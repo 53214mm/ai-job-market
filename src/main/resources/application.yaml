@@ -1,0 +1,61 @@
+spring:
+  application:
+    name: li-ai-agent
+  profiles:
+    active: local
+  ai:
+    dashscope:
+      chat:
+        options:
+          model: qwen-plus
+# pgvector向量数据库配置
+    vectorstore:
+      pgvector:
+        index-type: HNSW
+        dimensions: 1536
+        distance-type: COSINE_DISTANCE
+        max-document-batch-size: 10000 # Optional: Maximum number of documents per batch
+    mcp:
+      client:
+        sse:
+          connections:
+            mxai-mcp-server:
+              url: https://mcp.mxai.cn
+              sse-endpoint: /sse
+
+  # 1. Redis 核心配置
+  data:
+    redis:
+      host: localhost          # 你的 Redis 地址
+      port: 6379               # 端口
+      password: '123456'       # 没有密码留空
+      database: 1              # 使用 1 号库
+      timeout: 5000
+      connect-timeout: 5000
+
+# 自定义 Redis 对话记忆配置（可选扩展）
+chat-memory:
+  redis:
+    key-prefix: "chat:memory:"  # 对话历史 key 前缀
+
+server:
+  port: 8123
+  servlet:
+    context-path: /api
+
+springdoc:
+  swagger-ui:
+    path: /swagger-ui.html
+    tags-sorter: alpha
+    operations-sorter: alpha
+  api-docs:
+    path: /v3/api-docs
+  group-configs:
+    - group: 'default'
+      paths-to-match: '/**'
+      packages-to-scan: com.li.ai_job_market.controller
+
+knife4j:
+  enable: true
+  setting:
+    language: zh_cn
