@@ -14,6 +14,11 @@ import ResumeDetail from './pages/ResumeDetail.vue'
 import ResumeEdit from './pages/ResumeEdit.vue'
 import ResumeCreate from './pages/ResumeCreate.vue'
 
+// 公司
+import CompanyList from './pages/CompanyList.vue'
+import CompanyDetail from './pages/CompanyDetail.vue'
+import CompanyEdit from './pages/CompanyEdit.vue'
+
 // 角色仪表盘
 import SeekerDashboard from './pages/SeekerDashboard.vue'
 import RecruiterDashboard from './pages/RecruiterDashboard.vue'
@@ -32,8 +37,14 @@ const routes = [
   { path: '/resumes/:id', name: 'ResumeDetail', component: ResumeDetail },
   { path: '/resumes/:id/edit', name: 'ResumeEdit', component: ResumeEdit },
 
+  // 公司
+  { path: '/companies', name: 'CompanyList', component: CompanyList },
+  { path: '/companies/:id', name: 'CompanyDetail', component: CompanyDetail },
+
   // 招聘方
   { path: '/recruiter', name: 'RecruiterDashboard', component: RecruiterDashboard },
+  { path: '/recruiter/company', name: 'CompanyCreate', component: CompanyEdit },
+  { path: '/recruiter/company/:id', name: 'CompanyEdit', component: CompanyEdit },
   { path: '/recruiter/jobs', name: 'RecruiterJobs', component: () => import('./pages/Jobs.vue') },
   { path: '/recruiter/applications', name: 'RecruiterApplications', component: () => import('./pages/RecruiterDashboard.vue') },
 

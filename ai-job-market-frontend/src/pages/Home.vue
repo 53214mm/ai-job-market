@@ -1,9 +1,12 @@
 <script setup>
-import { ref } from 'vue'
+import { ref, onMounted } from 'vue'
+import { useRouter } from 'vue-router'
 import SearchBar from '../components/SearchBar.vue'
 import JobCard from '../components/JobCard.vue'
 import AIMatchCard from '../components/AIMatchCard.vue'
 import CompanyCard from '../components/CompanyCard.vue'
+
+const router = useRouter()
 
 const jobs = ref([
   {
@@ -46,17 +49,18 @@ const matchReason = ref({
   '地点匹配': 85
 })
 
-const companies = ref([
-  { name: '阿里巴巴', jobCount: 128 },
-  { name: '腾讯', jobCount: 96 },
-  { name: '字节跳动', jobCount: 85 },
-  { name: '百度', jobCount: 72 },
-  { name: '华为', jobCount: 64 },
-  { name: '美团', jobCount: 58 },
-])
+const companies = ref([])
+
+onMounted(async () => {
+  try {
+    const res = await fetch('/api/companies?current=1&pageSize=6')
+    const data = await res.json()
+    if (data.code === 0) companies.value = data.data.records || []
+  } catch (e) { /* 后端未启动时静默失败 */ }
+})
 
 function handleSearch(params) {
-  console.log('Search params:', params)
+  router.push('/jobs')
 }
 </script>
 

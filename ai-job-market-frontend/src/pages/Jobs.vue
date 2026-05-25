@@ -1,4 +1,5 @@
 <script setup>
+// TODO: 对接职位模块 API (GET /api/jobs) 替换静态数据
 import { ref } from 'vue'
 import SearchBar from '../components/SearchBar.vue'
 import JobCard from '../components/JobCard.vue'

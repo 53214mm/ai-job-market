@@ -1,13 +1,27 @@
 <script setup>
-import { ref, computed } from 'vue'
-import { useRouter } from 'vue-router'
+import { ref, computed, onMounted, onUnmounted } from 'vue'
+import { useRouter, useRoute } from 'vue-router'
 
 const router = useRouter()
+const route = useRoute()
 const token = ref(localStorage.getItem('token'))
 const user = ref(JSON.parse(localStorage.getItem('user') || 'null'))
 
 const isLoggedIn = computed(() => !!token.value)
 const role = computed(() => user.value?.role || '')
+
+// 路由变化时重新读取登录状态（响应 Login/Logout 变化）
+function refreshAuth() {
+  token.value = localStorage.getItem('token')
+  user.value = JSON.parse(localStorage.getItem('user') || 'null')
+}
+
+onMounted(() => window.addEventListener('focus', refreshAuth))
+onUnmounted(() => window.removeEventListener('focus', refreshAuth))
+
+// 监听路由变化
+import { watch } from 'vue'
+watch(() => route.path, refreshAuth)
 
 function logout() {
   localStorage.removeItem('token')
@@ -41,6 +55,7 @@ function logout() {
         <!-- Nav: 招聘方 -->
         <nav v-else-if="role === 'RECRUITER'" class="hidden md:flex items-center gap-8">
           <router-link to="/recruiter" class="text-sm font-medium text-gray-600 hover:text-blue-600 transition-colors">工作台</router-link>
+          <router-link to="/recruiter/company" class="text-sm font-medium text-gray-600 hover:text-blue-600 transition-colors">公司信息</router-link>
           <router-link to="/recruiter/jobs" class="text-sm font-medium text-gray-600 hover:text-blue-600 transition-colors">职位管理</router-link>
           <router-link to="/recruiter/applications" class="text-sm font-medium text-gray-600 hover:text-blue-600 transition-colors">简历筛选</router-link>
         </nav>

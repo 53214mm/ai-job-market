@@ -5,6 +5,8 @@ import { resumeApi } from '../api.js'
 
 const router = useRouter()
 const resumes = ref([])
+const company = ref(null)
+// TODO: 对接职位模块 API，目前使用静态占位数据
 const jobs = ref([
   { id: 1, title: '高级 Java 开发工程师', company: '阿里巴巴', city: '杭州', salary: '25K-45K', matchScore: 92 },
   { id: 2, title: 'AI 算法工程师', company: '百度', city: '北京', salary: '35K-60K', matchScore: 88 },
@@ -17,6 +19,13 @@ onMounted(async () => {
     const data = await resumeApi.list({ current: 1, pageSize: 5 })
     resumes.value = data.records || []
   } catch (e) { /* 未登录或无简历 */ }
+  try {
+    const res = await fetch('/api/user/current')
+    const d = await res.json()
+    if (d.code === 0 && d.data.role === 'RECRUITER') {
+      // 如果是招聘方，获取公司信息
+    }
+  } catch (e) { /* ignore */ }
 })
 
 const user = JSON.parse(localStorage.getItem('user') || '{}')
