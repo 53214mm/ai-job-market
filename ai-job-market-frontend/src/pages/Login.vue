@@ -21,7 +21,11 @@ async function handleLogin() {
     if (data.code === 0) {
       localStorage.setItem('token', data.data.token)
       localStorage.setItem('user', JSON.stringify(data.data.user))
-      router.push('/')
+      // 按角色跳转
+      const role = data.data.user.role
+      if (role === 'ADMIN') router.push('/admin')
+      else if (role === 'RECRUITER') router.push('/recruiter')
+      else router.push('/seeker')
     } else {
       error.value = data.message || '登录失败'
     }

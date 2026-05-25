@@ -37,6 +37,10 @@ spring:
       database: 1              # 使用 1 号库
       timeout: 5000
       connect-timeout: 5000
+  servlet:
+    multipart:
+      max-file-size: 10MB
+      max-request-size: 10MB
 
 # 自定义 Redis 对话记忆配置（可选扩展）
 chat-memory:

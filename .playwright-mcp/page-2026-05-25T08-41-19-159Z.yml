@@ -1,0 +1,94 @@
+- generic [ref=e3]:
+  - banner [ref=e4]:
+    - generic [ref=e6]:
+      - link "AI AI 招聘市场" [ref=e7] [cursor=pointer]:
+        - /url: /
+        - generic [ref=e9]: AI
+        - generic [ref=e10]: AI 招聘市场
+      - navigation [ref=e11]:
+        - link "求职" [ref=e12] [cursor=pointer]:
+          - /url: /
+        - link "简历" [ref=e13] [cursor=pointer]:
+          - /url: /resumes
+        - link "招聘" [ref=e14] [cursor=pointer]:
+          - /url: /jobs
+        - link "AI 推荐" [ref=e15] [cursor=pointer]:
+          - /url: "#"
+        - link "消息" [ref=e16] [cursor=pointer]:
+          - /url: "#"
+      - generic [ref=e17]:
+        - link "登录" [ref=e18] [cursor=pointer]:
+          - /url: /login
+        - link "注册" [ref=e19] [cursor=pointer]:
+          - /url: /register
+  - main [ref=e20]:
+    - generic [ref=e21]:
+      - generic [ref=e22]:
+        - generic [ref=e23]:
+          - heading "我的简历" [level=1] [ref=e24]
+          - paragraph [ref=e25]: 管理您的多份简历，最多可创建 5 份
+        - button "+ 创建新简历" [ref=e26]
+      - generic [ref=e27]:
+        - img [ref=e29]
+        - heading "还没有简历" [level=3] [ref=e31]
+        - paragraph [ref=e32]: 创建一份简历，开启您的求职之旅
+        - button "创建第一份简历" [ref=e33]
+  - contentinfo [ref=e34]:
+    - generic [ref=e35]:
+      - generic [ref=e36]:
+        - generic [ref=e37]:
+          - heading "求职者" [level=4] [ref=e38]
+          - list [ref=e39]:
+            - listitem [ref=e40]:
+              - link "浏览职位" [ref=e41] [cursor=pointer]:
+                - /url: "#"
+            - listitem [ref=e42]:
+              - link "AI 简历分析" [ref=e43] [cursor=pointer]:
+                - /url: "#"
+            - listitem [ref=e44]:
+              - link "求职攻略" [ref=e45] [cursor=pointer]:
+                - /url: "#"
+            - listitem [ref=e46]:
+              - link "AI 模拟面试" [ref=e47] [cursor=pointer]:
+                - /url: "#"
+        - generic [ref=e48]:
+          - heading "招聘方" [level=4] [ref=e49]
+          - list [ref=e50]:
+            - listitem [ref=e51]:
+              - link "发布职位" [ref=e52] [cursor=pointer]:
+                - /url: "#"
+            - listitem [ref=e53]:
+              - link "AI 简历筛选" [ref=e54] [cursor=pointer]:
+                - /url: "#"
+            - listitem [ref=e55]:
+              - link "企业认证" [ref=e56] [cursor=pointer]:
+                - /url: "#"
+            - listitem [ref=e57]:
+              - link "招聘方案" [ref=e58] [cursor=pointer]:
+                - /url: "#"
+        - generic [ref=e59]:
+          - heading "关于" [level=4] [ref=e60]
+          - list [ref=e61]:
+            - listitem [ref=e62]:
+              - link "关于我们" [ref=e63] [cursor=pointer]:
+                - /url: "#"
+            - listitem [ref=e64]:
+              - link "帮助中心" [ref=e65] [cursor=pointer]:
+                - /url: "#"
+            - listitem [ref=e66]:
+              - link "隐私政策" [ref=e67] [cursor=pointer]:
+                - /url: "#"
+            - listitem [ref=e68]:
+              - link "服务条款" [ref=e69] [cursor=pointer]:
+                - /url: "#"
+        - generic [ref=e70]:
+          - heading "联系我们" [level=4] [ref=e71]
+          - list [ref=e72]:
+            - listitem [ref=e73]: service@aijob.com
+            - listitem [ref=e74]: 400-888-0000
+            - listitem [ref=e75]: 周一至周五 9:00-18:00
+      - generic [ref=e76]:
+        - generic [ref=e77]:
+          - generic [ref=e79]: AI
+          - generic [ref=e80]: AI 智能招聘市场
+        - paragraph [ref=e81]: © 2026 AI Job Market. All rights reserved.

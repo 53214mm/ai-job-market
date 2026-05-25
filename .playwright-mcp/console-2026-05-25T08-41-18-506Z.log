@@ -1,0 +1,4 @@
+[     583ms] [ERROR] Failed to load resource: the server responded with a status of 502 (Bad Gateway) @ http://localhost:5174/api/resumes?current=1&pageSize=20:0
+[     583ms] [ERROR] SyntaxError: Failed to execute 'json' on 'Response': Unexpected end of JSON input
+    at request (http://localhost:5174/src/api.js:10:26)
+    at async http://localhost:5174/src/pages/ResumeList.vue:18:18 @ http://localhost:5174/@vite/client:524

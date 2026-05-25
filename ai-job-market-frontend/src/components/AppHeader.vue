@@ -7,6 +7,7 @@ const token = ref(localStorage.getItem('token'))
 const user = ref(JSON.parse(localStorage.getItem('user') || 'null'))
 
 const isLoggedIn = computed(() => !!token.value)
+const role = computed(() => user.value?.role || '')
 
 function logout() {
   localStorage.removeItem('token')
@@ -22,32 +23,48 @@ function logout() {
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
       <div class="flex items-center justify-between h-16">
         <!-- Logo -->
-        <router-link to="/" class="flex items-center gap-2 text-xl font-bold text-gray-900 no-underline">
+        <router-link :to="isLoggedIn ? (role === 'ADMIN' ? '/admin' : role === 'RECRUITER' ? '/recruiter' : '/seeker') : '/'"
+          class="flex items-center gap-2 text-xl font-bold text-gray-900 no-underline">
           <div class="w-8 h-8 bg-blue-600 rounded-lg flex items-center justify-center">
             <span class="text-white text-sm font-bold">AI</span>
           </div>
           <span class="hidden sm:inline">AI 招聘市场</span>
         </router-link>
 
-        <!-- Nav -->
-        <nav class="hidden md:flex items-center gap-8">
-          <router-link to="/" class="text-sm font-medium text-gray-600 hover:text-blue-600 transition-colors">
-            求职
-          </router-link>
-          <router-link to="/jobs" class="text-sm font-medium text-gray-600 hover:text-blue-600 transition-colors">
-            招聘
-          </router-link>
-          <a href="#" class="text-sm font-medium text-gray-600 hover:text-blue-600 transition-colors">
-            AI 推荐
-          </a>
-          <a href="#" class="text-sm font-medium text-gray-600 hover:text-blue-600 transition-colors">
-            消息
-          </a>
+        <!-- Nav: 求职者 -->
+        <nav v-if="role === 'SEEKER'" class="hidden md:flex items-center gap-8">
+          <router-link to="/seeker" class="text-sm font-medium text-gray-600 hover:text-blue-600 transition-colors">首页</router-link>
+          <router-link to="/jobs" class="text-sm font-medium text-gray-600 hover:text-blue-600 transition-colors">职位搜索</router-link>
+          <router-link to="/resumes" class="text-sm font-medium text-gray-600 hover:text-blue-600 transition-colors">我的简历</router-link>
+        </nav>
+
+        <!-- Nav: 招聘方 -->
+        <nav v-else-if="role === 'RECRUITER'" class="hidden md:flex items-center gap-8">
+          <router-link to="/recruiter" class="text-sm font-medium text-gray-600 hover:text-blue-600 transition-colors">工作台</router-link>
+          <router-link to="/recruiter/jobs" class="text-sm font-medium text-gray-600 hover:text-blue-600 transition-colors">职位管理</router-link>
+          <router-link to="/recruiter/applications" class="text-sm font-medium text-gray-600 hover:text-blue-600 transition-colors">简历筛选</router-link>
+        </nav>
+
+        <!-- Nav: 管理员 -->
+        <nav v-else-if="role === 'ADMIN'" class="hidden md:flex items-center gap-8">
+          <router-link to="/admin" class="text-sm font-medium text-gray-600 hover:text-blue-600 transition-colors">仪表盘</router-link>
+          <router-link to="/admin/users" class="text-sm font-medium text-gray-600 hover:text-blue-600 transition-colors">用户管理</router-link>
+          <router-link to="/admin/companies" class="text-sm font-medium text-gray-600 hover:text-blue-600 transition-colors">企业审核</router-link>
+        </nav>
+
+        <!-- Nav: 未登录 -->
+        <nav v-else class="hidden md:flex items-center gap-8">
+          <router-link to="/" class="text-sm font-medium text-gray-600 hover:text-blue-600 transition-colors">求职</router-link>
+          <router-link to="/jobs" class="text-sm font-medium text-gray-600 hover:text-blue-600 transition-colors">招聘</router-link>
         </nav>
 
         <!-- Auth -->
         <div class="flex items-center gap-3">
           <template v-if="isLoggedIn">
+            <span class="text-xs px-2 py-0.5 rounded-full font-medium"
+              :class="role === 'ADMIN' ? 'bg-red-50 text-red-600' : role === 'RECRUITER' ? 'bg-purple-50 text-purple-600' : 'bg-blue-50 text-blue-600'">
+              {{ role === 'ADMIN' ? '管理员' : role === 'RECRUITER' ? '招聘方' : '求职者' }}
+            </span>
             <span class="text-sm text-gray-600 hidden sm:inline">{{ user?.nickname }}</span>
             <button @click="logout"
               class="text-sm px-4 py-2 text-gray-600 border border-gray-300 rounded-md hover:bg-gray-50 transition-colors">
