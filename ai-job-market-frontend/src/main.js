@@ -19,10 +19,19 @@ import CompanyList from './pages/CompanyList.vue'
 import CompanyDetail from './pages/CompanyDetail.vue'
 import CompanyEdit from './pages/CompanyEdit.vue'
 
+// 投递
+import Applications from './pages/Applications.vue'
+import ApplicationDetail from './pages/ApplicationDetail.vue'
+import Favorites from './pages/Favorites.vue'
+import Interviews from './pages/Interviews.vue'
+
 // 角色仪表盘
 import SeekerDashboard from './pages/SeekerDashboard.vue'
 import RecruiterDashboard from './pages/RecruiterDashboard.vue'
 import AdminDashboard from './pages/AdminDashboard.vue'
+import AdminUsers from './pages/AdminUsers.vue'
+import AdminCompanies from './pages/AdminCompanies.vue'
+import AdminJobs from './pages/AdminJobs.vue'
 
 const routes = [
   { path: '/', name: 'Home', component: Home },
@@ -32,6 +41,10 @@ const routes = [
 
   // 求职者
   { path: '/seeker', name: 'SeekerDashboard', component: SeekerDashboard },
+  { path: '/applications', name: 'Applications', component: Applications },
+  { path: '/applications/:id', name: 'ApplicationDetail', component: ApplicationDetail },
+  { path: '/favorites', name: 'Favorites', component: Favorites },
+  { path: '/interviews', name: 'Interviews', component: Interviews },
   { path: '/resumes', name: 'ResumeList', component: ResumeList },
   { path: '/resumes/create', name: 'ResumeCreate', component: ResumeCreate },
   { path: '/resumes/:id', name: 'ResumeDetail', component: ResumeDetail },
@@ -50,8 +63,10 @@ const routes = [
 
   // 管理员
   { path: '/admin', name: 'AdminDashboard', component: AdminDashboard },
-  { path: '/admin/users', name: 'AdminUsers', component: AdminDashboard },
-  { path: '/admin/companies', name: 'AdminCompanies', component: AdminDashboard },
+  { path: '/admin/users', name: 'AdminUsers', component: AdminUsers },
+  { path: '/admin/companies', name: 'AdminCompanies', component: AdminCompanies },
+  { path: '/admin/jobs', name: 'AdminJobs', component: AdminJobs },
+  { path: '/admin/articles', name: 'AdminArticles', component: AdminDashboard },
 ]
 
 const router = createRouter({

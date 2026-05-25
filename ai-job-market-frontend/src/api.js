@@ -52,3 +52,15 @@ export const resumeApi = {
     return data.data
   },
 }
+
+export const jobApi = {
+  list: (params = {}) => request('/jobs?' + new URLSearchParams(params)),
+  detail: (id) => request('/jobs/' + id),
+  create: (body) => request('/jobs', { method: 'POST', body: JSON.stringify(body) }),
+  update: (id, body) => request('/jobs/' + id, { method: 'PUT', body: JSON.stringify(body) }),
+  publish: (id) => request('/jobs/' + id + '/publish', { method: 'PUT' }),
+  close: (id) => request('/jobs/' + id + '/close', { method: 'PUT' }),
+  myJobs: (params = {}) => request('/jobs/my?' + new URLSearchParams(params)),
+  recommend: (resumeId) => request('/jobs/recommend?resumeId=' + (resumeId || '')),
+  addSkillTag: (jobId, skillName, isRequired) => request('/jobs/' + jobId + '/skill-tags?skillName=' + encodeURIComponent(skillName) + '&isRequired=' + isRequired, { method: 'POST' }),
+}
