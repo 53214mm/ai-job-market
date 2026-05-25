@@ -1,0 +1,8 @@
+- generic [ref=e3]:
+  - generic [ref=e6]:
+    - img [ref=e8]
+    - generic [ref=e45]:
+      - generic [ref=e46]: Select a definition
+      - combobox "Select a definition" [ref=e47]:
+        - option "default" [selected]
+  - heading "No API definition provided." [level=4] [ref=e50]

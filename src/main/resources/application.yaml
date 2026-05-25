@@ -1,6 +1,6 @@
 spring:
   application:
-    name: li-ai-agent
+    name: ai-job-market
   profiles:
     active: local
   ai:
@@ -22,6 +22,11 @@ spring:
             mxai-mcp-server:
               url: https://mcp.mxai.cn
               sse-endpoint: /sse
+    datasource:
+      username: root
+      password: 123456
+      url: jdbc:mysql://localhost:3306/ai_job_market?useUnicode=true&characterEncoding=UTF-8&serverTimezone=Asia/Shanghai
+      driver-class-name: com.mysql.cj.jdbc.Driver
 
   # 1. Redis 核心配置
   data:
@@ -48,6 +53,7 @@ springdoc:
     path: /swagger-ui.html
     tags-sorter: alpha
     operations-sorter: alpha
+    persist-authorization: true
   api-docs:
     path: /v3/api-docs
   group-configs:
@@ -59,3 +65,9 @@ knife4j:
   enable: true
   setting:
     language: zh_cn
+    enable-swagger-models: true
+    enable-authorize: true
+  documents:
+    - group: default
+      name: 默认分组
+      locations: classpath:document/*

@@ -121,7 +121,7 @@ public class JobApp {
                 .user(message)
                 .advisors(spec -> spec.param(ChatMemory.CONVERSATION_ID, chatId))
                 // 应用 RAG 知识库问答 QuestionAnswerAdvisor
-                .advisors(QuestionAnswerAdvisor.builder(loveAppVectorStore).build())
+//                .advisors(QuestionAnswerAdvisor.builder(loveAppVectorStore).build())
                 // 应用 RAG 检索增强服务（基于云知识库服务）
 //                .advisors(loveAppRagCloudAdvisor)
                 // 应用自定义的 RAG 检索增强服务（文档查询器 + 上下文增强器）RetrievalAugmentationAdvisor

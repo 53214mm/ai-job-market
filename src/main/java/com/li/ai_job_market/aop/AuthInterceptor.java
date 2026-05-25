@@ -43,7 +43,7 @@ public class AuthInterceptor {
         }
         // 以下为：必须有该权限才通过
         // 获取当前用户具有的权限
-        UserRoleEnum userRoleEnum = UserRoleEnum.getEnumByValue(loginUser.getUserRole());
+        UserRoleEnum userRoleEnum = UserRoleEnum.getEnumByValue(loginUser.getRole());
         // 没有权限，拒绝
         if (userRoleEnum == null) {
             throw new BusinessException(ErrorCode.NO_AUTH_ERROR);

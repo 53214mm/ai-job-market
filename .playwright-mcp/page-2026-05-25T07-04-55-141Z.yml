@@ -1,0 +1,19 @@
+- generic [ref=e20]:
+  - complementary [ref=e21]:
+    - menu [ref=e24]
+  - generic [ref=e25]:
+    - generic [ref=e26]:
+      - generic:
+        - 'generic "icon: menu-unfold" [ref=e27] [cursor=pointer]':
+          - img [ref=e28]
+        - generic [ref=e31] [cursor=pointer]: 中
+    - tablist [ref=e33]:
+      - generic [ref=e34]:
+        - generic:
+          - generic:
+            - 'generic "icon: left"':
+              - img
+        - generic:
+          - generic:
+            - 'generic "icon: right"':
+              - img

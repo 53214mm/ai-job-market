@@ -1,0 +1,335 @@
+- generic [ref=e3]:
+  - banner [ref=e4]:
+    - generic [ref=e6]:
+      - link "AI AI 招聘市场" [ref=e7] [cursor=pointer]:
+        - /url: /
+        - generic [ref=e9]: AI
+        - generic [ref=e10]: AI 招聘市场
+      - navigation [ref=e11]:
+        - link "求职" [ref=e12] [cursor=pointer]:
+          - /url: /
+        - link "招聘" [ref=e13] [cursor=pointer]:
+          - /url: /jobs
+        - link "AI 推荐" [ref=e14] [cursor=pointer]:
+          - /url: "#"
+        - link "消息" [ref=e15] [cursor=pointer]:
+          - /url: "#"
+      - generic [ref=e16]:
+        - link "登录" [ref=e17] [cursor=pointer]:
+          - /url: /login
+        - link "注册" [ref=e18] [cursor=pointer]:
+          - /url: /register
+  - main [ref=e19]:
+    - generic [ref=e20]:
+      - generic [ref=e22]:
+        - generic [ref=e23]:
+          - heading "找到你的理想工作" [level=1] [ref=e24]
+          - paragraph [ref=e25]: AI 智能匹配，让好工作主动找到你。已为 10,000+ 求职者精准推荐
+        - generic [ref=e27]:
+          - generic [ref=e28]:
+            - img [ref=e29]
+            - textbox "职位关键词" [ref=e31]
+          - generic [ref=e32]:
+            - img [ref=e33]
+            - combobox [ref=e36]:
+              - option "所有城市" [selected]
+              - option "北京"
+              - option "上海"
+              - option "广州"
+              - option "深圳"
+              - option "杭州"
+              - option "成都"
+          - generic [ref=e37]:
+            - img [ref=e38]
+            - combobox [ref=e40]:
+              - option "薪资范围" [selected]
+              - option "10K 以下"
+              - option "10K - 20K"
+              - option "20K - 35K"
+              - option "35K - 50K"
+              - option "50K 以上"
+          - button "AI 智能搜索" [ref=e41]:
+            - img [ref=e42]
+            - text: AI 智能搜索
+        - generic [ref=e44]:
+          - generic [ref=e45]: 热门搜索：
+          - button "Java" [ref=e46]
+          - button "前端" [ref=e47]
+          - button "AI 算法" [ref=e48]
+          - button "远程工作" [ref=e49]
+      - generic [ref=e50]:
+        - generic [ref=e51]:
+          - heading "AI 智能推荐职位" [level=2] [ref=e52]
+          - button "查看全部 →" [ref=e53]
+        - generic [ref=e54]:
+          - generic [ref=e55]:
+            - generic [ref=e56] [cursor=pointer]:
+              - generic [ref=e57]:
+                - generic [ref=e58]:
+                  - generic [ref=e59]: 阿
+                  - generic [ref=e60]:
+                    - heading "高级 Java 开发工程师" [level=3] [ref=e61]
+                    - paragraph [ref=e62]: 阿里巴巴
+                - generic [ref=e63]:
+                  - img [ref=e64]
+                  - text: AI 匹配 92%
+              - generic [ref=e66]:
+                - generic [ref=e67]:
+                  - img [ref=e68]
+                  - text: 杭州
+                - generic [ref=e71]:
+                  - img [ref=e72]
+                  - text: 25K-45K
+                - generic [ref=e74]:
+                  - img [ref=e75]
+                  - text: 3-5年
+              - generic [ref=e77]:
+                - generic [ref=e78]: Java
+                - generic [ref=e79]: Spring Boot
+                - generic [ref=e80]: 微服务
+                - generic [ref=e81]: MySQL
+              - generic [ref=e82]:
+                - generic [ref=e83]: 2小时前
+                - button "立即投递" [ref=e84]
+            - generic [ref=e85] [cursor=pointer]:
+              - generic [ref=e86]:
+                - generic [ref=e87]:
+                  - generic [ref=e88]: 百
+                  - generic [ref=e89]:
+                    - heading "AI 算法工程师" [level=3] [ref=e90]
+                    - paragraph [ref=e91]: 百度
+                - generic [ref=e92]:
+                  - img [ref=e93]
+                  - text: AI 匹配 88%
+              - generic [ref=e95]:
+                - generic [ref=e96]:
+                  - img [ref=e97]
+                  - text: 北京
+                - generic [ref=e100]:
+                  - img [ref=e101]
+                  - text: 35K-60K
+                - generic [ref=e103]:
+                  - img [ref=e104]
+                  - text: 3-5年
+              - generic [ref=e106]:
+                - generic [ref=e107]: Python
+                - generic [ref=e108]: PyTorch
+                - generic [ref=e109]: NLP
+                - generic [ref=e110]: 大模型
+              - generic [ref=e111]:
+                - generic [ref=e112]: 4小时前
+                - button "立即投递" [ref=e113]
+            - generic [ref=e114] [cursor=pointer]:
+              - generic [ref=e115]:
+                - generic [ref=e116]:
+                  - generic [ref=e117]: 字
+                  - generic [ref=e118]:
+                    - heading "前端开发工程师" [level=3] [ref=e119]
+                    - paragraph [ref=e120]: 字节跳动
+                - generic [ref=e121]:
+                  - img [ref=e122]
+                  - text: AI 匹配 85%
+              - generic [ref=e124]:
+                - generic [ref=e125]:
+                  - img [ref=e126]
+                  - text: 上海
+                - generic [ref=e129]:
+                  - img [ref=e130]
+                  - text: 30K-50K
+                - generic [ref=e132]:
+                  - img [ref=e133]
+                  - text: 1-3年
+              - generic [ref=e135]:
+                - generic [ref=e136]: Vue.js
+                - generic [ref=e137]: React
+                - generic [ref=e138]: TypeScript
+                - generic [ref=e139]: Node.js
+              - generic [ref=e140]:
+                - generic [ref=e141]: 6小时前
+                - button "立即投递" [ref=e142]
+            - generic [ref=e143] [cursor=pointer]:
+              - generic [ref=e144]:
+                - generic [ref=e145]:
+                  - generic [ref=e146]: 腾
+                  - generic [ref=e147]:
+                    - heading "产品经理（AI 方向）" [level=3] [ref=e148]
+                    - paragraph [ref=e149]: 腾讯
+                - generic [ref=e150]:
+                  - img [ref=e151]
+                  - text: AI 匹配 79%
+              - generic [ref=e153]:
+                - generic [ref=e154]:
+                  - img [ref=e155]
+                  - text: 深圳
+                - generic [ref=e158]:
+                  - img [ref=e159]
+                  - text: 28K-48K
+                - generic [ref=e161]:
+                  - img [ref=e162]
+                  - text: 3-5年
+              - generic [ref=e164]:
+                - generic [ref=e165]: AI
+                - generic [ref=e166]: B端产品
+                - generic [ref=e167]: 数据分析
+              - generic [ref=e168]:
+                - generic [ref=e169]: 8小时前
+                - button "立即投递" [ref=e170]
+            - generic [ref=e171] [cursor=pointer]:
+              - generic [ref=e172]:
+                - generic [ref=e173]:
+                  - generic [ref=e174]: 华
+                  - generic [ref=e175]:
+                    - heading "DevOps 运维工程师" [level=3] [ref=e176]
+                    - paragraph [ref=e177]: 华为
+                - generic [ref=e178]:
+                  - img [ref=e179]
+                  - text: AI 匹配 75%
+              - generic [ref=e181]:
+                - generic [ref=e182]:
+                  - img [ref=e183]
+                  - text: 成都
+                - generic [ref=e186]:
+                  - img [ref=e187]
+                  - text: 20K-35K
+                - generic [ref=e189]:
+                  - img [ref=e190]
+                  - text: 3-5年
+              - generic [ref=e192]:
+                - generic [ref=e193]: Kubernetes
+                - generic [ref=e194]: Docker
+                - generic [ref=e195]: CI/CD
+                - generic [ref=e196]: Linux
+              - generic [ref=e197]:
+                - generic [ref=e198]: 12小时前
+                - button "立即投递" [ref=e199]
+          - generic [ref=e200]:
+            - generic [ref=e201]:
+              - generic [ref=e202]:
+                - img [ref=e204]
+                - heading "AI 推荐理由" [level=3] [ref=e206]
+              - paragraph [ref=e207]: 基于您的简历和求职偏好，以下职位与您的匹配度最高。
+              - generic [ref=e208]:
+                - generic [ref=e209]:
+                  - generic [ref=e210]: 技能匹配
+                  - generic [ref=e214]: 92%
+                - generic [ref=e215]:
+                  - generic [ref=e216]: 经验匹配
+                  - generic [ref=e220]: 88%
+                - generic [ref=e221]:
+                  - generic [ref=e222]: 学历匹配
+                  - generic [ref=e226]: 95%
+                - generic [ref=e227]:
+                  - generic [ref=e228]: 薪资匹配
+                  - generic [ref=e232]: 80%
+                - generic [ref=e233]:
+                  - generic [ref=e234]: 地点匹配
+                  - generic [ref=e238]: 85%
+              - paragraph [ref=e240]: AI 提示： 您的技能与当前热门岗位高度匹配，建议优先投递匹配度 85% 以上的职位，提高面试邀约率。
+            - generic [ref=e241]:
+              - heading "快速入口" [level=3] [ref=e242]
+              - generic [ref=e243]:
+                - button "我的简历" [ref=e244]
+                - button "投递记录" [ref=e245]
+                - button "我的收藏" [ref=e246]
+                - button "AI 求职助手" [ref=e247]
+      - generic [ref=e249]:
+        - generic [ref=e250]:
+          - heading "热门企业" [level=2] [ref=e251]
+          - button "查看全部 →" [ref=e252]
+        - generic [ref=e253]:
+          - generic [ref=e254] [cursor=pointer]:
+            - generic [ref=e255]: 阿
+            - paragraph [ref=e256]: 阿里巴巴
+            - paragraph [ref=e257]: 128 个在招职位
+          - generic [ref=e258] [cursor=pointer]:
+            - generic [ref=e259]: 腾
+            - paragraph [ref=e260]: 腾讯
+            - paragraph [ref=e261]: 96 个在招职位
+          - generic [ref=e262] [cursor=pointer]:
+            - generic [ref=e263]: 字
+            - paragraph [ref=e264]: 字节跳动
+            - paragraph [ref=e265]: 85 个在招职位
+          - generic [ref=e266] [cursor=pointer]:
+            - generic [ref=e267]: 百
+            - paragraph [ref=e268]: 百度
+            - paragraph [ref=e269]: 72 个在招职位
+          - generic [ref=e270] [cursor=pointer]:
+            - generic [ref=e271]: 华
+            - paragraph [ref=e272]: 华为
+            - paragraph [ref=e273]: 64 个在招职位
+          - generic [ref=e274] [cursor=pointer]:
+            - generic [ref=e275]: 美
+            - paragraph [ref=e276]: 美团
+            - paragraph [ref=e277]: 58 个在招职位
+      - generic [ref=e280]:
+        - generic [ref=e281]:
+          - paragraph [ref=e282]: 10,000+
+          - paragraph [ref=e283]: 活跃求职者
+        - generic [ref=e284]:
+          - paragraph [ref=e285]: 5,000+
+          - paragraph [ref=e286]: 合作企业
+        - generic [ref=e287]:
+          - paragraph [ref=e288]: 20,000+
+          - paragraph [ref=e289]: 在招职位
+        - generic [ref=e290]:
+          - paragraph [ref=e291]: 92%
+          - paragraph [ref=e292]: AI 推荐精准度
+  - contentinfo [ref=e293]:
+    - generic [ref=e294]:
+      - generic [ref=e295]:
+        - generic [ref=e296]:
+          - heading "求职者" [level=4] [ref=e297]
+          - list [ref=e298]:
+            - listitem [ref=e299]:
+              - link "浏览职位" [ref=e300] [cursor=pointer]:
+                - /url: "#"
+            - listitem [ref=e301]:
+              - link "AI 简历分析" [ref=e302] [cursor=pointer]:
+                - /url: "#"
+            - listitem [ref=e303]:
+              - link "求职攻略" [ref=e304] [cursor=pointer]:
+                - /url: "#"
+            - listitem [ref=e305]:
+              - link "AI 模拟面试" [ref=e306] [cursor=pointer]:
+                - /url: "#"
+        - generic [ref=e307]:
+          - heading "招聘方" [level=4] [ref=e308]
+          - list [ref=e309]:
+            - listitem [ref=e310]:
+              - link "发布职位" [ref=e311] [cursor=pointer]:
+                - /url: "#"
+            - listitem [ref=e312]:
+              - link "AI 简历筛选" [ref=e313] [cursor=pointer]:
+                - /url: "#"
+            - listitem [ref=e314]:
+              - link "企业认证" [ref=e315] [cursor=pointer]:
+                - /url: "#"
+            - listitem [ref=e316]:
+              - link "招聘方案" [ref=e317] [cursor=pointer]:
+                - /url: "#"
+        - generic [ref=e318]:
+          - heading "关于" [level=4] [ref=e319]
+          - list [ref=e320]:
+            - listitem [ref=e321]:
+              - link "关于我们" [ref=e322] [cursor=pointer]:
+                - /url: "#"
+            - listitem [ref=e323]:
+              - link "帮助中心" [ref=e324] [cursor=pointer]:
+                - /url: "#"
+            - listitem [ref=e325]:
+              - link "隐私政策" [ref=e326] [cursor=pointer]:
+                - /url: "#"
+            - listitem [ref=e327]:
+              - link "服务条款" [ref=e328] [cursor=pointer]:
+                - /url: "#"
+        - generic [ref=e329]:
+          - heading "联系我们" [level=4] [ref=e330]
+          - list [ref=e331]:
+            - listitem [ref=e332]: service@aijob.com
+            - listitem [ref=e333]: 400-888-0000
+            - listitem [ref=e334]: 周一至周五 9:00-18:00
+      - generic [ref=e335]:
+        - generic [ref=e336]:
+          - generic [ref=e338]: AI
+          - generic [ref=e339]: AI 智能招聘市场
+        - paragraph [ref=e340]: © 2026 AI Job Market. All rights reserved.

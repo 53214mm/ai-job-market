@@ -1,0 +1,356 @@
+- generic [ref=e3]:
+  - generic [ref=e6]:
+    - img [ref=e8]
+    - generic [ref=e45]:
+      - generic [ref=e46]: Select a definition
+      - combobox "Select a definition" [ref=e47]:
+        - option "default" [selected]
+  - generic [ref=e48]:
+    - generic:
+      - img
+    - generic [ref=e61]:
+      - generic [ref=e64]:
+        - generic [ref=e65]:
+          - heading "AI 智能招聘市场 API 1.0 OAS 3.1" [level=2] [ref=e66]:
+            - text: AI 智能招聘市场 API
+            - generic [ref=e67]:
+              - generic [ref=e69]: "1.0"
+              - generic [ref=e71]: OAS 3.1
+          - link "/api/v3/api-docs/default" [ref=e72] [cursor=pointer]:
+            - /url: /api/v3/api-docs/default
+            - generic [ref=e73]: /api/v3/api-docs/default
+        - paragraph [ref=e76]: AI Job Market API 文档
+      - generic [ref=e78]:
+        - generic [ref=e80]:
+          - text: Servers
+          - combobox [ref=e83]:
+            - option "http://localhost:8123/api - Generated server url" [selected]
+        - generic [ref=e84]:
+          - button "Authorize" [ref=e85] [cursor=pointer]:
+            - generic [ref=e86]: Authorize
+            - img [ref=e517]
+          - generic [ref=e496]:
+            - generic [ref=e497]:
+              - heading "Available authorizations" [level=3] [ref=e498]
+              - button [ref=e499] [cursor=pointer]:
+                - img [ref=e500]
+            - generic [ref=e504]:
+              - generic [ref=e505]:
+                - heading "Bearer (http, Bearer)" [level=4] [ref=e506]:
+                  - code [ref=e507]: Bearer
+                  - text: (http, Bearer)
+                - heading "Authorized" [level=6] [ref=e519]
+                - paragraph [ref=e510]: 粘贴 JWT Token（无需加 Bearer 前缀）
+                - generic [ref=e511]:
+                  - text: "Value:"
+                  - code [ref=e520]: "******"
+              - generic [ref=e514]:
+                - button "Remove authorization" [active] [ref=e521] [cursor=pointer]: Logout
+                - button "Close" [ref=e516] [cursor=pointer]
+      - generic [ref=e91]:
+        - generic [ref=e93]:
+          - heading "ai-controller Collapse operation" [level=3] [ref=e94] [cursor=pointer]:
+            - link "ai-controller" [ref=e95]:
+              - /url: "#/ai-controller"
+            - button "Collapse operation" [expanded] [ref=e96]:
+              - img [ref=e97]
+          - generic [ref=e100]:
+            - generic [ref=e103] [cursor=pointer]:
+              - button "GET /ai/file/download" [ref=e104]:
+                - generic [ref=e105]: GET
+                - link "/ai/file/download" [ref=e108]:
+                  - /url: "#/ai-controller/downloadFile"
+                  - generic [ref=e109]:
+                    - text: /ai
+                    - text: /file
+                    - text: /download
+              - generic "Copy to clipboard"
+              - button "authorization button locked" [ref=e522]:
+                - img [ref=e523]
+              - button "get /ai/file/download" [ref=e115]:
+                - img [ref=e116]
+            - generic [ref=e120] [cursor=pointer]:
+              - button "GET /ai/love_app/chat/server_sent_event" [ref=e121]:
+                - generic [ref=e122]: GET
+                - link "/ai/love_app/chat/server_sent_event" [ref=e125]:
+                  - /url: "#/ai-controller/doChatWithLoveAppServerSentEvent"
+                  - generic [ref=e126]:
+                    - text: /ai
+                    - text: /love_app
+                    - text: /chat
+                    - text: /server_sent_event
+              - generic "Copy to clipboard"
+              - button "authorization button locked" [ref=e525]:
+                - img [ref=e526]
+              - button "get /ai/love_app/chat/server_sent_event" [ref=e132]:
+                - img [ref=e133]
+            - generic [ref=e137] [cursor=pointer]:
+              - button "GET /ai/love_app/chat/sse" [ref=e138]:
+                - generic [ref=e139]: GET
+                - link "/ai/love_app/chat/sse" [ref=e142]:
+                  - /url: "#/ai-controller/doChatWithLoveAppSSE"
+                  - generic [ref=e143]:
+                    - text: /ai
+                    - text: /love_app
+                    - text: /chat
+                    - text: /sse
+              - generic "Copy to clipboard"
+              - button "authorization button locked" [ref=e528]:
+                - img [ref=e529]
+              - button "get /ai/love_app/chat/sse" [ref=e149]:
+                - img [ref=e150]
+            - generic [ref=e154] [cursor=pointer]:
+              - button "GET /ai/love_app/chat/sse/emitter" [ref=e155]:
+                - generic [ref=e156]: GET
+                - link "/ai/love_app/chat/sse/emitter" [ref=e159]:
+                  - /url: "#/ai-controller/doChatWithLoveAppSseEmitter"
+                  - generic [ref=e160]:
+                    - text: /ai
+                    - text: /love_app
+                    - text: /chat
+                    - text: /sse
+                    - text: /emitter
+              - generic "Copy to clipboard"
+              - button "authorization button locked" [ref=e531]:
+                - img [ref=e532]
+              - button "get /ai/love_app/chat/sse/emitter" [ref=e166]:
+                - img [ref=e167]
+            - generic [ref=e171] [cursor=pointer]:
+              - button "GET /ai/love_app/chat/sync" [ref=e172]:
+                - generic [ref=e173]: GET
+                - link "/ai/love_app/chat/sync" [ref=e176]:
+                  - /url: "#/ai-controller/chat"
+                  - generic [ref=e177]:
+                    - text: /ai
+                    - text: /love_app
+                    - text: /chat
+                    - text: /sync
+              - generic "Copy to clipboard"
+              - button "authorization button locked" [ref=e534]:
+                - img [ref=e535]
+              - button "get /ai/love_app/chat/sync" [ref=e183]:
+                - img [ref=e184]
+            - generic [ref=e188] [cursor=pointer]:
+              - button "GET /ai/manus/chat" [ref=e189]:
+                - generic [ref=e190]: GET
+                - link "/ai/manus/chat" [ref=e193]:
+                  - /url: "#/ai-controller/doChatWithManus"
+                  - generic [ref=e194]:
+                    - text: /ai
+                    - text: /manus
+                    - text: /chat
+              - generic "Copy to clipboard"
+              - button "authorization button locked" [ref=e537]:
+                - img [ref=e538]
+              - button "get /ai/manus/chat" [ref=e200]:
+                - img [ref=e201]
+        - generic [ref=e204]:
+          - heading "hello Collapse operation" [level=3] [ref=e205] [cursor=pointer]:
+            - link "hello" [ref=e206]:
+              - /url: "#/hello"
+            - button "Collapse operation" [expanded] [ref=e207]:
+              - img [ref=e208]
+          - generic [ref=e214] [cursor=pointer]:
+            - button "GET /hello" [ref=e215]:
+              - generic [ref=e216]: GET
+              - link "/hello" [ref=e219]:
+                - /url: "#/hello/hello"
+            - generic "Copy to clipboard"
+            - button "authorization button locked" [ref=e540]:
+              - img [ref=e541]
+            - button "get /hello" [ref=e225]:
+              - img [ref=e226]
+        - generic [ref=e229]:
+          - heading "user-controller Collapse operation" [level=3] [ref=e230] [cursor=pointer]:
+            - link "user-controller" [ref=e231]:
+              - /url: "#/user-controller"
+            - button "Collapse operation" [expanded] [ref=e232]:
+              - img [ref=e233]
+          - generic [ref=e236]:
+            - generic [ref=e239] [cursor=pointer]:
+              - button "GET /user/current" [ref=e240]:
+                - generic [ref=e241]: GET
+                - link "/user/current" [ref=e244]:
+                  - /url: "#/user-controller/getCurrentUser"
+                  - generic [ref=e245]:
+                    - text: /user
+                    - text: /current
+              - generic "Copy to clipboard"
+              - button "authorization button locked" [ref=e543]:
+                - img [ref=e544]
+              - button "get /user/current" [ref=e251]:
+                - img [ref=e252]
+            - generic [ref=e256] [cursor=pointer]:
+              - 'button "PUT /user/disable/{id}" [ref=e257]':
+                - generic [ref=e258]: PUT
+                - 'link "/user/disable/{id}" [ref=e261]':
+                  - /url: "#/user-controller/disableUser"
+                  - generic [ref=e262]:
+                    - text: /user
+                    - text: /disable
+                    - text: "/{id}"
+              - generic "Copy to clipboard"
+              - button "authorization button locked" [ref=e546]:
+                - img [ref=e547]
+              - 'button "put /user/disable/{id}" [ref=e268]':
+                - img [ref=e269]
+            - generic [ref=e273] [cursor=pointer]:
+              - button "GET /user/list" [ref=e274]:
+                - generic [ref=e275]: GET
+                - link "/user/list" [ref=e278]:
+                  - /url: "#/user-controller/listUsers"
+                  - generic [ref=e279]:
+                    - text: /user
+                    - text: /list
+              - generic "Copy to clipboard"
+              - button "authorization button locked" [ref=e549]:
+                - img [ref=e550]
+              - button "get /user/list" [ref=e285]:
+                - img [ref=e286]
+            - generic [ref=e290] [cursor=pointer]:
+              - button "POST /user/login" [ref=e291]:
+                - generic [ref=e292]: POST
+                - link "/user/login" [ref=e295]:
+                  - /url: "#/user-controller/login"
+                  - generic [ref=e296]:
+                    - text: /user
+                    - text: /login
+              - generic "Copy to clipboard"
+              - button "authorization button locked" [ref=e552]:
+                - img [ref=e553]
+              - button "post /user/login" [ref=e302]:
+                - img [ref=e303]
+            - generic [ref=e307] [cursor=pointer]:
+              - button "POST /user/register" [ref=e308]:
+                - generic [ref=e309]: POST
+                - link "/user/register" [ref=e312]:
+                  - /url: "#/user-controller/register"
+                  - generic [ref=e313]:
+                    - text: /user
+                    - text: /register
+              - generic "Copy to clipboard"
+              - button "authorization button locked" [ref=e555]:
+                - img [ref=e556]
+              - button "post /user/register" [ref=e319]:
+                - img [ref=e320]
+            - generic [ref=e324] [cursor=pointer]:
+              - button "PUT /user/update" [ref=e325]:
+                - generic [ref=e326]: PUT
+                - link "/user/update" [ref=e329]:
+                  - /url: "#/user-controller/updateUser"
+                  - generic [ref=e330]:
+                    - text: /user
+                    - text: /update
+              - generic "Copy to clipboard"
+              - button "authorization button locked" [ref=e558]:
+                - img [ref=e559]
+              - button "put /user/update" [ref=e336]:
+                - img [ref=e337]
+      - generic [ref=e341]:
+        - heading "Schemas" [level=4] [ref=e342] [cursor=pointer]:
+          - button "Schemas" [expanded] [ref=e343]:
+            - generic [ref=e344]: Schemas
+            - img [ref=e345]
+        - generic [ref=e347]:
+          - article [ref=e348]:
+            - generic [ref=e349]:
+              - button "UserUpdateRequest" [ref=e350] [cursor=pointer]:
+                - generic [ref=e352]: UserUpdateRequest
+                - img [ref=e354]
+              - button "Expand all" [ref=e356] [cursor=pointer]
+              - strong [ref=e357]: object
+          - article [ref=e358]:
+            - generic [ref=e359]:
+              - button "BaseResponseBoolean" [ref=e360] [cursor=pointer]:
+                - generic [ref=e362]: BaseResponseBoolean
+                - img [ref=e364]
+              - button "Expand all" [ref=e366] [cursor=pointer]
+              - strong [ref=e367]: object
+          - article [ref=e368]:
+            - generic [ref=e369]:
+              - button "RegisterRequest" [ref=e370] [cursor=pointer]:
+                - generic [ref=e372]: RegisterRequest
+                - img [ref=e374]
+              - button "Expand all" [ref=e376] [cursor=pointer]
+              - strong [ref=e377]: object
+          - article [ref=e378]:
+            - generic [ref=e379]:
+              - button "BaseResponseLong" [ref=e380] [cursor=pointer]:
+                - generic [ref=e382]: BaseResponseLong
+                - img [ref=e384]
+              - button "Expand all" [ref=e386] [cursor=pointer]
+              - strong [ref=e387]: object
+          - article [ref=e388]:
+            - generic [ref=e389]:
+              - button "LoginRequest" [ref=e390] [cursor=pointer]:
+                - generic [ref=e392]: LoginRequest
+                - img [ref=e394]
+              - button "Expand all" [ref=e396] [cursor=pointer]
+              - strong [ref=e397]: object
+          - article [ref=e398]:
+            - generic [ref=e399]:
+              - button "BaseResponseLoginResult" [ref=e400] [cursor=pointer]:
+                - generic [ref=e402]: BaseResponseLoginResult
+                - img [ref=e404]
+              - button "Expand all" [ref=e406] [cursor=pointer]
+              - strong [ref=e407]: object
+          - article [ref=e408]:
+            - generic [ref=e409]:
+              - button "LoginResult" [ref=e410] [cursor=pointer]:
+                - generic [ref=e412]: LoginResult
+                - img [ref=e414]
+              - button "Expand all" [ref=e416] [cursor=pointer]
+              - strong [ref=e417]: object
+          - article [ref=e418]:
+            - generic [ref=e419]:
+              - button "UserVO" [ref=e420] [cursor=pointer]:
+                - generic [ref=e422]: UserVO
+                - img [ref=e424]
+              - button "Expand all" [ref=e426] [cursor=pointer]
+              - strong [ref=e427]: object
+          - article [ref=e428]:
+            - generic [ref=e429]:
+              - button "UserQueryRequest" [ref=e430] [cursor=pointer]:
+                - generic [ref=e432]: UserQueryRequest
+                - img [ref=e434]
+              - button "Expand all" [ref=e436] [cursor=pointer]
+              - strong [ref=e437]: object
+          - article [ref=e438]:
+            - generic [ref=e439]:
+              - button "BaseResponsePageUserVO" [ref=e440] [cursor=pointer]:
+                - generic [ref=e442]: BaseResponsePageUserVO
+                - img [ref=e444]
+              - button "Expand all" [ref=e446] [cursor=pointer]
+              - strong [ref=e447]: object
+          - article [ref=e448]:
+            - generic [ref=e449]:
+              - button "OrderItem" [ref=e450] [cursor=pointer]:
+                - generic [ref=e452]: OrderItem
+                - img [ref=e454]
+              - button "Expand all" [ref=e456] [cursor=pointer]
+              - strong [ref=e457]: object
+          - article [ref=e458]:
+            - generic [ref=e459]:
+              - button "PageUserVO" [ref=e460] [cursor=pointer]:
+                - generic [ref=e462]: PageUserVO
+                - img [ref=e464]
+              - button "Expand all" [ref=e466] [cursor=pointer]
+              - strong [ref=e467]: object
+          - article [ref=e468]:
+            - generic [ref=e469]:
+              - button "BaseResponseUserVO" [ref=e470] [cursor=pointer]:
+                - generic [ref=e472]: BaseResponseUserVO
+                - img [ref=e474]
+              - button "Expand all" [ref=e476] [cursor=pointer]
+              - strong [ref=e477]: object
+          - article [ref=e478]:
+            - generic [ref=e479]:
+              - button "SseEmitter" [ref=e480] [cursor=pointer]:
+                - generic [ref=e482]: SseEmitter
+                - img [ref=e484]
+              - button "Expand all" [ref=e486] [cursor=pointer]
+              - strong [ref=e487]: object
+          - article [ref=e488]:
+            - generic [ref=e489]:
+              - generic [ref=e490]: ServerSentEventString
+              - strong [ref=e491]: any

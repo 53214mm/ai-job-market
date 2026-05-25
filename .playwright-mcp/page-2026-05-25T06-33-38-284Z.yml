@@ -1,0 +1,178 @@
+- generic [ref=e1]:
+  - generic [ref=e20]:
+    - complementary [ref=e21]:
+      - generic [ref=e22]:
+        - img "logo" [ref=e45] [cursor=pointer]
+        - menu [ref=e24]:
+          - menuitem "主页" [ref=e46] [cursor=pointer]:
+            - link "主页" [ref=e47]:
+              - /url: "#/home"
+              - img [ref=e49]
+              - generic: 主页
+          - menuitem "Authorize" [ref=e51] [cursor=pointer]:
+            - link "Authorize" [active] [ref=e52]:
+              - /url: "#/Authorize/default"
+              - img [ref=e54]
+              - generic: Authorize
+          - menuitem "Swagger Models" [ref=e56] [cursor=pointer]:
+            - link "Swagger Models" [ref=e57]:
+              - /url: "#/SwaggerModels/default"
+              - img [ref=e59]
+              - generic: Swagger Models
+          - menuitem "文档管理" [ref=e61]:
+            - generic [ref=e183] [cursor=pointer]:
+              - img [ref=e185]
+              - generic: 文档管理
+          - menuitem "ai-controller" [ref=e67]:
+            - generic [ref=e188] [cursor=pointer]:
+              - img [ref=e190]
+              - generic: ai-controller
+          - menuitem "hello" [ref=e73]:
+            - generic [ref=e193] [cursor=pointer]:
+              - img [ref=e195]
+              - generic: hello
+          - menuitem "user-controller" [ref=e79]:
+            - generic [ref=e198] [cursor=pointer]:
+              - img [ref=e200]
+              - generic: user-controller
+    - generic [ref=e25]:
+      - generic [ref=e85]:
+        - 'generic "icon: menu-unfold" [ref=e27] [cursor=pointer]':
+          - img [ref=e28]
+        - text: AI 智能招聘市场 API
+        - generic [ref=e30]:
+          - generic [ref=e86] [cursor=pointer]:
+            - combobox [ref=e88]:
+              - generic [ref=e89]:
+                - list:
+                  - listitem [ref=e90]:
+                    - textbox "输入文档关键字搜索" [ref=e92]
+            - 'generic "icon: search" [ref=e93]':
+              - img [ref=e94]
+          - generic [ref=e96] [cursor=pointer]: 中
+      - generic [ref=e37]:
+        - tablist [ref=e38]:
+          - generic [ref=e39]:
+            - generic:
+              - generic:
+                - 'generic "icon: left"':
+                  - img
+            - generic:
+              - generic:
+                - 'generic "icon: right"':
+                  - img
+            - generic [ref=e98]:
+              - tab "主页" [ref=e99] [cursor=pointer]:
+                - generic [ref=e100]: 主页
+              - 'tab "Authorize(default) icon: close" [selected] [ref=e202] [cursor=pointer]':
+                - generic [ref=e203]:
+                  - text: Authorize(default)
+                  - 'generic "icon: close" [ref=e204]':
+                    - img [ref=e205]
+        - generic [ref=e101]:
+          - main:
+            - generic:
+              - generic:
+                - generic:
+                  - heading [level=2]: AI 智能招聘市场 API
+                - generic:
+                  - generic:
+                    - generic:
+                      - heading [level=3]: 简介
+                    - generic:
+                      - generic:
+                        - paragraph: AI Job Market API 文档
+                  - separator
+                  - generic:
+                    - generic:
+                      - heading [level=3]: 作者
+                  - separator
+                  - generic:
+                    - generic:
+                      - heading [level=3]: 版本
+                    - generic: "1.0"
+                  - separator
+                  - generic:
+                    - generic:
+                      - heading [level=3]: host
+                    - generic: http://localhost:8123/api
+                  - separator
+                  - generic:
+                    - generic:
+                      - heading [level=3]: basePath
+                    - generic: /api
+                  - separator
+                  - generic:
+                    - generic:
+                      - heading [level=3]: API服务条款
+                  - separator
+                  - generic:
+                    - generic:
+                      - heading [level=3]: 分组名称
+                    - generic: default
+                  - separator
+                  - generic:
+                    - generic:
+                      - heading [level=3]: 分组Url
+                    - generic: /api/v3/api-docs/default
+                  - separator
+                  - generic:
+                    - generic:
+                      - heading [level=3]: 分组location
+                    - generic: /api/v3/api-docs/default
+                  - separator
+                  - generic:
+                    - generic:
+                      - heading [level=3]: 接口统计信息
+                    - generic:
+                      - generic:
+                        - generic: PUT
+                        - generic:
+                          - generic: "2"
+                        - separator
+                      - generic:
+                        - generic: POST
+                        - generic:
+                          - generic: "2"
+                        - separator
+                      - generic:
+                        - generic: GET
+                        - generic:
+                          - generic: "9"
+                        - separator
+          - tabpanel [ref=e207]:
+            - main [ref=e208]:
+              - generic [ref=e209]:
+                - button "注销" [ref=e211] [cursor=pointer]
+                - table [ref=e219]:
+                  - rowgroup [ref=e225]:
+                    - row "参数key 参数名称 in 参数值" [ref=e226]:
+                      - columnheader "参数key" [ref=e227]:
+                        - generic [ref=e229]: 参数key
+                      - columnheader "参数名称" [ref=e230]:
+                        - generic [ref=e232]: 参数名称
+                      - columnheader "in" [ref=e233]:
+                        - generic [ref=e235]: in
+                      - columnheader "参数值" [ref=e236]:
+                        - generic [ref=e238]: 参数值
+                  - rowgroup [ref=e239]:
+                    - row "Bearer Authorization" [ref=e240]:
+                      - cell "Bearer" [ref=e241]
+                      - cell "Authorization" [ref=e242]
+                      - cell [ref=e243]
+                      - cell [ref=e244]:
+                        - textbox [ref=e245]
+      - generic [ref=e177]:
+        - text: Apache License 2.0 | Copyright
+        - 'generic "icon: copyright" [ref=e178]':
+          - img [ref=e179]
+        - text: 2019-
+        - link "Knife4j-v4.4.0" [ref=e181] [cursor=pointer]:
+          - /url: https://gitee.com/xiaoym/knife4j
+  - generic:
+    - generic:
+      - generic:
+        - generic:
+          - tooltip "Authorize":
+            - link "Authorize":
+              - /url: "#/Authorize/default"

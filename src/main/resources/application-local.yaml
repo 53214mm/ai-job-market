@@ -1,0 +1,16 @@
+spring:
+  ai:
+    dashscope:
+      api-key: sk-2bc1bfe2bda2400ca93d35619fc8ccd8
+    qianfan:
+      api-key: bce-v3/ALTAK-2vb2qBgN9TTcTLt1XwjhW/42f45e45ed49bdb5586fe6c09cbc346242f68fce
+      Bearer: Bearer bce-v3/ALTAK-2vb2qBgN9TTcTLt1XwjhW/42f45e45ed49bdb5586fe6c09cbc346242f68fce
+  datasource:
+    url: jdbc:mysql://localhost:3306/ai_job_market?useUnicode=true&characterEncoding=UTF-8&serverTimezone=Asia/Shanghai
+    username: root
+    password: 123456
+    driver-class-name: com.mysql.cj.jdbc.Driver
+
+
+mxai:
+  api-key: nb_5db8df21d10a061850dd34d8340c900fb85f95ee9f8034a6accdfd68db9ca100
