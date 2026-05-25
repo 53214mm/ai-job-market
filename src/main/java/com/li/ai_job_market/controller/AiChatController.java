@@ -1,0 +1,83 @@
+package com.li.ai_job_market.controller;
+
+import com.li.ai_job_market.common.BaseResponse;
+import com.li.ai_job_market.common.ResultUtils;
+import com.li.ai_job_market.model.entity.AiChatMessage;
+import com.li.ai_job_market.model.entity.AiChatSession;
+import com.li.ai_job_market.model.entity.AiInterviewRecord;
+import com.li.ai_job_market.model.vo.UserVO;
+import com.li.ai_job_market.service.AiChatService;
+import com.li.ai_job_market.service.AiInterviewService;
+import com.li.ai_job_market.service.UserService;
+import jakarta.annotation.Resource;
+import jakarta.servlet.http.HttpServletRequest;
+import lombok.Data;
+import lombok.extern.slf4j.Slf4j;
+import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
+import java.util.Map;
+
+@Slf4j
+@RestController
+@RequestMapping("/ai")
+public class AiChatController {
+
+    @Resource private AiChatService aiChatService;
+    @Resource private AiInterviewService aiInterviewService;
+    @Resource private UserService userService;
+
+    private UserVO getLoginUser(HttpServletRequest request) {
+        return userService.getLoginUser(request);
+    }
+
+    // ==================== AI 聊天 ====================
+
+    @PostMapping("/chat/sessions")
+    public BaseResponse<Long> createSession(@RequestBody CreateSessionReq req, HttpServletRequest request) {
+        UserVO user = getLoginUser(request);
+        return ResultUtils.success(aiChatService.createSession(user.getId(), req.getType(), req.getTitle()));
+    }
+
+    @GetMapping("/chat/sessions")
+    public BaseResponse<List<AiChatSession>> listSessions(HttpServletRequest request) {
+        UserVO user = getLoginUser(request);
+        return ResultUtils.success(aiChatService.listSessions(user.getId()));
+    }
+
+    @GetMapping("/chat/sessions/{id}/messages")
+    public BaseResponse<List<AiChatMessage>> messages(@PathVariable Long id) {
+        return ResultUtils.success(aiChatService.getMessages(id));
+    }
+
+    @PostMapping("/chat/send")
+    public BaseResponse<String> sendMessage(@RequestBody SendMessageReq req, HttpServletRequest request) {
+        UserVO user = getLoginUser(request);
+        return ResultUtils.success(aiChatService.sendMessage(req.getSessionId(), user.getId(), req.getMessage()));
+    }
+
+    // ==================== AI 模拟面试 ====================
+
+    @PostMapping("/interview/start")
+    public BaseResponse<AiInterviewRecord> startInterview(@RequestBody InterviewStartReq req, HttpServletRequest request) {
+        UserVO user = getLoginUser(request);
+        return ResultUtils.success(aiInterviewService.startInterview(user.getId(), req.getJobId()));
+    }
+
+    @PostMapping("/interview/answer")
+    public BaseResponse<Map<String, Object>> answerQuestion(@RequestBody InterviewAnswerReq req, HttpServletRequest request) {
+        UserVO user = getLoginUser(request);
+        return ResultUtils.success(aiInterviewService.evaluateAnswer(req.getRecordId(), user.getId(), req.getAnswer()));
+    }
+
+    @GetMapping("/interview/{sessionId}/report")
+    public BaseResponse<Map<String, Object>> getReport(@PathVariable Long sessionId) {
+        return ResultUtils.success(aiInterviewService.getReport(sessionId));
+    }
+}
+
+// ---------- Inner DTOs ----------
+@Data class CreateSessionReq { private String type; private String title; }
+@Data class SendMessageReq { private Long sessionId; private String message; }
+@Data class InterviewStartReq { private Long jobId; }
+@Data class InterviewAnswerReq { private Long recordId; private String answer; }

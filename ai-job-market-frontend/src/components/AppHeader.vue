@@ -52,6 +52,7 @@ function logout() {
           <router-link to="/resumes" class="text-sm font-medium text-gray-600 hover:text-blue-600 transition-colors">我的简历</router-link>
           <router-link to="/applications" class="text-sm font-medium text-gray-600 hover:text-blue-600 transition-colors">投递记录</router-link>
           <router-link to="/favorites" class="text-sm font-medium text-gray-600 hover:text-blue-600 transition-colors">收藏</router-link>
+          <router-link to="/ai/interview" class="text-sm font-medium text-gray-600 hover:text-blue-600 transition-colors">AI面试</router-link>
         </nav>
 
         <!-- Nav: 招聘方 -->

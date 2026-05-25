@@ -33,6 +33,10 @@ import AdminUsers from './pages/AdminUsers.vue'
 import AdminCompanies from './pages/AdminCompanies.vue'
 import AdminJobs from './pages/AdminJobs.vue'
 
+// AI
+import AiChat from './pages/AiChat.vue'
+import AiInterview from './pages/AiInterview.vue'
+
 const routes = [
   { path: '/', name: 'Home', component: Home },
   { path: '/login', name: 'Login', component: Login },
@@ -60,6 +64,10 @@ const routes = [
   { path: '/recruiter/company/:id', name: 'CompanyEdit', component: CompanyEdit },
   { path: '/recruiter/jobs', name: 'RecruiterJobs', component: () => import('./pages/Jobs.vue') },
   { path: '/recruiter/applications', name: 'RecruiterApplications', component: () => import('./pages/RecruiterDashboard.vue') },
+
+  // AI
+  { path: '/ai/chat', name: 'AiChat', component: AiChat },
+  { path: '/ai/interview', name: 'AiInterview', component: AiInterview },
 
   // 管理员
   { path: '/admin', name: 'AdminDashboard', component: AdminDashboard },
