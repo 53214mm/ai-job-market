@@ -9,17 +9,32 @@ const filter = ref('')
 const statusMap = { APPLIED:'已投递', VIEWED:'已查看', SCREENING:'筛选中', INTERVIEW:'面试中', OFFER:'已发Offer', HIRED:'已录用', REJECTED:'已拒绝', WITHDRAWN:'已撤回' }
 const statusColor = { APPLIED:'text-blue-600 bg-blue-50', VIEWED:'text-gray-600 bg-gray-100', SCREENING:'text-yellow-600 bg-yellow-50', INTERVIEW:'text-purple-600 bg-purple-50', OFFER:'text-green-600 bg-green-50', HIRED:'text-green-600 bg-green-50', REJECTED:'text-red-600 bg-red-50', WITHDRAWN:'text-gray-400 bg-gray-100' }
 
-async function fetch() {
+const error = ref('')
+
+async function fetchApps() {
   loading.value = true
+  error.value = ''
   try {
+    const token = localStorage.getItem('token')
+    if (!token) { router.push('/login'); return }
     const params = new URLSearchParams({ current:'1', size:'50' })
     if (filter.value) params.set('status', filter.value)
     const res = await fetch('/api/applications/my?' + params, {
-      headers: { 'Authorization': 'Bearer ' + localStorage.getItem('token') }
+      headers: { 'Authorization': 'Bearer ' + token }
     })
     const data = await res.json()
-    apps.value = data.data?.records || []
-  } catch(e) { console.error(e) }
+    if (data.code === 0) {
+      apps.value = data.data?.records || []
+    } else if (data.code === 40100) {
+      // 未登录，跳转登录页
+      localStorage.removeItem('token')
+      router.push('/login')
+      return
+    } else {
+      error.value = data.message || '加载失败'
+      apps.value = data.data?.records || []
+    }
+  } catch(e) { console.error(e); error.value = '网络错误，请稍后重试' }
   finally { loading.value = false }
 }
 
@@ -30,11 +45,11 @@ async function withdraw(id) {
     headers: { 'Content-Type': 'application/json', 'Authorization': 'Bearer ' + localStorage.getItem('token') },
     body: JSON.stringify({ status: 'WITHDRAWN' })
   })
-  fetch()
+  fetchApps()
 }
 
-function changeFilter(f) { filter.value = f; fetch() }
-onMounted(fetch)
+function changeFilter(f) { filter.value = f; fetchApps() }
+onMounted(fetchApps)
 </script>
 
 <template>
@@ -48,6 +63,7 @@ onMounted(fetch)
     </div>
 
     <div v-if="loading" class="text-center py-12 text-gray-400">加载中...</div>
+    <div v-else-if="error" class="text-center py-8 bg-red-50 rounded-xl border border-red-200 text-red-600 text-sm">{{ error }}</div>
     <div v-else-if="apps.length === 0" class="text-center py-16 bg-gray-50 rounded-xl text-gray-400">暂无投递记录</div>
 
     <div v-else class="space-y-3">

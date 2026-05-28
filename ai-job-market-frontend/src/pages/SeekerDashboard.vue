@@ -5,25 +5,42 @@ import { resumeApi } from '../api.js'
 
 const router = useRouter()
 const resumes = ref([])
-const company = ref(null)
-// TODO: 对接职位模块 API，目前使用静态占位数据
-const jobs = ref([
-  { id: 1, title: '高级 Java 开发工程师', company: '阿里巴巴', city: '杭州', salary: '25K-45K', matchScore: 92 },
-  { id: 2, title: 'AI 算法工程师', company: '百度', city: '北京', salary: '35K-60K', matchScore: 88 },
-  { id: 3, title: '前端开发工程师', company: '字节跳动', city: '上海', salary: '30K-50K', matchScore: 85 },
-  { id: 4, title: '产品经理（AI 方向）', company: '腾讯', city: '深圳', salary: '28K-48K', matchScore: 79 },
-])
+const jobs = ref([])
+const stats = ref({ applications: 0, interviews: 0 })
 
 onMounted(async () => {
   try {
     const data = await resumeApi.list({ current: 1, pageSize: 5 })
     resumes.value = data.records || []
   } catch (e) { /* 未登录或无简历 */ }
+
   try {
-    const res = await fetch('/api/user/current')
-    const d = await res.json()
-    if (d.code === 0 && d.data.role === 'RECRUITER') {
-      // 如果是招聘方，获取公司信息
+    const token = localStorage.getItem('token')
+    if (!token) return
+    const h = { 'Authorization': 'Bearer ' + token }
+    // 先获取第一个简历ID用于推荐
+    const resumeRes = await fetch('/api/resumes?current=1&pageSize=1', { headers: h })
+    const resumeData = await resumeRes.json()
+    const resumeId = resumeData.code === 0 ? resumeData.data?.records?.[0]?.id : null
+
+    const [jobRes, appRes] = await Promise.all([
+      fetch('/api/jobs/recommend' + (resumeId ? '?resumeId=' + resumeId : ''), { headers: h }),
+      fetch('/api/applications/my?current=1&size=10', { headers: h })
+    ])
+    const jobData = await jobRes.json()
+    const appData = await appRes.json()
+    if (jobData.code === 0) {
+      jobs.value = (jobData.data || []).slice(0, 4).map(j => ({
+        id: j.id,
+        title: j.title,
+        company: j.companyName || '未知公司',
+        city: j.city || '全国',
+        salary: (j.salaryMin || 0) + 'K-' + (j.salaryMax || 0) + 'K',
+        matchScore: j.matchScore || 0
+      }))
+    }
+    if (appData.code === 0) {
+      stats.value.applications = appData.data.total || 0
     }
   } catch (e) { /* ignore */ }
 })
@@ -49,11 +66,11 @@ const user = JSON.parse(localStorage.getItem('user') || '{}')
             <p class="text-xs text-gray-500 mt-1">我的简历</p>
           </div>
           <div class="bg-white border border-gray-200 rounded-lg p-4 text-center shadow-sm">
-            <p class="text-2xl font-bold text-green-600">0</p>
+            <p class="text-2xl font-bold text-green-600">{{ stats.applications }}</p>
             <p class="text-xs text-gray-500 mt-1">投递中</p>
           </div>
           <div class="bg-white border border-gray-200 rounded-lg p-4 text-center shadow-sm">
-            <p class="text-2xl font-bold text-purple-600">0</p>
+            <p class="text-2xl font-bold text-purple-600">{{ stats.interviews }}</p>
             <p class="text-xs text-gray-500 mt-1">面试邀请</p>
           </div>
         </div>

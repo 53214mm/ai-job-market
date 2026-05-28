@@ -7,7 +7,7 @@ const statusOptions = ['VIEWED','SCREENING','INTERVIEW','OFFER','HIRED','REJECTE
 const statusForm = ref({ status: '', remark: '' })
 const interviewForm = ref({ interviewType:'VIDEO', scheduledTime:'', durationMinutes:60, location:'', interviewer:'', contactPhone:'' })
 
-async function fetch() {
+async function loadDetail() {
   try {
     const res = await fetch('/api/applications/' + route.params.id, {
       headers: { 'Authorization': 'Bearer ' + localStorage.getItem('token') }
@@ -25,7 +25,7 @@ async function updateStatus() {
     body: JSON.stringify(statusForm.value)
   })
   statusForm.value = { status: '', remark: '' }
-  fetch()
+  loadDetail()
 }
 
 async function scheduleInterview() {
@@ -35,10 +35,10 @@ async function scheduleInterview() {
     body: JSON.stringify(interviewForm.value)
   })
   interviewForm.value = { interviewType:'VIDEO', scheduledTime:'', durationMinutes:60, location:'', interviewer:'', contactPhone:'' }
-  fetch()
+  loadDetail()
 }
 
-onMounted(fetch)
+onMounted(loadDetail)
 </script>
 
 <template>

@@ -11,6 +11,8 @@ import com.li.ai_job_market.model.entity.*;
 import com.li.ai_job_market.model.vo.ApplicationVO;
 import com.li.ai_job_market.model.vo.FavoriteVO;
 import com.li.ai_job_market.service.ApplicationService;
+import com.li.ai_job_market.service.MessageService;
+import com.li.ai_job_market.service.NotificationService;
 import jakarta.annotation.Resource;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
@@ -32,6 +34,8 @@ public class ApplicationServiceImpl extends ServiceImpl<ApplicationMapper, Appli
     @Resource private InterviewMapper interviewMapper;
     @Resource private FavoriteMapper favoriteMapper;
     @Resource private ResumeSkillMapper resumeSkillMapper;
+    @Resource private MessageService messageService;
+    @Resource private NotificationService notificationService;
 
     @Override
     @Transactional(rollbackFor = Exception.class)
@@ -66,6 +70,15 @@ public class ApplicationServiceImpl extends ServiceImpl<ApplicationMapper, Appli
 
         // 日志
         writeLog(app.getId(), null, "APPLIED", seekerId, null);
+
+        // 自动给招聘方发私信建立对话
+        try {
+            String msg = "您好，我通过AI招聘市场投递了【" + job.getTitle() + "】职位。期待与您沟通！";
+            messageService.send(seekerId, job.getRecruiterId(), app.getId(), msg);
+        } catch (Exception e) {
+            log.warn("自动创建投递私信失败: {}", e.getMessage());
+        }
+
         log.info("投递: appId={}, seekerId={}, jobId={}", app.getId(), seekerId, jobId);
         return app.getId();
     }
@@ -87,13 +100,31 @@ public class ApplicationServiceImpl extends ServiceImpl<ApplicationMapper, Appli
         app.setStatus(status);
         this.updateById(app);
         writeLog(id, oldStatus, status, operatorId, remark);
+
+        // 推送通知给求职者
+        try {
+            String title = switch (status) {
+                case "SCREENING" -> "简历通过筛选";
+                case "INTERVIEW" -> "恭喜获得面试机会";
+                case "OFFERED" -> "恭喜获得录用";
+                case "REJECTED" -> "投递结果通知";
+                default -> "投递状态更新";
+            };
+            notificationService.create(app.getSeekerId(), "APPLICATION_UPDATE",
+                    title, "您的投递状态已更新为：" + title + (remark != null ? "（" + remark + "）" : ""), id);
+        } catch (Exception e) {
+            log.warn("推送投递通知失败: {}", e.getMessage());
+        }
+
         return true;
     }
 
     @Override
-    public Page<ApplicationVO> listMyApplications(Long seekerId, int current, int size) {
+    public Page<ApplicationVO> listMyApplications(Long seekerId, int current, int size, String status) {
         LambdaQueryWrapper<Application> w = new LambdaQueryWrapper<>();
-        w.eq(Application::getSeekerId, seekerId).orderByDesc(Application::getCreatedAt);
+        w.eq(Application::getSeekerId, seekerId);
+        w.eq(StringUtils.isNotBlank(status), Application::getStatus, status);
+        w.orderByDesc(Application::getCreatedAt);
         Page<Application> page = this.page(new Page<>(current, size), w);
         Page<ApplicationVO> voPage = new Page<>(page.getCurrent(), page.getSize(), page.getTotal());
         voPage.setRecords(page.getRecords().stream().map(this::buildVO).toList());
@@ -131,6 +162,17 @@ public class ApplicationServiceImpl extends ServiceImpl<ApplicationMapper, Appli
         interviewMapper.insert(interview);
 
         updateStatus(applicationId, recruiterId, "INTERVIEW", "安排面试: " + req.getInterviewType());
+
+        // 推送面试邀请通知
+        try {
+            Job job = jobMapper.selectById(app.getJobId());
+            String jobTitle = job != null ? job.getTitle() : "未知职位";
+            notificationService.create(app.getSeekerId(), "INTERVIEW_INVITE",
+                    "面试邀请", "您申请的【" + jobTitle + "】已安排面试，请查看详情", applicationId);
+        } catch (Exception e) {
+            log.warn("推送面试通知失败: {}", e.getMessage());
+        }
+
         return interview;
     }
 

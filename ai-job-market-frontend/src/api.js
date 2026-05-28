@@ -53,6 +53,24 @@ export const resumeApi = {
   },
 }
 
+// 通知
+export const notificationApi = {
+  list: (params = {}) => request('/notifications?' + new URLSearchParams(params)),
+  unreadCount: () => request('/notifications/unread-count'),
+  markRead: (id) => request('/notifications/' + id + '/read', { method: 'PUT' }),
+  markAllRead: () => request('/notifications/read-all', { method: 'PUT' }),
+  delete: (id) => request('/notifications/' + id, { method: 'DELETE' }),
+}
+
+// 私信
+export const messageApi = {
+  conversations: () => request('/messages/conversations'),
+  getMessages: (peerId, params = {}) => request('/messages/' + peerId + '?' + new URLSearchParams(params)),
+  send: (body) => request('/messages', { method: 'POST', body: JSON.stringify(body) }),
+  unreadCount: () => request('/messages/unread-count'),
+  markRead: (id) => request('/messages/' + id + '/read', { method: 'PUT' }),
+}
+
 export const jobApi = {
   list: (params = {}) => request('/jobs?' + new URLSearchParams(params)),
   detail: (id) => request('/jobs/' + id),

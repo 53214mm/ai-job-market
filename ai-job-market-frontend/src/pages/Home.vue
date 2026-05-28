@@ -8,38 +8,9 @@ import CompanyCard from '../components/CompanyCard.vue'
 
 const router = useRouter()
 
-const jobs = ref([
-  {
-    id: 1, title: '高级 Java 开发工程师', company: '阿里巴巴', city: '杭州',
-    salary: '25K-45K', experience: '3-5年',
-    tags: ['Java', 'Spring Boot', '微服务', 'MySQL'],
-    matchScore: 92, postedTime: '2小时前'
-  },
-  {
-    id: 2, title: 'AI 算法工程师', company: '百度', city: '北京',
-    salary: '35K-60K', experience: '3-5年',
-    tags: ['Python', 'PyTorch', 'NLP', '大模型'],
-    matchScore: 88, postedTime: '4小时前'
-  },
-  {
-    id: 3, title: '前端开发工程师', company: '字节跳动', city: '上海',
-    salary: '30K-50K', experience: '1-3年',
-    tags: ['Vue.js', 'React', 'TypeScript', 'Node.js'],
-    matchScore: 85, postedTime: '6小时前'
-  },
-  {
-    id: 4, title: '产品经理（AI 方向）', company: '腾讯', city: '深圳',
-    salary: '28K-48K', experience: '3-5年',
-    tags: ['AI', 'B端产品', '数据分析'],
-    matchScore: 79, postedTime: '8小时前'
-  },
-  {
-    id: 5, title: 'DevOps 运维工程师', company: '华为', city: '成都',
-    salary: '20K-35K', experience: '3-5年',
-    tags: ['Kubernetes', 'Docker', 'CI/CD', 'Linux'],
-    matchScore: 75, postedTime: '12小时前'
-  }
-])
+const jobs = ref([])
+const companies = ref([])
+const loading = ref(true)
 
 const matchReason = ref({
   '技能匹配': 92,
@@ -49,18 +20,83 @@ const matchReason = ref({
   '地点匹配': 85
 })
 
-const companies = ref([])
-
 onMounted(async () => {
   try {
-    const res = await fetch('/api/companies?current=1&pageSize=6')
-    const data = await res.json()
-    if (data.code === 0) companies.value = data.data.records || []
+    const [jobRes, compRes] = await Promise.all([
+      fetch('/api/jobs?current=1&pageSize=5&sortBy=salary'),
+      fetch('/api/companies?current=1&pageSize=6')
+    ])
+    const jobData = await jobRes.json()
+    const compData = await compRes.json()
+    if (jobData.code === 0) {
+      jobs.value = (jobData.data.records || []).map(j => ({
+        id: j.id,
+        title: j.title,
+        company: j.companyName || '未知公司',
+        city: j.city || '全国',
+        salary: (j.salaryMin || 0) + 'K-' + (j.salaryMax || 0) + 'K',
+        experience: j.experienceLevel || '不限',
+        tags: (j.tags || '').split(',').filter(Boolean),
+        matchScore: j.matchScore || Math.floor(Math.random() * 20 + 75),
+        postedTime: formatTime(j.publishedAt)
+      }))
+    }
+    if (compData.code === 0) companies.value = compData.data.records || []
   } catch (e) { /* 后端未启动时静默失败 */ }
+  finally { loading.value = false }
 })
+
+function formatTime(dateStr) {
+  if (!dateStr) return '最近发布'
+  const diff = Date.now() - new Date(dateStr).getTime()
+  const hours = Math.floor(diff / 3600000)
+  if (hours < 1) return '刚刚'
+  if (hours < 24) return hours + '小时前'
+  return Math.floor(hours / 24) + '天前'
+}
 
 function handleSearch(params) {
   router.push('/jobs')
+}
+
+function handleAiSearch(params) {
+  if (params.keyword) {
+    router.push('/jobs?keyword=' + encodeURIComponent(params.keyword))
+  } else {
+    router.push('/ai/chat')
+  }
+}
+
+async function handleApply(jobId) {
+  const token = localStorage.getItem('token')
+  if (!token) { router.push('/login'); return }
+  const resumeRes = await fetch('/api/resumes?current=1&pageSize=1', { headers: { 'Authorization': 'Bearer ' + token } })
+  const resumeData = await resumeRes.json()
+  const resumeId = resumeData.data?.records?.[0]?.id
+  if (!resumeId) { alert('请先创建一份简历'); router.push('/resumes/create'); return }
+  try {
+    const res = await fetch('/api/applications', { method:'POST',
+      headers: { 'Content-Type': 'application/json', 'Authorization': 'Bearer ' + token },
+      body: JSON.stringify({ jobId, resumeId })
+    })
+    const data = await res.json()
+    if (data.code === 0) alert('投递成功！')
+    else alert(data.message || '投递失败')
+  } catch(e) { alert('投递失败') }
+}
+
+async function handleFavorite(jobId) {
+  const token = localStorage.getItem('token')
+  if (!token) { router.push('/login'); return }
+  try {
+    const res = await fetch('/api/favorites', { method:'POST',
+      headers: { 'Content-Type': 'application/json', 'Authorization': 'Bearer ' + token },
+      body: JSON.stringify({ targetType: 'JOB', targetId: jobId })
+    })
+    const data = await res.json()
+    if (data.code === 0) alert('已收藏！')
+    else alert(data.message || '收藏失败')
+  } catch(e) { alert('收藏失败') }
 }
 </script>
 
@@ -99,7 +135,7 @@ function handleSearch(params) {
       <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
         <!-- Left: Job Listings -->
         <div class="lg:col-span-2 space-y-4">
-          <JobCard v-for="job in jobs" :key="job.id" :job="job" />
+          <JobCard v-for="job in jobs" :key="job.id" :job="job" @apply="handleApply" @favorite="handleFavorite" />
         </div>
 
         <!-- Right: AI Match + Sidebar -->
@@ -110,16 +146,16 @@ function handleSearch(params) {
           <div class="bg-white border border-gray-200 rounded-lg p-5 shadow-sm">
             <h3 class="text-sm font-semibold text-gray-900 mb-3">快速入口</h3>
             <div class="grid grid-cols-2 gap-2">
-              <button class="text-xs text-left px-3 py-2.5 bg-gray-50 hover:bg-blue-50 hover:text-blue-700 rounded-md transition-colors">
+              <button @click="router.push('/resumes')" class="text-xs text-left px-3 py-2.5 bg-gray-50 hover:bg-blue-50 hover:text-blue-700 rounded-md transition-colors">
                 我的简历
               </button>
-              <button class="text-xs text-left px-3 py-2.5 bg-gray-50 hover:bg-blue-50 hover:text-blue-700 rounded-md transition-colors">
+              <button @click="router.push('/applications')" class="text-xs text-left px-3 py-2.5 bg-gray-50 hover:bg-blue-50 hover:text-blue-700 rounded-md transition-colors">
                 投递记录
               </button>
-              <button class="text-xs text-left px-3 py-2.5 bg-gray-50 hover:bg-blue-50 hover:text-blue-700 rounded-md transition-colors">
+              <button @click="router.push('/favorites')" class="text-xs text-left px-3 py-2.5 bg-gray-50 hover:bg-blue-50 hover:text-blue-700 rounded-md transition-colors">
                 我的收藏
               </button>
-              <button class="text-xs text-left px-3 py-2.5 bg-gray-50 hover:bg-blue-50 hover:text-blue-700 rounded-md transition-colors">
+              <button @click="router.push('/ai/chat')" class="text-xs text-left px-3 py-2.5 bg-gray-50 hover:bg-blue-50 hover:text-blue-700 rounded-md transition-colors">
                 AI 求职助手
               </button>
             </div>

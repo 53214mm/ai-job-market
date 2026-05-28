@@ -1,6 +1,7 @@
 <script setup>
-import { ref, computed, onMounted, onUnmounted } from 'vue'
+import { ref, computed, onMounted, onUnmounted, watch } from 'vue'
 import { useRouter, useRoute } from 'vue-router'
+import { useStomp } from '../composables/useStomp.js'
 
 const router = useRouter()
 const route = useRoute()
@@ -10,24 +11,62 @@ const user = ref(JSON.parse(localStorage.getItem('user') || 'null'))
 const isLoggedIn = computed(() => !!token.value)
 const role = computed(() => user.value?.role || '')
 
-// 路由变化时重新读取登录状态（响应 Login/Logout 变化）
+const { connect, onUnreadCount } = useStomp()
+
+// 未读通知+私信数量
+const unreadTotal = ref(0)
+let unsubUnread = null
+
+async function fetchUnread() {
+  const t = localStorage.getItem('token')
+  if (!t) { unreadTotal.value = 0; return }
+  const h = { 'Authorization': 'Bearer ' + t }
+  try {
+    const [nr, mr] = await Promise.all([
+      fetch('/api/notifications/unread-count', { headers: h }),
+      fetch('/api/messages/unread-count', { headers: h })
+    ])
+    const nd = await nr.json(); const md = await mr.json()
+    unreadTotal.value = (nd.data?.count || 0) + (md.data?.count || 0)
+  } catch(e) { unreadTotal.value = 0 }
+}
+
+// 路由变化或页面聚焦时重新读取登录状态
 function refreshAuth() {
   token.value = localStorage.getItem('token')
   user.value = JSON.parse(localStorage.getItem('user') || 'null')
 }
 
-onMounted(() => window.addEventListener('focus', refreshAuth))
-onUnmounted(() => window.removeEventListener('focus', refreshAuth))
+function onUnreadChanged() { fetchUnread() }
 
-// 监听路由变化
-import { watch } from 'vue'
-watch(() => route.path, refreshAuth)
+onMounted(async () => {
+  window.addEventListener('focus', refreshAuth)
+  window.addEventListener('unread-changed', onUnreadChanged)
+  // 初始 REST 拉取
+  await fetchUnread()
+  // 建立 WebSocket 接收实时未读数推送
+  try {
+    await connect()
+    unsubUnread = onUnreadCount((count) => {
+      unreadTotal.value = count
+    })
+  } catch(e) { /* STOMP 连接失败，仅依赖 REST 轮询 */ }
+})
+
+onUnmounted(() => {
+  window.removeEventListener('focus', refreshAuth)
+  window.removeEventListener('unread-changed', onUnreadChanged)
+  if (unsubUnread) unsubUnread()
+})
+
+watch(() => route.path, () => { refreshAuth(); fetchUnread() })
 
 function logout() {
   localStorage.removeItem('token')
   localStorage.removeItem('user')
   token.value = null
   user.value = null
+  unreadTotal.value = 0
   router.push('/')
 }
 </script>
@@ -53,6 +92,11 @@ function logout() {
           <router-link to="/applications" class="text-sm font-medium text-gray-600 hover:text-blue-600 transition-colors">投递记录</router-link>
           <router-link to="/favorites" class="text-sm font-medium text-gray-600 hover:text-blue-600 transition-colors">收藏</router-link>
           <router-link to="/ai/interview" class="text-sm font-medium text-gray-600 hover:text-blue-600 transition-colors">AI面试</router-link>
+          <router-link to="/ai/chat" class="text-sm font-medium text-gray-600 hover:text-blue-600 transition-colors">AI助手</router-link>
+          <router-link to="/notifications" class="relative text-sm font-medium text-gray-600 hover:text-blue-600 transition-colors">通知
+            <span v-if="unreadTotal > 0" class="absolute -top-1.5 -right-3.5 min-w-[16px] h-4 bg-red-500 text-white text-[10px] rounded-full flex items-center justify-center px-1">{{ unreadTotal > 99 ? '99+' : unreadTotal }}</span>
+          </router-link>
+          <router-link to="/messages" class="text-sm font-medium text-gray-600 hover:text-blue-600 transition-colors">私信</router-link>
         </nav>
 
         <!-- Nav: 招聘方 -->
@@ -61,6 +105,11 @@ function logout() {
           <router-link to="/recruiter/company" class="text-sm font-medium text-gray-600 hover:text-blue-600 transition-colors">公司信息</router-link>
           <router-link to="/recruiter/jobs" class="text-sm font-medium text-gray-600 hover:text-blue-600 transition-colors">职位管理</router-link>
           <router-link to="/recruiter/applications" class="text-sm font-medium text-gray-600 hover:text-blue-600 transition-colors">简历筛选</router-link>
+          <router-link to="/notifications" class="relative text-sm font-medium text-gray-600 hover:text-blue-600 transition-colors">通知
+            <span v-if="unreadTotal > 0" class="absolute -top-1.5 -right-3.5 min-w-[16px] h-4 bg-red-500 text-white text-[10px] rounded-full flex items-center justify-center px-1">{{ unreadTotal > 99 ? '99+' : unreadTotal }}</span>
+          </router-link>
+          <router-link to="/messages" class="text-sm font-medium text-gray-600 hover:text-blue-600 transition-colors">私信</router-link>
+          <router-link to="/ai/chat" class="text-sm font-medium text-purple-600 hover:text-purple-700 transition-colors">AI助手</router-link>
         </nav>
 
         <!-- Nav: 管理员 -->
@@ -68,12 +117,18 @@ function logout() {
           <router-link to="/admin" class="text-sm font-medium text-gray-600 hover:text-blue-600 transition-colors">仪表盘</router-link>
           <router-link to="/admin/users" class="text-sm font-medium text-gray-600 hover:text-blue-600 transition-colors">用户管理</router-link>
           <router-link to="/admin/companies" class="text-sm font-medium text-gray-600 hover:text-blue-600 transition-colors">企业审核</router-link>
+          <router-link to="/notifications" class="relative text-sm font-medium text-gray-600 hover:text-blue-600 transition-colors">通知
+            <span v-if="unreadTotal > 0" class="absolute -top-1.5 -right-3.5 min-w-[16px] h-4 bg-red-500 text-white text-[10px] rounded-full flex items-center justify-center px-1">{{ unreadTotal > 99 ? '99+' : unreadTotal }}</span>
+          </router-link>
+          <router-link to="/messages" class="text-sm font-medium text-gray-600 hover:text-blue-600 transition-colors">私信</router-link>
+          <router-link to="/ai/chat" class="text-sm font-medium text-purple-600 hover:text-purple-700 transition-colors">AI助手</router-link>
         </nav>
 
         <!-- Nav: 未登录 -->
         <nav v-else class="hidden md:flex items-center gap-8">
           <router-link to="/" class="text-sm font-medium text-gray-600 hover:text-blue-600 transition-colors">求职</router-link>
           <router-link to="/jobs" class="text-sm font-medium text-gray-600 hover:text-blue-600 transition-colors">招聘</router-link>
+          <router-link to="/ai/chat" class="text-sm font-medium text-purple-600 hover:text-purple-700 transition-colors">AI助手</router-link>
         </nav>
 
         <!-- Auth -->

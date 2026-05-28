@@ -84,6 +84,21 @@ public class UserController {
         return ResultUtils.success(voPage);
     }
 
+    @GetMapping("/search")
+    public BaseResponse<java.util.List<UserVO>> searchUsers(@RequestParam String q, HttpServletRequest request) {
+        UserVO loginUser = userService.getLoginUser(request);
+        LambdaQueryWrapper<User> wrapper = new LambdaQueryWrapper<>();
+        wrapper.like(StringUtils.isNotBlank(q), User::getNickname, q)
+               .or()
+               .like(StringUtils.isNotBlank(q), User::getEmail, q);
+        wrapper.ne(User::getId, loginUser.getId()); // 排除自己
+        wrapper.last("LIMIT 20");
+        java.util.List<UserVO> list = userService.list(wrapper).stream()
+                .map(userService::toUserVO)
+                .toList();
+        return ResultUtils.success(list);
+    }
+
     @PutMapping("/disable/{id}")
     @AuthCheck(mustRole = "ADMIN")
     public BaseResponse<Boolean> disableUser(@PathVariable Long id) {

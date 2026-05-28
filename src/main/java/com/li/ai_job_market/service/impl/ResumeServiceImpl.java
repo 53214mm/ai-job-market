@@ -26,11 +26,13 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
 import java.io.File;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 @Slf4j
 @Service
@@ -57,6 +59,8 @@ public class ResumeServiceImpl extends ServiceImpl<ResumeMapper, Resume>
 
     @Resource
     private AiResumeAnalysisMapper analysisMapper;
+
+    private final ObjectMapper objectMapper = new ObjectMapper();
 
     private static final DateTimeFormatter DATE_FMT = DateTimeFormatter.ofPattern("yyyy.MM");
 
@@ -438,15 +442,32 @@ public class ResumeServiceImpl extends ServiceImpl<ResumeMapper, Resume>
 
         String result = jobApp.doChat(prompt, "resume-analyze-" + resumeId);
 
-        // 保存分析结果
+        // 解析 AI 返回的 JSON 结果
         AiResumeAnalysis analysis = new AiResumeAnalysis();
         analysis.setResumeId(resumeId);
         analysis.setSeekerId(userId);
+        try {
+            String json = extractJson(result);
+            @SuppressWarnings("unchecked")
+            Map<String, Object> map = objectMapper.readValue(json, Map.class);
+            analysis.setOverallScore(toInt(map.get("overallScore")));
+            analysis.setFormatScore(toInt(map.get("formatScore")));
+            analysis.setContentScore(toInt(map.get("contentScore")));
+            analysis.setKeywordScore(toInt(map.get("keywordScore")));
+            analysis.setStrengths(toString(map.get("strengths")));
+            analysis.setWeaknesses(toString(map.get("weaknesses")));
+            analysis.setSuggestions(toString(map.get("suggestions")));
+            analysis.setOptimizedContent(toString(map.get("optimizedContent")));
+        } catch (Exception e) {
+            log.warn("AI 分析结果解析失败，保存原始结果: {}", e.getMessage());
+            analysis.setSuggestions(result);
+        }
         analysisMapper.insert(analysis);
 
-        log.info("AI 分析完成: resumeId={}", resumeId);
+        log.info("AI 分析完成: resumeId={}, overallScore={}", resumeId, analysis.getOverallScore());
 
         ResumeAnalysisVO vo = new ResumeAnalysisVO();
+        vo.setId(analysis.getId());
         vo.setResumeId(resumeId);
         vo.setOverallScore(analysis.getOverallScore());
         vo.setFormatScore(analysis.getFormatScore());
@@ -458,6 +479,28 @@ public class ResumeServiceImpl extends ServiceImpl<ResumeMapper, Resume>
         vo.setOptimizedContent(analysis.getOptimizedContent());
         vo.setCreatedAt(analysis.getCreatedAt());
         return vo;
+    }
+
+    private String extractJson(String text) {
+        if (text == null) return "{}";
+        int start = text.indexOf("{");
+        int end = text.lastIndexOf("}");
+        if (start >= 0 && end > start) {
+            return text.substring(start, end + 1);
+        }
+        return "{}";
+    }
+
+    private int toInt(Object val) {
+        if (val instanceof Number n) return n.intValue();
+        if (val instanceof String s) {
+            try { return Integer.parseInt(s); } catch (NumberFormatException e) { return 0; }
+        }
+        return 0;
+    }
+
+    private String toString(Object val) {
+        return val != null ? val.toString() : null;
     }
 
     // ==================== AI 优化 ====================

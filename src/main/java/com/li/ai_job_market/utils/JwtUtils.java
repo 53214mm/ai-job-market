@@ -5,6 +5,7 @@ import com.auth0.jwt.algorithms.Algorithm;
 import com.auth0.jwt.exceptions.JWTVerificationException;
 import com.auth0.jwt.interfaces.DecodedJWT;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 
 import java.util.Date;
@@ -16,9 +17,11 @@ import java.util.Date;
 @Component
 public class JwtUtils {
 
-    // TODO: 生产环境改为复杂密钥并通过 @Value 注入
-    private static final String SECRET = "ai-job-market-secret-key-2026-must-be-long-enough";
-    private static final long EXPIRATION_MS = 7 * 24 * 60 * 60 * 1000L; // 7天
+    @Value("${jwt.secret:ai-job-market-secret-key-2026-must-be-long-enough}")
+    private String secret;
+
+    @Value("${jwt.expiration-ms:604800000}")
+    private long expirationMs;
 
     /**
      * 生成 Token
@@ -30,8 +33,8 @@ public class JwtUtils {
                 .withClaim("userId", userId)
                 .withClaim("role", role)
                 .withIssuedAt(new Date())
-                .withExpiresAt(new Date(System.currentTimeMillis() + EXPIRATION_MS))
-                .sign(Algorithm.HMAC256(SECRET));
+                .withExpiresAt(new Date(System.currentTimeMillis() + expirationMs))
+                .sign(Algorithm.HMAC256(secret));
     }
 
     /**
@@ -40,7 +43,7 @@ public class JwtUtils {
      */
     public DecodedJWT verifyToken(String token) {
         try {
-            return JWT.require(Algorithm.HMAC256(SECRET)).build().verify(token);
+            return JWT.require(Algorithm.HMAC256(secret)).build().verify(token);
         } catch (JWTVerificationException e) {
             log.warn("JWT 验证失败: {}", e.getMessage());
             return null;

@@ -16,7 +16,7 @@ public interface ApplicationService extends IService<Application> {
     ApplicationVO getDetail(Long id, Long userId);
     boolean updateStatus(Long id, Long operatorId, String status, String remark);
 
-    Page<ApplicationVO> listMyApplications(Long seekerId, int current, int size);
+    Page<ApplicationVO> listMyApplications(Long seekerId, int current, int size, String status);
     Page<ApplicationVO> listReceivedApplications(Long recruiterId, int current, int size, String status);
 
     Interview scheduleInterview(Long applicationId, Long recruiterId, InterviewRequest req);

@@ -2,7 +2,7 @@
 import { ref, onMounted } from 'vue'
 const favs = ref([]); const loading = ref(true)
 
-async function fetch() {
+async function loadFavs() {
   loading.value = true
   try {
     const res = await fetch('/api/favorites', {
@@ -22,7 +22,7 @@ async function remove(id) {
   favs.value = favs.value.filter(f => f.id !== id)
 }
 
-onMounted(fetch)
+onMounted(loadFavs)
 </script>
 
 <template>

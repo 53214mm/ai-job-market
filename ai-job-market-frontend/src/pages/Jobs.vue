@@ -54,6 +54,43 @@ function handleSearch(params) {
   fetchJobs()
 }
 
+async function handleApply(jobId) {
+  const token = localStorage.getItem('token')
+  if (!token) { router.push('/login'); return }
+  const resumeRes = await fetch('/api/resumes?current=1&pageSize=1', { headers: { 'Authorization': 'Bearer ' + token } })
+  const resumeData = await resumeRes.json()
+  const resumeId = resumeData.data?.records?.[0]?.id
+  if (!resumeId) { alert('请先创建一份简历'); router.push('/resumes/create'); return }
+  try {
+    const res = await fetch('/api/applications', { method:'POST',
+      headers: { 'Content-Type': 'application/json', 'Authorization': 'Bearer ' + token },
+      body: JSON.stringify({ jobId, resumeId })
+    })
+    const data = await res.json()
+    if (data.code === 0) alert('投递成功！AI正在为你计算匹配度...')
+    else alert(data.message || '投递失败')
+  } catch(e) { alert('投递失败') }
+}
+
+async function handleFavorite(jobId) {
+  const token = localStorage.getItem('token')
+  if (!token) { router.push('/login'); return }
+  try {
+    const res = await fetch('/api/favorites', { method:'POST',
+      headers: { 'Content-Type': 'application/json', 'Authorization': 'Bearer ' + token },
+      body: JSON.stringify({ targetType: 'JOB', targetId: jobId })
+    })
+    const data = await res.json()
+    if (data.code === 0) alert('已收藏！')
+    else alert(data.message || '收藏失败')
+  } catch(e) { alert('收藏失败') }
+}
+
+function handleAiSearch(params) {
+  searchParams.value = { ...searchParams.value, ...params }
+  router.push('/jobs?ai=1')
+  fetchJobs()
+}
 function changePage(p) { currentPage.value = p; fetchJobs() }
 function switchTab(t) { tab.value = t; currentPage.value = 1; fetchJobs() }
 onMounted(fetchJobs)
@@ -68,7 +105,7 @@ onMounted(fetchJobs)
           <button @click="switchTab('all')" :class="tab === 'all' ? 'bg-blue-600 text-white' : 'bg-white text-gray-600'" class="px-3 py-1.5 text-xs font-medium transition-colors">全部职位</button>
           <button @click="switchTab('my')" :class="tab === 'my' ? 'bg-blue-600 text-white' : 'bg-white text-gray-600'" class="px-3 py-1.5 text-xs font-medium transition-colors">我的职位</button>
         </div>
-        <button v-if="role === 'RECRUITER'" @click="router.push('/recruiter/jobs')" class="px-3 py-1.5 bg-blue-600 text-white text-xs rounded-md hover:bg-blue-700 transition-colors">发布新职位</button>
+        <button v-if="role === 'RECRUITER'" @click="router.push('/recruiter/jobs/create')" class="px-3 py-1.5 bg-blue-600 text-white text-xs rounded-md hover:bg-blue-700 transition-colors">发布新职位</button>
       </div>
     </div>
 
@@ -100,7 +137,7 @@ onMounted(fetchJobs)
     <div v-else class="grid grid-cols-1 md:grid-cols-2 gap-4">
       <template v-for="job in jobs" :key="job.id">
         <div class="relative">
-          <JobCard :job="job" @click="router.push('/jobs/' + job.id)" />
+          <JobCard :job="job" @apply="handleApply" @favorite="handleFavorite" @click="id => router.push('/jobs/' + id)" />
           <div v-if="tab === 'my'" class="absolute top-3 right-3 flex items-center gap-1">
             <span class="px-2 py-0.5 text-xs rounded-full"
               :class="job.status === 'PUBLISHED' ? 'bg-green-50 text-green-600' : job.status === 'CLOSED' ? 'bg-gray-100 text-gray-500' : 'bg-yellow-50 text-yellow-600'">

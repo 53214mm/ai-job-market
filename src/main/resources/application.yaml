@@ -47,6 +47,10 @@ chat-memory:
   redis:
     key-prefix: "chat:memory:"  # 对话历史 key 前缀
 
+jwt:
+  secret: ai-job-market-secret-key-2026-must-be-long-enough
+  expiration-ms: 604800000  # 7天
+
 server:
   port: 8123
   servlet:

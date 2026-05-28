@@ -4,23 +4,36 @@ import { useRouter } from 'vue-router'
 const router = useRouter()
 const user = JSON.parse(localStorage.getItem('user') || '{}')
 const myCompany = ref(null)
+const stats = ref({ publishedJobs: 0, receivedApps: 0, interviewing: 0, pending: 0 })
 
 onMounted(async () => {
+  const token = localStorage.getItem('token')
+  const h = token ? { 'Authorization': 'Bearer ' + token } : {}
   try {
-    // 获取当前用户信息，获取 company_id
-    const res = await fetch('/api/user/current', {
-      headers: { 'Authorization': 'Bearer ' + localStorage.getItem('token') }
-    })
+    const res = await fetch('/api/user/current', { headers: h })
     const d = await res.json()
     if (d.code === 0) {
       user.role = d.data.role
       user.id = d.data.id
     }
-    // 尝试获取公司列表，匹配当前用户的公司
-    const cres = await fetch('/api/companies?current=1&pageSize=50')
-    const cdata = await cres.json()
-    if (cdata.code === 0) {
-      myCompany.value = cdata.data.records?.[0] || null
+  } catch (e) { /* */ }
+  try {
+    const [compRes, jobRes, appRes] = await Promise.all([
+      fetch('/api/companies?current=1&pageSize=50', { headers: h }),
+      fetch('/api/jobs/my?current=1&pageSize=100', { headers: h }),
+      fetch('/api/applications/received?current=1&pageSize=100', { headers: h })
+    ])
+    const [cdata, jdata, adata] = await Promise.all([compRes.json(), jobRes.json(), appRes.json()])
+    if (cdata.code === 0) myCompany.value = cdata.data.records?.[0] || null
+    if (jdata.code === 0) {
+      const records = jdata.data.records || []
+      stats.value.publishedJobs = records.filter(j => j.status === 'PUBLISHED').length
+    }
+    if (adata.code === 0) {
+      const records = adata.data.records || []
+      stats.value.receivedApps = records.length
+      stats.value.interviewing = records.filter(a => a.status === 'INTERVIEW').length
+      stats.value.pending = records.filter(a => a.status === 'APPLIED' || a.status === 'SCREENING').length
     }
   } catch (e) { /* */ }
 })
@@ -40,19 +53,19 @@ function goCompany() {
 
     <div class="grid grid-cols-1 md:grid-cols-4 gap-4 mb-8">
       <div class="bg-white border border-gray-200 rounded-lg p-4 text-center shadow-sm">
-        <p class="text-2xl font-bold text-purple-600">0</p>
+        <p class="text-2xl font-bold text-purple-600">{{ stats.publishedJobs }}</p>
         <p class="text-xs text-gray-500 mt-1">发布中职位</p>
       </div>
       <div class="bg-white border border-gray-200 rounded-lg p-4 text-center shadow-sm">
-        <p class="text-2xl font-bold text-blue-600">0</p>
+        <p class="text-2xl font-bold text-blue-600">{{ stats.receivedApps }}</p>
         <p class="text-xs text-gray-500 mt-1">收到简历</p>
       </div>
       <div class="bg-white border border-gray-200 rounded-lg p-4 text-center shadow-sm">
-        <p class="text-2xl font-bold text-green-600">0</p>
+        <p class="text-2xl font-bold text-green-600">{{ stats.interviewing }}</p>
         <p class="text-xs text-gray-500 mt-1">面试中</p>
       </div>
       <div class="bg-white border border-gray-200 rounded-lg p-4 text-center shadow-sm">
-        <p class="text-2xl font-bold text-orange-600">0</p>
+        <p class="text-2xl font-bold text-orange-600">{{ stats.pending }}</p>
         <p class="text-xs text-gray-500 mt-1">待处理</p>
       </div>
     </div>

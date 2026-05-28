@@ -6,6 +6,7 @@ import com.li.ai_job_market.model.entity.AiChatMessage;
 import com.li.ai_job_market.model.entity.AiChatSession;
 import com.li.ai_job_market.model.entity.AiInterviewRecord;
 import com.li.ai_job_market.model.vo.UserVO;
+import com.li.ai_job_market.AI.app.JobApp;
 import com.li.ai_job_market.service.AiChatService;
 import com.li.ai_job_market.service.AiInterviewService;
 import com.li.ai_job_market.service.UserService;
@@ -14,7 +15,9 @@ import jakarta.servlet.http.HttpServletRequest;
 import lombok.Data;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.servlet.mvc.method.annotation.SseEmitter;
 
+import java.io.IOException;
 import java.util.List;
 import java.util.Map;
 
@@ -26,6 +29,7 @@ public class AiChatController {
     @Resource private AiChatService aiChatService;
     @Resource private AiInterviewService aiInterviewService;
     @Resource private UserService userService;
+    @Resource private JobApp jobApp;
 
     private UserVO getLoginUser(HttpServletRequest request) {
         return userService.getLoginUser(request);
@@ -54,6 +58,37 @@ public class AiChatController {
     public BaseResponse<String> sendMessage(@RequestBody SendMessageReq req, HttpServletRequest request) {
         UserVO user = getLoginUser(request);
         return ResultUtils.success(aiChatService.sendMessage(req.getSessionId(), user.getId(), req.getMessage()));
+    }
+
+    // ==================== 流式聊天 ====================
+
+    @GetMapping("/chat/stream")
+    public SseEmitter chatStream(@RequestParam String message,
+                                  @RequestParam(defaultValue = "recruitment-chat") String chatId,
+                                  @RequestParam(required = false) String token,
+                                  HttpServletRequest request) {
+        SseEmitter emitter = new SseEmitter(300000L);
+
+        jobApp.doChatByStream(message, chatId).subscribe(
+                chunk -> {
+                    try {
+                        emitter.send(SseEmitter.event().data(chunk));
+                    } catch (IOException e) {
+                        emitter.completeWithError(e);
+                    }
+                },
+                emitter::completeWithError,
+                () -> {
+                    try {
+                        emitter.send(SseEmitter.event().name("done").data(""));
+                        emitter.complete();
+                    } catch (IOException e) {
+                        emitter.completeWithError(e);
+                    }
+                }
+        );
+
+        return emitter;
     }
 
     // ==================== AI 模拟面试 ====================

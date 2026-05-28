@@ -11,6 +11,7 @@ import com.li.ai_job_market.model.dto.company.*;
 import com.li.ai_job_market.model.entity.*;
 import com.li.ai_job_market.model.vo.*;
 import com.li.ai_job_market.service.CompanyService;
+import com.li.ai_job_market.service.UserRecruiterProfileService;
 import jakarta.annotation.Resource;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
@@ -31,7 +32,7 @@ public class CompanyServiceImpl extends ServiceImpl<CompanyMapper, Company>
     private CompanyReviewMapper reviewMapper;
 
     @Resource
-    private UserRecruiterProfileMapper recruiterMapper;
+    private UserRecruiterProfileService recruiterProfileService;
 
     @Override
     @Transactional(rollbackFor = Exception.class)
@@ -39,7 +40,8 @@ public class CompanyServiceImpl extends ServiceImpl<CompanyMapper, Company>
         ThrowUtils.throwIf(StringUtils.isBlank(req.getName()),
                 ErrorCode.PARAMS_ERROR, "公司名称不能为空");
 
-        UserRecruiterProfile profile = recruiterMapper.selectById(userId);
+        UserRecruiterProfile profile = recruiterProfileService.getOne(
+                new LambdaQueryWrapper<UserRecruiterProfile>().eq(UserRecruiterProfile::getUserId, userId));
         if (profile != null && profile.getCompanyId() != null) {
             ThrowUtils.throwIf(true, ErrorCode.PARAMS_ERROR, "您已关联公司，不可重复创建");
         }
@@ -63,7 +65,7 @@ public class CompanyServiceImpl extends ServiceImpl<CompanyMapper, Company>
 
         if (profile != null) {
             profile.setCompanyId(company.getId());
-            recruiterMapper.updateById(profile);
+            recruiterProfileService.updateById(profile);
         }
         log.info("公司创建: id={}, name={}, userId={}", company.getId(), req.getName(), userId);
         return company.getId();
@@ -86,7 +88,8 @@ public class CompanyServiceImpl extends ServiceImpl<CompanyMapper, Company>
 
     @Override
     public boolean updateCompany(Long companyId, Long userId, CompanyUpdateRequest req) {
-        UserRecruiterProfile profile = recruiterMapper.selectById(userId);
+        UserRecruiterProfile profile = recruiterProfileService.getOne(
+                new LambdaQueryWrapper<UserRecruiterProfile>().eq(UserRecruiterProfile::getUserId, userId));
         ThrowUtils.throwIf(profile == null || !companyId.equals(profile.getCompanyId()),
                 ErrorCode.NO_AUTH_ERROR, "无权操作此公司");
 
@@ -172,7 +175,8 @@ public class CompanyServiceImpl extends ServiceImpl<CompanyMapper, Company>
         Company company = this.getById(companyId);
         ThrowUtils.throwIf(company == null, ErrorCode.NOT_FOUND_ERROR, "公司不存在");
 
-        UserRecruiterProfile profile = recruiterMapper.selectById(userId);
+        UserRecruiterProfile profile = recruiterProfileService.getOne(
+                new LambdaQueryWrapper<UserRecruiterProfile>().eq(UserRecruiterProfile::getUserId, userId));
         ThrowUtils.throwIf(profile == null || !companyId.equals(profile.getCompanyId()),
                 ErrorCode.NO_AUTH_ERROR, "无权操作");
 

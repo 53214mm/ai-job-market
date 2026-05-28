@@ -32,10 +32,19 @@ import AdminDashboard from './pages/AdminDashboard.vue'
 import AdminUsers from './pages/AdminUsers.vue'
 import AdminCompanies from './pages/AdminCompanies.vue'
 import AdminJobs from './pages/AdminJobs.vue'
+import AdminArticles from './pages/AdminArticles.vue'
 
 // AI
 import AiChat from './pages/AiChat.vue'
 import AiInterview from './pages/AiInterview.vue'
+
+// 消息通知
+import Notifications from './pages/Notifications.vue'
+import Messages from './pages/Messages.vue'
+
+// 招聘方专用
+import JobCreate from './pages/JobCreate.vue'
+import RecruiterApps from './pages/RecruiterApplications.vue'
 
 const routes = [
   { path: '/', name: 'Home', component: Home },
@@ -62,19 +71,25 @@ const routes = [
   { path: '/recruiter', name: 'RecruiterDashboard', component: RecruiterDashboard },
   { path: '/recruiter/company', name: 'CompanyCreate', component: CompanyEdit },
   { path: '/recruiter/company/:id', name: 'CompanyEdit', component: CompanyEdit },
-  { path: '/recruiter/jobs', name: 'RecruiterJobs', component: () => import('./pages/Jobs.vue') },
-  { path: '/recruiter/applications', name: 'RecruiterApplications', component: () => import('./pages/RecruiterDashboard.vue') },
+  { path: '/recruiter/jobs', name: 'RecruiterJobs', component: Jobs },
+  { path: '/recruiter/jobs/create', name: 'JobCreate', component: JobCreate },
+  { path: '/recruiter/applications', name: 'RecruiterApplications', component: RecruiterApps },
 
   // AI
   { path: '/ai/chat', name: 'AiChat', component: AiChat },
   { path: '/ai/interview', name: 'AiInterview', component: AiInterview },
+
+  // 消息通知
+  { path: '/notifications', name: 'Notifications', component: Notifications },
+  { path: '/messages', name: 'Messages', component: Messages },
+  { path: '/messages/:peerId', name: 'MessagesChat', component: Messages },
 
   // 管理员
   { path: '/admin', name: 'AdminDashboard', component: AdminDashboard },
   { path: '/admin/users', name: 'AdminUsers', component: AdminUsers },
   { path: '/admin/companies', name: 'AdminCompanies', component: AdminCompanies },
   { path: '/admin/jobs', name: 'AdminJobs', component: AdminJobs },
-  { path: '/admin/articles', name: 'AdminArticles', component: AdminDashboard },
+  { path: '/admin/articles', name: 'AdminArticles', component: AdminArticles },
 ]
 
 const router = createRouter({

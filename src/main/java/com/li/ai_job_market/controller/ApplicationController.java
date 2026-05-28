@@ -37,9 +37,10 @@ public class ApplicationController {
     @GetMapping("/applications/my")
     public BaseResponse<Page<ApplicationVO>> my(@RequestParam(defaultValue = "1") int current,
                                                  @RequestParam(defaultValue = "10") int size,
+                                                 @RequestParam(required = false) String status,
                                                  HttpServletRequest request) {
         UserVO user = getLoginUser(request);
-        return ResultUtils.success(applicationService.listMyApplications(user.getId(), current, size));
+        return ResultUtils.success(applicationService.listMyApplications(user.getId(), current, size, status));
     }
 
     @GetMapping("/applications/received")

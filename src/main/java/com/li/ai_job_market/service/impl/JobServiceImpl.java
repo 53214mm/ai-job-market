@@ -10,6 +10,7 @@ import com.li.ai_job_market.model.dto.job.*;
 import com.li.ai_job_market.model.entity.*;
 import com.li.ai_job_market.model.vo.JobVO;
 import com.li.ai_job_market.service.JobService;
+import com.li.ai_job_market.service.UserRecruiterProfileService;
 import jakarta.annotation.Resource;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
@@ -26,7 +27,7 @@ public class JobServiceImpl extends ServiceImpl<JobMapper, Job> implements JobSe
     @Resource
     private CompanyMapper companyMapper;
     @Resource
-    private UserRecruiterProfileMapper recruiterMapper;
+    private UserRecruiterProfileService recruiterProfileService;
     @Resource
     private JobSkillTagMapper skillTagMapper;
     @Resource
@@ -40,7 +41,8 @@ public class JobServiceImpl extends ServiceImpl<JobMapper, Job> implements JobSe
         ThrowUtils.throwIf(StringUtils.isBlank(req.getTitle()),
                 ErrorCode.PARAMS_ERROR, "职位名称不能为空");
 
-        UserRecruiterProfile profile = recruiterMapper.selectById(userId);
+        UserRecruiterProfile profile = recruiterProfileService.getOne(
+                new LambdaQueryWrapper<UserRecruiterProfile>().eq(UserRecruiterProfile::getUserId, userId));
         ThrowUtils.throwIf(profile == null || profile.getCompanyId() == null,
                 ErrorCode.NO_AUTH_ERROR, "请先创建公司后再发布职位");
         Company company = companyMapper.selectById(profile.getCompanyId());
