@@ -1,0 +1,100 @@
+- generic [ref=e3]:
+  - banner [ref=e4]:
+    - generic [ref=e6]:
+      - link "AI AI 招聘市场" [ref=e7] [cursor=pointer]:
+        - /url: /
+        - generic [ref=e9]: AI
+        - generic [ref=e10]: AI 招聘市场
+      - navigation [ref=e11]:
+        - link "求职" [ref=e12] [cursor=pointer]:
+          - /url: /
+        - link "招聘" [ref=e13] [cursor=pointer]:
+          - /url: /jobs
+        - link "AI助手" [ref=e14] [cursor=pointer]:
+          - /url: /ai/chat
+      - generic [ref=e15]:
+        - link "登录" [ref=e16] [cursor=pointer]:
+          - /url: /login
+        - link "注册" [ref=e17] [cursor=pointer]:
+          - /url: /register
+  - main [ref=e18]:
+    - generic [ref=e20]:
+      - generic [ref=e21]:
+        - generic [ref=e23]: AI
+        - heading "欢迎回来" [level=1] [ref=e24]
+        - paragraph [ref=e25]: 登录 AI 智能招聘市场
+      - generic [ref=e26]:
+        - generic [ref=e27]:
+          - generic [ref=e28]: 邮箱
+          - generic [ref=e29]:
+            - img [ref=e30]
+            - textbox "请输入邮箱" [ref=e32]
+        - generic [ref=e33]:
+          - generic [ref=e34]: 密码
+          - generic [ref=e35]:
+            - img [ref=e36]
+            - textbox "请输入密码" [ref=e38]
+        - button "登录" [ref=e39]
+        - paragraph [ref=e40]:
+          - text: 还没有账号？
+          - link "立即注册" [ref=e41] [cursor=pointer]:
+            - /url: /register
+  - contentinfo [ref=e42]:
+    - generic [ref=e43]:
+      - generic [ref=e44]:
+        - generic [ref=e45]:
+          - heading "求职者" [level=4] [ref=e46]
+          - list [ref=e47]:
+            - listitem [ref=e48]:
+              - link "浏览职位" [ref=e49] [cursor=pointer]:
+                - /url: "#"
+            - listitem [ref=e50]:
+              - link "AI 简历分析" [ref=e51] [cursor=pointer]:
+                - /url: "#"
+            - listitem [ref=e52]:
+              - link "求职攻略" [ref=e53] [cursor=pointer]:
+                - /url: "#"
+            - listitem [ref=e54]:
+              - link "AI 模拟面试" [ref=e55] [cursor=pointer]:
+                - /url: "#"
+        - generic [ref=e56]:
+          - heading "招聘方" [level=4] [ref=e57]
+          - list [ref=e58]:
+            - listitem [ref=e59]:
+              - link "发布职位" [ref=e60] [cursor=pointer]:
+                - /url: "#"
+            - listitem [ref=e61]:
+              - link "AI 简历筛选" [ref=e62] [cursor=pointer]:
+                - /url: "#"
+            - listitem [ref=e63]:
+              - link "企业认证" [ref=e64] [cursor=pointer]:
+                - /url: "#"
+            - listitem [ref=e65]:
+              - link "招聘方案" [ref=e66] [cursor=pointer]:
+                - /url: "#"
+        - generic [ref=e67]:
+          - heading "关于" [level=4] [ref=e68]
+          - list [ref=e69]:
+            - listitem [ref=e70]:
+              - link "关于我们" [ref=e71] [cursor=pointer]:
+                - /url: "#"
+            - listitem [ref=e72]:
+              - link "帮助中心" [ref=e73] [cursor=pointer]:
+                - /url: "#"
+            - listitem [ref=e74]:
+              - link "隐私政策" [ref=e75] [cursor=pointer]:
+                - /url: "#"
+            - listitem [ref=e76]:
+              - link "服务条款" [ref=e77] [cursor=pointer]:
+                - /url: "#"
+        - generic [ref=e78]:
+          - heading "联系我们" [level=4] [ref=e79]
+          - list [ref=e80]:
+            - listitem [ref=e81]: service@aijob.com
+            - listitem [ref=e82]: 400-888-0000
+            - listitem [ref=e83]: 周一至周五 9:00-18:00
+      - generic [ref=e84]:
+        - generic [ref=e85]:
+          - generic [ref=e87]: AI
+          - generic [ref=e88]: AI 智能招聘市场
+        - paragraph [ref=e89]: © 2026 AI Job Market. All rights reserved.

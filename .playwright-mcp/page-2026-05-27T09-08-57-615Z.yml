@@ -1,0 +1,330 @@
+- generic [ref=e3]:
+  - banner [ref=e4]:
+    - generic [ref=e6]:
+      - link "AI AI 招聘市场" [ref=e7] [cursor=pointer]:
+        - /url: /seeker
+        - generic [ref=e9]: AI
+        - generic [ref=e10]: AI 招聘市场
+      - navigation [ref=e11]:
+        - link "首页" [ref=e12] [cursor=pointer]:
+          - /url: /seeker
+        - link "职位搜索" [ref=e13] [cursor=pointer]:
+          - /url: /jobs
+        - link "我的简历" [ref=e14] [cursor=pointer]:
+          - /url: /resumes
+        - link "投递记录" [ref=e15] [cursor=pointer]:
+          - /url: /applications
+        - link "收藏" [ref=e16] [cursor=pointer]:
+          - /url: /favorites
+        - link "AI面试" [ref=e17] [cursor=pointer]:
+          - /url: /ai/interview
+        - link "AI助手" [ref=e18] [cursor=pointer]:
+          - /url: /ai/chat
+        - link "通知" [ref=e19] [cursor=pointer]:
+          - /url: /notifications
+        - link "私信" [ref=e20] [cursor=pointer]:
+          - /url: /messages
+      - generic [ref=e21]:
+        - generic [ref=e22]: 求职者
+        - generic [ref=e23]: 测试用户
+        - button "退出" [ref=e24]
+  - main [ref=e25]:
+    - generic [ref=e26]:
+      - heading "职位搜索" [level=1] [ref=e28]
+      - generic [ref=e30]:
+        - generic [ref=e31]:
+          - img [ref=e32]
+          - textbox "职位关键词" [ref=e34]
+        - combobox [ref=e36]:
+          - option "所有城市" [selected]
+          - option "北京"
+          - option "上海"
+          - option "广州"
+          - option "深圳"
+          - option "杭州"
+          - option "成都"
+        - combobox [ref=e38]:
+          - option "薪资范围" [selected]
+          - option "10K-20K"
+          - option "20K-35K"
+          - option "35K-50K"
+          - option "50K以上"
+        - button "搜索" [ref=e39]
+        - button "AI 语义搜索" [ref=e40]:
+          - img [ref=e41]
+          - text: AI 语义搜索
+      - generic [ref=e43]:
+        - paragraph [ref=e44]: 共找到 8 个职位
+        - generic [ref=e45]:
+          - generic [ref=e46]: 排序：
+          - combobox [ref=e47]:
+            - option "发布时间" [selected]
+            - option "薪资高低"
+      - generic [ref=e48]:
+        - generic [ref=e50] [cursor=pointer]:
+          - generic [ref=e52]:
+            - generic [ref=e53]: 极
+            - generic [ref=e54]:
+              - heading "全栈开发工程师" [level=3] [ref=e55]
+              - paragraph [ref=e56]: 极客未来科技
+          - generic [ref=e57]:
+            - generic [ref=e58]:
+              - img [ref=e59]
+              - text: 深圳
+            - generic [ref=e62]:
+              - img [ref=e63]
+              - text: 18K-30K
+            - generic [ref=e65]:
+              - img [ref=e66]
+              - text: 1-3年
+          - generic [ref=e68]:
+            - generic [ref=e69]: 全栈
+            - generic [ref=e70]: 远程
+            - generic [ref=e71]: 创业公司
+            - generic [ref=e72]: Vue.js
+          - generic [ref=e73]:
+            - generic [ref=e74]: 2026-05-23
+            - generic [ref=e75]:
+              - button "收藏" [ref=e76]
+              - button "立即投递" [ref=e77]
+        - generic [ref=e79] [cursor=pointer]:
+          - generic [ref=e81]:
+            - generic [ref=e82]: 小
+            - generic [ref=e83]:
+              - heading "iOS开发工程师" [level=3] [ref=e84]
+              - paragraph [ref=e85]: 小红书科技
+          - generic [ref=e86]:
+            - generic [ref=e87]:
+              - img [ref=e88]
+              - text: 上海
+            - generic [ref=e91]:
+              - img [ref=e92]
+              - text: 20K-35K
+            - generic [ref=e94]:
+              - img [ref=e95]
+              - text: 1-3年
+          - generic [ref=e97]:
+            - generic [ref=e98]: iOS
+            - generic [ref=e99]: Swift
+            - generic [ref=e100]: 上海
+            - generic [ref=e101]: 年轻化
+          - generic [ref=e102]:
+            - generic [ref=e103]: 2026-05-22
+            - generic [ref=e104]:
+              - button "收藏" [ref=e105]
+              - button "立即投递" [ref=e106]
+        - generic [ref=e108] [cursor=pointer]:
+          - generic [ref=e110]:
+            - generic [ref=e111]: 美
+            - generic [ref=e112]:
+              - heading "产品经理（商家端）" [level=3] [ref=e113]
+              - paragraph [ref=e114]: 美团
+          - generic [ref=e115]:
+            - generic [ref=e116]:
+              - img [ref=e117]
+              - text: 北京
+            - generic [ref=e120]:
+              - img [ref=e121]
+              - text: 22K-38K
+            - generic [ref=e123]:
+              - img [ref=e124]
+              - text: 1-3年
+          - generic [ref=e126]:
+            - generic [ref=e127]: 产品经理
+            - generic [ref=e128]: B端
+            - generic [ref=e129]: 电商
+            - generic [ref=e130]: 数据分析
+          - generic [ref=e131]:
+            - generic [ref=e132]: 2026-05-21
+            - generic [ref=e133]:
+              - button "收藏" [ref=e134]
+              - button "立即投递" [ref=e135]
+        - generic [ref=e137] [cursor=pointer]:
+          - generic [ref=e139]:
+            - generic [ref=e140]: 字
+            - generic [ref=e141]:
+              - heading "高级Java开发工程师" [level=3] [ref=e142]
+              - paragraph [ref=e143]: 字节跳动科技有限公司
+          - generic [ref=e144]:
+            - generic [ref=e145]:
+              - img [ref=e146]
+              - text: 北京
+            - generic [ref=e149]:
+              - img [ref=e150]
+              - text: 30K-50K
+            - generic [ref=e152]:
+              - img [ref=e153]
+              - text: 3-5年
+          - generic [ref=e155]:
+            - generic [ref=e156]: Java
+            - generic [ref=e157]: 微服务
+            - generic [ref=e158]: 大厂
+            - generic [ref=e159]: 急聘
+          - generic [ref=e160]:
+            - generic [ref=e161]: 2026-05-20
+            - generic [ref=e162]:
+              - button "收藏" [ref=e163]
+              - button "立即投递" [ref=e164]
+        - generic [ref=e166] [cursor=pointer]:
+          - generic [ref=e168]:
+            - generic [ref=e169]: 阿
+            - generic [ref=e170]:
+              - heading "高级前端开发工程师" [level=3] [ref=e171]
+              - paragraph [ref=e172]: 阿里巴巴集团
+          - generic [ref=e173]:
+            - generic [ref=e174]:
+              - img [ref=e175]
+              - text: 杭州
+            - generic [ref=e178]:
+              - img [ref=e179]
+              - text: 28K-50K
+            - generic [ref=e181]:
+              - img [ref=e182]
+              - text: 3-5年
+          - generic [ref=e184]:
+            - generic [ref=e185]: 前端
+            - generic [ref=e186]: Vue.js
+            - generic [ref=e187]: 大厂
+            - generic [ref=e188]: 杭州
+          - generic [ref=e189]:
+            - generic [ref=e190]: 2026-05-19
+            - generic [ref=e191]:
+              - button "收藏" [ref=e192]
+              - button "立即投递" [ref=e193]
+        - generic [ref=e195] [cursor=pointer]:
+          - generic [ref=e197]:
+            - generic [ref=e198]: 字
+            - generic [ref=e199]:
+              - heading "AI算法工程师（NLP方向）" [level=3] [ref=e200]
+              - paragraph [ref=e201]: 字节跳动科技有限公司
+          - generic [ref=e202]:
+            - generic [ref=e203]:
+              - img [ref=e204]
+              - text: 北京
+            - generic [ref=e207]:
+              - img [ref=e208]
+              - text: 40K-70K
+            - generic [ref=e210]:
+              - img [ref=e211]
+              - text: 3-5年
+          - generic [ref=e213]:
+            - generic [ref=e214]: AI
+            - generic [ref=e215]: NLP
+            - generic [ref=e216]: 大语言模型
+            - generic [ref=e217]: 高薪
+          - generic [ref=e218]:
+            - generic [ref=e219]: 2026-05-18
+            - generic [ref=e220]:
+              - button "收藏" [ref=e221]
+              - button "立即投递" [ref=e222]
+        - generic [ref=e224] [cursor=pointer]:
+          - generic [ref=e226]:
+            - generic [ref=e227]: 百
+            - generic [ref=e228]:
+              - heading "自动驾驶感知算法工程师" [level=3] [ref=e229]
+              - paragraph [ref=e230]: 百度在线网络技术有限公司
+          - generic [ref=e231]:
+            - generic [ref=e232]:
+              - img [ref=e233]
+              - text: 北京
+            - generic [ref=e236]:
+              - img [ref=e237]
+              - text: 45K-75K
+            - generic [ref=e239]:
+              - img [ref=e240]
+              - text: 3-5年
+          - generic [ref=e242]:
+            - generic [ref=e243]: AI
+            - generic [ref=e244]: 自动驾驶
+            - generic [ref=e245]: 计算机视觉
+            - generic [ref=e246]: 高薪
+          - generic [ref=e247]:
+            - generic [ref=e248]: 2026-05-17
+            - generic [ref=e249]:
+              - button "收藏" [ref=e250]
+              - button "立即投递" [ref=e251]
+        - generic [ref=e253] [cursor=pointer]:
+          - generic [ref=e255]:
+            - generic [ref=e256]: 极
+            - generic [ref=e257]:
+              - heading "AI产品实习生" [level=3] [ref=e258]
+              - paragraph [ref=e259]: 极客未来科技
+          - generic [ref=e260]:
+            - generic [ref=e261]:
+              - img [ref=e262]
+              - text: 深圳
+            - generic [ref=e265]:
+              - img [ref=e266]
+              - text: 150K-300K
+            - generic [ref=e268]:
+              - img [ref=e269]
+              - text: 应届
+          - generic [ref=e271]:
+            - generic [ref=e272]: 实习
+            - generic [ref=e273]: AI
+            - generic [ref=e274]: 产品
+            - generic [ref=e275]: 深圳
+          - generic [ref=e276]:
+            - generic [ref=e277]: 2026-05-15
+            - generic [ref=e278]:
+              - button "收藏" [ref=e279]
+              - button "立即投递" [ref=e280]
+  - contentinfo [ref=e281]:
+    - generic [ref=e282]:
+      - generic [ref=e283]:
+        - generic [ref=e284]:
+          - heading "求职者" [level=4] [ref=e285]
+          - list [ref=e286]:
+            - listitem [ref=e287]:
+              - link "浏览职位" [ref=e288] [cursor=pointer]:
+                - /url: "#"
+            - listitem [ref=e289]:
+              - link "AI 简历分析" [ref=e290] [cursor=pointer]:
+                - /url: "#"
+            - listitem [ref=e291]:
+              - link "求职攻略" [ref=e292] [cursor=pointer]:
+                - /url: "#"
+            - listitem [ref=e293]:
+              - link "AI 模拟面试" [ref=e294] [cursor=pointer]:
+                - /url: "#"
+        - generic [ref=e295]:
+          - heading "招聘方" [level=4] [ref=e296]
+          - list [ref=e297]:
+            - listitem [ref=e298]:
+              - link "发布职位" [ref=e299] [cursor=pointer]:
+                - /url: "#"
+            - listitem [ref=e300]:
+              - link "AI 简历筛选" [ref=e301] [cursor=pointer]:
+                - /url: "#"
+            - listitem [ref=e302]:
+              - link "企业认证" [ref=e303] [cursor=pointer]:
+                - /url: "#"
+            - listitem [ref=e304]:
+              - link "招聘方案" [ref=e305] [cursor=pointer]:
+                - /url: "#"
+        - generic [ref=e306]:
+          - heading "关于" [level=4] [ref=e307]
+          - list [ref=e308]:
+            - listitem [ref=e309]:
+              - link "关于我们" [ref=e310] [cursor=pointer]:
+                - /url: "#"
+            - listitem [ref=e311]:
+              - link "帮助中心" [ref=e312] [cursor=pointer]:
+                - /url: "#"
+            - listitem [ref=e313]:
+              - link "隐私政策" [ref=e314] [cursor=pointer]:
+                - /url: "#"
+            - listitem [ref=e315]:
+              - link "服务条款" [ref=e316] [cursor=pointer]:
+                - /url: "#"
+        - generic [ref=e317]:
+          - heading "联系我们" [level=4] [ref=e318]
+          - list [ref=e319]:
+            - listitem [ref=e320]: service@aijob.com
+            - listitem [ref=e321]: 400-888-0000
+            - listitem [ref=e322]: 周一至周五 9:00-18:00
+      - generic [ref=e323]:
+        - generic [ref=e324]:
+          - generic [ref=e326]: AI
+          - generic [ref=e327]: AI 智能招聘市场
+        - paragraph [ref=e328]: © 2026 AI Job Market. All rights reserved.
