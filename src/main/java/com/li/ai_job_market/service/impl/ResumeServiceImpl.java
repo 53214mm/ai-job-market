@@ -431,6 +431,10 @@ public class ResumeServiceImpl extends ServiceImpl<ResumeMapper, Resume>
         checkResumeAccess(resumeId, userId);
 
         String resumeMarkdown = buildResumeMarkdown(resumeId);
+        // DashScope Qwen 输入限制约 30720 字符，预留 prompt 和响应空间
+        if (resumeMarkdown.length() > 25000) {
+            resumeMarkdown = resumeMarkdown.substring(0, 25000) + "\n\n[简历内容过长，已截断]";
+        }
 
         String prompt = """
             你是一位资深 HR 和简历优化专家。请分析以下简历，给出详细评分和建议。
@@ -510,6 +514,9 @@ public class ResumeServiceImpl extends ServiceImpl<ResumeMapper, Resume>
     public String aiOptimize(Long resumeId, Long userId) {
         checkResumeAccess(resumeId, userId);
         String resumeMarkdown = buildResumeMarkdown(resumeId);
+        if (resumeMarkdown.length() > 25000) {
+            resumeMarkdown = resumeMarkdown.substring(0, 25000) + "\n\n[简历内容过长，已截断]";
+        }
 
         String prompt = """
             你是一位顶级简历优化顾问。请根据以下简历内容，提供优化建议。
