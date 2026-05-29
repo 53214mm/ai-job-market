@@ -6,6 +6,7 @@ import com.li.ai_job_market.model.entity.AiJobMatch;
 
 import java.util.List;
 
+/** AI职位匹配服务接口，提供求职者与职位的智能匹配计算和匹配结果查询功能 */
 public interface AiJobMatchService extends IService<AiJobMatch> {
 
     void computeMatch(Long seekerId, Long resumeId, Long jobId);

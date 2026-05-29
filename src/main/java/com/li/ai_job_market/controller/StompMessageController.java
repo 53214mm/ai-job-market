@@ -11,12 +11,16 @@ import org.springframework.stereotype.Controller;
 
 import java.security.Principal;
 
+/**
+ * WebSocket消息控制器 —— 基于STOMP协议处理实时私信消息的接收与转发
+ */
 @Slf4j
 @Controller
 public class StompMessageController {
 
     @Resource private MessageService messageService;
 
+    // 处理WebSocket私信消息（STOMP协议）
     @MessageMapping("/messages")
     public void handleMessage(@Payload StompMessagePayload payload, Principal principal) {
         Long senderId = Long.valueOf(principal.getName());

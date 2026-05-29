@@ -7,6 +7,9 @@ import java.io.Serializable;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 
+/**
+ * 求职者档案实体，记录求职者的个人详细信息。
+ */
 @Data
 @TableName("user_seeker_profile")
 public class UserSeekerProfile implements Serializable {

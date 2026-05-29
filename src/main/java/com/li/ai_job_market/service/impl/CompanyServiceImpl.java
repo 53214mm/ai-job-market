@@ -20,6 +20,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
+/** 公司管理服务实现，提供公司信息管理、评价审核和AI生成公司介绍功能 */
 @Slf4j
 @Service
 public class CompanyServiceImpl extends ServiceImpl<CompanyMapper, Company>

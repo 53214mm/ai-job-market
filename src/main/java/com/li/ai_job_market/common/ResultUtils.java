@@ -2,6 +2,9 @@ package com.li.ai_job_market.common;
 
 import com.li.ai_job_market.exception.ErrorCode;
 
+/**
+ * 响应结果工具类，提供成功与失败响应的快捷构建方法
+ */
 public class ResultUtils {
 
     /**

@@ -7,6 +7,9 @@ import java.io.Serializable;
 import java.time.LocalDateTime;
 import java.util.List;
 
+/**
+ * 简历视图对象，展示简历的完整信息，包含教育、工作、项目、技能和证书等子项。
+ */
 @Data
 public class ResumeVO implements Serializable {
     private Long id;

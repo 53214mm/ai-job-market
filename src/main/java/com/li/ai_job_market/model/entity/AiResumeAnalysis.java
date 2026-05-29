@@ -6,6 +6,9 @@ import lombok.Data;
 import java.io.Serializable;
 import java.time.LocalDateTime;
 
+/**
+ * AI简历分析实体，记录简历的AI分析评分和建议。
+ */
 @Data
 @TableName("ai_resume_analysis")
 public class AiResumeAnalysis implements Serializable {

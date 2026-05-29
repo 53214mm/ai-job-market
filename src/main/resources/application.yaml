@@ -7,7 +7,7 @@ spring:
     dashscope:
       chat:
         options:
-          model: qwen-plus
+          model: qwen-max
 # pgvector向量数据库配置
     vectorstore:
       pgvector:

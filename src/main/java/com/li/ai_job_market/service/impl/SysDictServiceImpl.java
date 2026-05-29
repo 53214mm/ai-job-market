@@ -11,6 +11,7 @@ import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 
+/** 系统字典服务实现，提供字典数据的分类查询和键值映射 */
 @Service
 public class SysDictServiceImpl extends ServiceImpl<SysDictMapper, SysDict>
         implements SysDictService {

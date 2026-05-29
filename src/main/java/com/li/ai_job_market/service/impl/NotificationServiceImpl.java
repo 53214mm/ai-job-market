@@ -18,6 +18,7 @@ import org.springframework.stereotype.Service;
 
 import java.util.Map;
 
+/** 系统通知服务实现，提供通知的创建、查询、批量已读和WebSocket实时推送未读数 */
 @Slf4j
 @Service
 public class NotificationServiceImpl extends ServiceImpl<NotificationMapper, Notification>

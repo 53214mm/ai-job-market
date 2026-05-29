@@ -4,6 +4,9 @@ import lombok.Data;
 
 import java.io.Serializable;
 
+/**
+ * 公司更新请求DTO，封装更新公司信息时提交的字段。
+ */
 @Data
 public class CompanyUpdateRequest implements Serializable {
     private Long id;

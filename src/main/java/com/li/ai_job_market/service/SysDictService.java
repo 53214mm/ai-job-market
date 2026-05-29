@@ -6,6 +6,7 @@ import com.li.ai_job_market.model.entity.SysDict;
 import java.util.List;
 import java.util.Map;
 
+/** 系统字典服务接口，提供字典数据的分类查询和键值映射功能 */
 public interface SysDictService extends IService<SysDict> {
 
     List<SysDict> listByType(String dictType);

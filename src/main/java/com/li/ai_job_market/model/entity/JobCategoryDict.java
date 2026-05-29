@@ -6,6 +6,9 @@ import lombok.Data;
 import java.io.Serializable;
 import java.time.LocalDateTime;
 
+/**
+ * 职位分类字典实体，记录职位分类的层级树结构。
+ */
 @Data
 @TableName("job_category_dict")
 public class JobCategoryDict implements Serializable {

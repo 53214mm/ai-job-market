@@ -6,6 +6,9 @@ import lombok.Data;
 import java.io.Serializable;
 import java.time.LocalDateTime;
 
+/**
+ * 用户实体，记录平台用户的基本信息。
+ */
 @Data
 @TableName("user")
 public class User implements Serializable {

@@ -6,6 +6,9 @@ import lombok.Data;
 import java.io.Serializable;
 import java.time.LocalDateTime;
 
+/**
+ * 面试实体，记录面试安排的时间、类型和反馈。
+ */
 @Data
 @TableName("interview")
 public class Interview implements Serializable {

@@ -16,6 +16,7 @@ import org.springframework.stereotype.Service;
 
 import java.util.List;
 
+/** AI聊天服务实现，支持多轮对话和流式响应，通过Redis管理会话上下文 */
 @Slf4j
 @Service
 public class AiChatServiceImpl implements AiChatService {

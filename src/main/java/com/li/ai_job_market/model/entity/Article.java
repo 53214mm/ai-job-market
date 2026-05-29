@@ -6,6 +6,9 @@ import lombok.Data;
 import java.io.Serializable;
 import java.time.LocalDateTime;
 
+/**
+ * 文章实体，记录平台资讯文章的内容、分类及浏览信息。
+ */
 @Data
 @TableName("article")
 public class Article implements Serializable {

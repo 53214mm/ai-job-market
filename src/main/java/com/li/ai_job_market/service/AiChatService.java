@@ -5,6 +5,7 @@ import com.li.ai_job_market.model.entity.AiChatSession;
 
 import java.util.List;
 
+/** AI聊天服务接口，提供AI会话创建、消息收发和历史查询功能 */
 public interface AiChatService {
     Long createSession(Long userId, String type, String title);
     List<AiChatSession> listSessions(Long userId);

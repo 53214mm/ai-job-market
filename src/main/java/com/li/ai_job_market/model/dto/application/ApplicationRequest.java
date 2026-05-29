@@ -4,6 +4,9 @@ import lombok.Data;
 
 import java.io.Serializable;
 
+/**
+ * 投递申请请求DTO，封装投递职位时的职位、简历及求职信信息。
+ */
 @Data
 public class ApplicationRequest implements Serializable {
     private Long jobId;

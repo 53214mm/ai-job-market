@@ -13,13 +13,14 @@ const role = computed(() => user.value?.role || '')
 
 const { connect, onUnreadCount } = useStomp()
 
-// 未读通知+私信数量
-const unreadTotal = ref(0)
+// 通知和私信分开计数
+const unreadNotif = ref(0)
+const unreadMsg = ref(0)
 let unsubUnread = null
 
 async function fetchUnread() {
   const t = localStorage.getItem('token')
-  if (!t) { unreadTotal.value = 0; return }
+  if (!t) { unreadNotif.value = 0; unreadMsg.value = 0; return }
   const h = { 'Authorization': 'Bearer ' + t }
   try {
     const [nr, mr] = await Promise.all([
@@ -27,8 +28,9 @@ async function fetchUnread() {
       fetch('/api/messages/unread-count', { headers: h })
     ])
     const nd = await nr.json(); const md = await mr.json()
-    unreadTotal.value = (nd.data?.count || 0) + (md.data?.count || 0)
-  } catch(e) { unreadTotal.value = 0 }
+    unreadNotif.value = nd.data?.count || 0
+    unreadMsg.value = md.data?.count || 0
+  } catch(e) { unreadNotif.value = 0; unreadMsg.value = 0 }
 }
 
 // 路由变化或页面聚焦时重新读取登录状态
@@ -47,8 +49,9 @@ onMounted(async () => {
   // 建立 WebSocket 接收实时未读数推送
   try {
     await connect()
-    unsubUnread = onUnreadCount((count) => {
-      unreadTotal.value = count
+    unsubUnread = onUnreadCount(() => {
+      // WebSocket 推送触发后，用 REST 拉取获得通知/私信分开的精确值
+      fetchUnread()
     })
   } catch(e) { /* STOMP 连接失败，仅依赖 REST 轮询 */ }
 })
@@ -66,7 +69,8 @@ function logout() {
   localStorage.removeItem('user')
   token.value = null
   user.value = null
-  unreadTotal.value = 0
+  unreadNotif.value = 0
+  unreadMsg.value = 0
   router.push('/')
 }
 </script>
@@ -94,9 +98,11 @@ function logout() {
           <router-link to="/ai/interview" class="text-sm font-medium text-gray-600 hover:text-blue-600 transition-colors">AI面试</router-link>
           <router-link to="/ai/chat" class="text-sm font-medium text-gray-600 hover:text-blue-600 transition-colors">AI助手</router-link>
           <router-link to="/notifications" class="relative text-sm font-medium text-gray-600 hover:text-blue-600 transition-colors">通知
-            <span v-if="unreadTotal > 0" class="absolute -top-1.5 -right-3.5 min-w-[16px] h-4 bg-red-500 text-white text-[10px] rounded-full flex items-center justify-center px-1">{{ unreadTotal > 99 ? '99+' : unreadTotal }}</span>
+            <span v-if="unreadNotif > 0" class="absolute -top-1.5 -right-3.5 min-w-[16px] h-4 bg-red-500 text-white text-[10px] rounded-full flex items-center justify-center px-1">{{ unreadNotif > 99 ? '99+' : unreadNotif }}</span>
           </router-link>
-          <router-link to="/messages" class="text-sm font-medium text-gray-600 hover:text-blue-600 transition-colors">私信</router-link>
+          <router-link to="/messages" class="relative text-sm font-medium text-gray-600 hover:text-blue-600 transition-colors">私信
+            <span v-if="unreadMsg > 0" class="absolute -top-1.5 -right-3.5 min-w-[16px] h-4 bg-red-500 text-white text-[10px] rounded-full flex items-center justify-center px-1">{{ unreadMsg > 99 ? '99+' : unreadMsg }}</span>
+          </router-link>
         </nav>
 
         <!-- Nav: 招聘方 -->
@@ -106,9 +112,11 @@ function logout() {
           <router-link to="/recruiter/jobs" class="text-sm font-medium text-gray-600 hover:text-blue-600 transition-colors">职位管理</router-link>
           <router-link to="/recruiter/applications" class="text-sm font-medium text-gray-600 hover:text-blue-600 transition-colors">简历筛选</router-link>
           <router-link to="/notifications" class="relative text-sm font-medium text-gray-600 hover:text-blue-600 transition-colors">通知
-            <span v-if="unreadTotal > 0" class="absolute -top-1.5 -right-3.5 min-w-[16px] h-4 bg-red-500 text-white text-[10px] rounded-full flex items-center justify-center px-1">{{ unreadTotal > 99 ? '99+' : unreadTotal }}</span>
+            <span v-if="unreadNotif > 0" class="absolute -top-1.5 -right-3.5 min-w-[16px] h-4 bg-red-500 text-white text-[10px] rounded-full flex items-center justify-center px-1">{{ unreadNotif > 99 ? '99+' : unreadNotif }}</span>
           </router-link>
-          <router-link to="/messages" class="text-sm font-medium text-gray-600 hover:text-blue-600 transition-colors">私信</router-link>
+          <router-link to="/messages" class="relative text-sm font-medium text-gray-600 hover:text-blue-600 transition-colors">私信
+            <span v-if="unreadMsg > 0" class="absolute -top-1.5 -right-3.5 min-w-[16px] h-4 bg-red-500 text-white text-[10px] rounded-full flex items-center justify-center px-1">{{ unreadMsg > 99 ? '99+' : unreadMsg }}</span>
+          </router-link>
           <router-link to="/ai/chat" class="text-sm font-medium text-purple-600 hover:text-purple-700 transition-colors">AI助手</router-link>
         </nav>
 
@@ -118,9 +126,11 @@ function logout() {
           <router-link to="/admin/users" class="text-sm font-medium text-gray-600 hover:text-blue-600 transition-colors">用户管理</router-link>
           <router-link to="/admin/companies" class="text-sm font-medium text-gray-600 hover:text-blue-600 transition-colors">企业审核</router-link>
           <router-link to="/notifications" class="relative text-sm font-medium text-gray-600 hover:text-blue-600 transition-colors">通知
-            <span v-if="unreadTotal > 0" class="absolute -top-1.5 -right-3.5 min-w-[16px] h-4 bg-red-500 text-white text-[10px] rounded-full flex items-center justify-center px-1">{{ unreadTotal > 99 ? '99+' : unreadTotal }}</span>
+            <span v-if="unreadNotif > 0" class="absolute -top-1.5 -right-3.5 min-w-[16px] h-4 bg-red-500 text-white text-[10px] rounded-full flex items-center justify-center px-1">{{ unreadNotif > 99 ? '99+' : unreadNotif }}</span>
           </router-link>
-          <router-link to="/messages" class="text-sm font-medium text-gray-600 hover:text-blue-600 transition-colors">私信</router-link>
+          <router-link to="/messages" class="relative text-sm font-medium text-gray-600 hover:text-blue-600 transition-colors">私信
+            <span v-if="unreadMsg > 0" class="absolute -top-1.5 -right-3.5 min-w-[16px] h-4 bg-red-500 text-white text-[10px] rounded-full flex items-center justify-center px-1">{{ unreadMsg > 99 ? '99+' : unreadMsg }}</span>
+          </router-link>
           <router-link to="/ai/chat" class="text-sm font-medium text-purple-600 hover:text-purple-700 transition-colors">AI助手</router-link>
         </nav>
 

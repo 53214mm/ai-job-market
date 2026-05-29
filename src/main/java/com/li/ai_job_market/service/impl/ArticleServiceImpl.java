@@ -18,6 +18,7 @@ import org.springframework.stereotype.Service;
 import java.time.LocalDateTime;
 import java.util.List;
 
+/** 文章管理服务实现，提供文章的全生命周期管理和分类查询 */
 @Slf4j
 @Service
 public class ArticleServiceImpl extends ServiceImpl<ArticleMapper, Article>

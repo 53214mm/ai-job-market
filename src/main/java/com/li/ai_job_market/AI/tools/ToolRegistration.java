@@ -6,6 +6,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
+/**
+ * 工具注册配置类，将所有工具注册为 Spring Bean 供智能体调用
+ */
 @Configuration
 public class ToolRegistration {
 

@@ -11,6 +11,7 @@ import com.li.ai_job_market.model.vo.ResumeAnalysisVO;
 import com.li.ai_job_market.model.vo.ResumeVO;
 import org.springframework.core.io.Resource;
 
+/** 简历管理服务接口，提供简历全生命周期管理和AI分析优化功能 */
 public interface ResumeService extends IService<Resume> {
 
     // === 简历 CRUD ===

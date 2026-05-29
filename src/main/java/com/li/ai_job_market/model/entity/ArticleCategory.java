@@ -6,6 +6,9 @@ import lombok.Data;
 import java.io.Serializable;
 import java.time.LocalDateTime;
 
+/**
+ * 文章分类实体，记录文章所属的分类信息。
+ */
 @Data
 @TableName("article_category")
 public class ArticleCategory implements Serializable {

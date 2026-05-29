@@ -21,6 +21,9 @@ import reactor.core.publisher.Flux;
 import java.io.File;
 import java.io.IOException;
 
+/**
+ * AI控制器 —— 提供多种AI对话接口（同步/SSE/流式）及文件下载功能
+ */
 @RestController
 @RequestMapping("/ai")
 public class AiController {
@@ -33,22 +36,26 @@ public class AiController {
     @Qualifier("dashScopeChatModel")
     private ChatModel dashscopeChatModel;
 
+    // 同步AI聊天
     @GetMapping("/love_app/chat/sync")
     public String chat(String message, String chatId) {
         return jobApp.doChat(message, chatId);
     }
 
+    // SSE流式AI聊天（Flux<String>）
     @GetMapping(value = "/love_app/chat/sse", produces = MediaType.TEXT_EVENT_STREAM_VALUE)
     public Flux<String> doChatWithLoveAppSSE(String message, String chatId) {
         return jobApp.doChatByStream(message, chatId);
     }
 
+    // ServerSentEvent流式AI聊天
     @GetMapping(value = "/love_app/chat/server_sent_event")
     public Flux<ServerSentEvent<String>> doChatWithLoveAppServerSentEvent(String message, String chatId) {
         return jobApp.doChatByStream(message, chatId)
                 .map(chunk -> ServerSentEvent.<String>builder().data(chunk).build());
     }
 
+    // SseEmitter流式AI聊天
     @GetMapping("/love_app/chat/sse/emitter")
     public SseEmitter doChatWithLoveAppSseEmitter(String message, String chatId) {
         SseEmitter emitter = new SseEmitter(180000L);
@@ -64,6 +71,7 @@ public class AiController {
 
     private final java.util.concurrent.ConcurrentHashMap<String, JobAgent> manusSessions = new java.util.concurrent.ConcurrentHashMap<>();
 
+    // Manus Agent流式对话（带会话管理）
     @GetMapping(value = "/manus/chat", produces = MediaType.TEXT_EVENT_STREAM_VALUE)
     public SseEmitter doChatWithManus(String message, String chatId) {
         JobAgent jobAgent = manusSessions.computeIfAbsent(

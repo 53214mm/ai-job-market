@@ -8,6 +8,7 @@ import com.li.ai_job_market.model.vo.JobVO;
 
 import java.util.List;
 
+/** 职位管理服务接口，提供职位的发布、编辑、查询、搜索和技能标签管理功能 */
 public interface JobService extends IService<Job> {
 
     long createJob(Long userId, JobCreateRequest req);

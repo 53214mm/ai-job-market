@@ -8,6 +8,7 @@ import com.li.ai_job_market.model.vo.*;
 
 import java.util.List;
 
+/** 公司管理服务接口，提供公司信息管理、评价审核和AI公司介绍生成功能 */
 public interface CompanyService extends IService<Company> {
 
     long createCompany(Long userId, CompanyCreateRequest req);

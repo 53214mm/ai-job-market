@@ -5,6 +5,9 @@ import lombok.Data;
 import java.io.Serializable;
 import java.util.List;
 
+/**
+ * 职位创建请求DTO，封装发布职位时的所有信息及技能标签。
+ */
 @Data
 public class JobCreateRequest implements Serializable {
     private String title;

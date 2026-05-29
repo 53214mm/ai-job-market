@@ -7,6 +7,9 @@ import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.data.redis.serializer.RedisSerializer;
 import org.springframework.data.redis.serializer.StringRedisSerializer;
 
+/**
+ * Redis 配置类，配置 byte[] 类型的 RedisTemplate
+ */
 @Configuration
 public class RedisConfig {
 

@@ -7,6 +7,9 @@ import java.io.Serializable;
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
 
+/**
+ * AI职位匹配实体，记录简历与职位的智能匹配结果。
+ */
 @Data
 @TableName("ai_job_match")
 public class AiJobMatch implements Serializable {

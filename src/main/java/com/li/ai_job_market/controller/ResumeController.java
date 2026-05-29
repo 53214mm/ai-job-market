@@ -20,6 +20,9 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
+/**
+ * 简历控制器 —— 提供简历CRUD、教育/工作/项目经历管理、技能与证书管理、AI分析与优化、PDF导出及上传解析功能
+ */
 @Slf4j
 @RestController
 @RequestMapping("/resumes")
@@ -40,6 +43,7 @@ public class ResumeController {
 
     // ==================== 简历 CRUD ====================
 
+    // 创建简历
     @PostMapping
     public BaseResponse<Long> create(@RequestBody ResumeCreateRequest req,
                                       HttpServletRequest request) {
@@ -48,6 +52,7 @@ public class ResumeController {
         return ResultUtils.success(resumeId);
     }
 
+    // 分页获取我的简历列表
     @GetMapping
     public BaseResponse<Page<Resume>> list(ResumeQueryRequest req,
                                             HttpServletRequest request) {
@@ -56,6 +61,7 @@ public class ResumeController {
         return ResultUtils.success(page);
     }
 
+    // 获取简历详情
     @GetMapping("/{id}")
     public BaseResponse<ResumeVO> detail(@PathVariable Long id,
                                           HttpServletRequest request) {
@@ -64,6 +70,7 @@ public class ResumeController {
         return ResultUtils.success(vo);
     }
 
+    // 更新简历
     @PutMapping("/{id}")
     public BaseResponse<Boolean> update(@PathVariable Long id,
                                          @RequestBody ResumeUpdateRequest req,
@@ -73,6 +80,7 @@ public class ResumeController {
         return ResultUtils.success(ok);
     }
 
+    // 删除简历
     @DeleteMapping("/{id}")
     public BaseResponse<Boolean> delete(@PathVariable Long id,
                                          HttpServletRequest request) {
@@ -81,6 +89,7 @@ public class ResumeController {
         return ResultUtils.success(ok);
     }
 
+    // 设为默认简历
     @PutMapping("/{id}/default")
     public BaseResponse<Boolean> setDefault(@PathVariable Long id,
                                              HttpServletRequest request) {
@@ -91,6 +100,7 @@ public class ResumeController {
 
     // ==================== 教育经历 ====================
 
+    // 添加教育经历
     @PostMapping("/{id}/education")
     public BaseResponse<ResumeEducation> addEducation(
             @PathVariable Long id, @RequestBody SubItemRequest req,
@@ -100,6 +110,7 @@ public class ResumeController {
         return ResultUtils.success(edu);
     }
 
+    // 更新教育经历
     @PutMapping("/{id}/education/{eid}")
     public BaseResponse<ResumeEducation> updateEducation(
             @PathVariable Long id, @PathVariable Long eid,
@@ -109,6 +120,7 @@ public class ResumeController {
         return ResultUtils.success(edu);
     }
 
+    // 删除教育经历
     @DeleteMapping("/{id}/education/{eid}")
     public BaseResponse<Boolean> deleteEducation(
             @PathVariable Long id, @PathVariable Long eid,
@@ -120,6 +132,7 @@ public class ResumeController {
 
     // ==================== 工作经历 ====================
 
+    // 添加工作经历
     @PostMapping("/{id}/work")
     public BaseResponse<ResumeWorkExperience> addWork(
             @PathVariable Long id, @RequestBody SubItemRequest req,
@@ -128,6 +141,7 @@ public class ResumeController {
         return ResultUtils.success(resumeService.addWorkExperience(id, userId, req));
     }
 
+    // 更新工作经历
     @PutMapping("/{id}/work/{wid}")
     public BaseResponse<ResumeWorkExperience> updateWork(
             @PathVariable Long id, @PathVariable Long wid,
@@ -136,6 +150,7 @@ public class ResumeController {
         return ResultUtils.success(resumeService.updateWorkExperience(id, wid, userId, req));
     }
 
+    // 删除工作经历
     @DeleteMapping("/{id}/work/{wid}")
     public BaseResponse<Boolean> deleteWork(
             @PathVariable Long id, @PathVariable Long wid,
@@ -146,6 +161,7 @@ public class ResumeController {
 
     // ==================== 项目经历 ====================
 
+    // 添加项目经历
     @PostMapping("/{id}/project")
     public BaseResponse<ResumeProject> addProject(
             @PathVariable Long id, @RequestBody SubItemRequest req,
@@ -154,6 +170,7 @@ public class ResumeController {
         return ResultUtils.success(resumeService.addProject(id, userId, req));
     }
 
+    // 更新项目经历
     @PutMapping("/{id}/project/{pid}")
     public BaseResponse<ResumeProject> updateProject(
             @PathVariable Long id, @PathVariable Long pid,
@@ -162,6 +179,7 @@ public class ResumeController {
         return ResultUtils.success(resumeService.updateProject(id, pid, userId, req));
     }
 
+    // 删除项目经历
     @DeleteMapping("/{id}/project/{pid}")
     public BaseResponse<Boolean> deleteProject(
             @PathVariable Long id, @PathVariable Long pid,
@@ -172,6 +190,7 @@ public class ResumeController {
 
     // ==================== 技能 ====================
 
+    // 添加技能
     @PostMapping("/{id}/skill")
     public BaseResponse<ResumeSkill> addSkill(
             @PathVariable Long id, @RequestBody SubItemRequest req,
@@ -180,6 +199,7 @@ public class ResumeController {
         return ResultUtils.success(resumeService.addSkill(id, userId, req));
     }
 
+    // 更新技能
     @PutMapping("/{id}/skill/{sid}")
     public BaseResponse<ResumeSkill> updateSkill(
             @PathVariable Long id, @PathVariable Long sid,
@@ -188,6 +208,7 @@ public class ResumeController {
         return ResultUtils.success(resumeService.updateSkill(id, sid, userId, req));
     }
 
+    // 删除技能
     @DeleteMapping("/{id}/skill/{sid}")
     public BaseResponse<Boolean> deleteSkill(
             @PathVariable Long id, @PathVariable Long sid,
@@ -198,6 +219,7 @@ public class ResumeController {
 
     // ==================== 证书 ====================
 
+    // 添加证书
     @PostMapping("/{id}/cert")
     public BaseResponse<ResumeCertificate> addCertificate(
             @PathVariable Long id, @RequestBody SubItemRequest req,
@@ -206,6 +228,7 @@ public class ResumeController {
         return ResultUtils.success(resumeService.addCertificate(id, userId, req));
     }
 
+    // 更新证书
     @PutMapping("/{id}/cert/{cid}")
     public BaseResponse<ResumeCertificate> updateCertificate(
             @PathVariable Long id, @PathVariable Long cid,
@@ -214,6 +237,7 @@ public class ResumeController {
         return ResultUtils.success(resumeService.updateCertificate(id, cid, userId, req));
     }
 
+    // 删除证书
     @DeleteMapping("/{id}/cert/{cid}")
     public BaseResponse<Boolean> deleteCertificate(
             @PathVariable Long id, @PathVariable Long cid,
@@ -224,6 +248,7 @@ public class ResumeController {
 
     // ==================== AI 功能 ====================
 
+    // AI分析简历
     @PostMapping("/{id}/ai-analyze")
     public BaseResponse<ResumeAnalysisVO> aiAnalyze(
             @PathVariable Long id, HttpServletRequest request) {
@@ -232,6 +257,7 @@ public class ResumeController {
         return ResultUtils.success(result);
     }
 
+    // AI优化简历内容
     @PostMapping("/{id}/ai-optimize")
     public BaseResponse<String> aiOptimize(
             @PathVariable Long id, HttpServletRequest request) {
@@ -240,6 +266,7 @@ public class ResumeController {
         return ResultUtils.success(result);
     }
 
+    // 导出简历为PDF文件
     @PostMapping("/{id}/export-pdf")
     public ResponseEntity<org.springframework.core.io.Resource> exportPdf(
             @PathVariable Long id, HttpServletRequest request) {
@@ -255,6 +282,7 @@ public class ResumeController {
 
     // ==================== PDF 上传 ====================
 
+    // 上传PDF文件并解析简历
     @PostMapping("/upload-pdf")
     public BaseResponse<Long> uploadPdf(@RequestParam("file") MultipartFile file,
                                          HttpServletRequest request) {

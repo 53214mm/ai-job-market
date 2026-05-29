@@ -16,6 +16,7 @@ import org.springframework.stereotype.Service;
 
 import java.util.*;
 
+/** AI模拟面试服务实现，支持AI自动出题、答题评估和面试报告生成 */
 @Slf4j
 @Service
 public class AiInterviewServiceImpl implements AiInterviewService {

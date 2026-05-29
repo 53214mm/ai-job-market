@@ -6,6 +6,9 @@ import lombok.Data;
 import java.io.Serializable;
 import java.time.LocalDateTime;
 
+/**
+ * 收藏实体，记录用户收藏的职位或公司。
+ */
 @Data
 @TableName("favorite")
 public class Favorite implements Serializable {

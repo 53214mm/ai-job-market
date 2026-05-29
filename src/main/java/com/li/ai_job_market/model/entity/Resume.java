@@ -6,6 +6,9 @@ import lombok.Data;
 import java.io.Serializable;
 import java.time.LocalDateTime;
 
+/**
+ * 简历实体，记录求职者的简历基本信息。
+ */
 @Data
 @TableName("resume")
 public class Resume implements Serializable {

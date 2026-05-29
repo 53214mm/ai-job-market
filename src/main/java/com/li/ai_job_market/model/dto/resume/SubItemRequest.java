@@ -5,6 +5,9 @@ import lombok.Data;
 import java.io.Serializable;
 import java.time.LocalDate;
 
+/**
+ * 简历子项请求DTO，封装简历中的教育、工作、项目、技能、证书等子项通用请求。
+ */
 @Data
 public class SubItemRequest implements Serializable {
     // 通用

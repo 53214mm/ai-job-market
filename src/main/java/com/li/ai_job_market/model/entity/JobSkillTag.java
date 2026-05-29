@@ -6,6 +6,9 @@ import lombok.Data;
 import java.io.Serializable;
 import java.time.LocalDateTime;
 
+/**
+ * 职位技能标签实体，记录职位要求的技能。
+ */
 @Data
 @TableName("job_skill_tag")
 public class JobSkillTag implements Serializable {

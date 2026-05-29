@@ -4,6 +4,9 @@ import lombok.Data;
 
 import java.io.Serializable;
 
+/**
+ * 用户更新请求DTO，封装用户可修改的个人信息字段。
+ */
 @Data
 public class UserUpdateRequest implements Serializable {
     private Long id;

@@ -5,6 +5,9 @@ import lombok.Data;
 import java.io.Serializable;
 import java.time.LocalDateTime;
 
+/**
+ * 通知视图对象，展示系统通知的详情及类型的中文标签。
+ */
 @Data
 public class NotificationVO implements Serializable {
     private Long id;

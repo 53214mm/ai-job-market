@@ -15,6 +15,9 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * 基于文件的聊天记忆实现，使用 Kryo 序列化持久化对话历史
+ */
 public class FileBasedChatMemory implements ChatMemory {
 
     private final String BASE_DIR;

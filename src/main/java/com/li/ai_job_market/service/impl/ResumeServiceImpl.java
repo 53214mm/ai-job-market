@@ -34,6 +34,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
+/** 简历管理服务实现，提供简历全生命周期管理，支持AI分析、AI优化及PDF导入导出 */
 @Slf4j
 @Service
 public class ResumeServiceImpl extends ServiceImpl<ResumeMapper, Resume>

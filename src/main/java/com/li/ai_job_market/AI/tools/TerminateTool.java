@@ -2,6 +2,9 @@ package com.li.ai_job_market.AI.tools;
 
 import org.springframework.ai.tool.annotation.Tool;
 
+/**
+ * 终止工具，用于标记任务完成并结束智能体交互
+ */
 public class TerminateTool {
   
     @Tool(description = """  

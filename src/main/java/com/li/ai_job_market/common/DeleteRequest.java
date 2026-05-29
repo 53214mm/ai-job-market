@@ -4,6 +4,9 @@ import lombok.Data;
 
 import java.io.Serializable;
 
+/**
+ * 删除请求通用 DTO，封装删除操作的 id 参数
+ */
 @Data
 public class DeleteRequest implements Serializable {
 

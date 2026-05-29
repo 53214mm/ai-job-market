@@ -21,6 +21,9 @@ import org.springframework.web.socket.server.support.DefaultHandshakeHandler;
 import java.security.Principal;
 import java.util.Map;
 
+/**
+ * WebSocket 配置类，配置 STOMP 消息代理及 JWT 握手拦截
+ */
 @Slf4j
 @Configuration
 @EnableWebSocketMessageBroker
@@ -47,7 +50,7 @@ public class WebSocketConfig implements WebSocketMessageBrokerConfigurer {
         JwtHandshakeInterceptor interceptor = new JwtHandshakeInterceptor();
         // 原生 WebSocket（@stomp/stompjs brokerURL 模式）
         registry.addEndpoint("/ws")
-                .setAllowedOriginPatterns("*")
+                .setAllowedOriginPatterns("http://localhost:5173", "http://localhost:8123")
                 .addInterceptors(interceptor)
                 .setHandshakeHandler(new DefaultHandshakeHandler() {
                     @Override
@@ -60,7 +63,7 @@ public class WebSocketConfig implements WebSocketMessageBrokerConfigurer {
                 });
         // SockJS 降级（sockjs-client）
         registry.addEndpoint("/ws")
-                .setAllowedOriginPatterns("*")
+                .setAllowedOriginPatterns("http://localhost:5173", "http://localhost:8123")
                 .addInterceptors(interceptor)
                 .withSockJS();
     }

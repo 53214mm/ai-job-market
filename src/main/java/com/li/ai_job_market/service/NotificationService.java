@@ -5,6 +5,7 @@ import com.baomidou.mybatisplus.extension.service.IService;
 import com.li.ai_job_market.model.entity.Notification;
 import com.li.ai_job_market.model.vo.NotificationVO;
 
+/** 系统通知服务接口，提供通知创建、查询、已读标记和删除功能 */
 public interface NotificationService extends IService<Notification> {
 
     void create(Long userId, String type, String title, String content, Long relatedId);

@@ -7,6 +7,9 @@ import org.springframework.ai.tool.ToolCallback;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Component;
 
+/**
+ * 智能体核心实现，注册全部工具并通过思考-行动循环完成用户请求
+ */
 @Component
 public class JobAgent extends ToolCallAgent {
 

@@ -6,6 +6,9 @@ import lombok.EqualsAndHashCode;
 
 import java.io.Serializable;
 
+/**
+ * 公司查询请求DTO，封装公司列表的分页查询条件。
+ */
 @Data
 @EqualsAndHashCode(callSuper = true)
 public class CompanyQueryRequest extends PageRequest implements Serializable {

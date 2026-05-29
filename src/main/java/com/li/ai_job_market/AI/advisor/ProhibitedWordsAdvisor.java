@@ -19,6 +19,9 @@ import java.util.HashSet;
 import java.util.Set;
 import java.util.stream.Collectors;
 
+/**
+ * 敏感词过滤顾问，从配置文件加载敏感词列表并拦截包含敏感词的请求
+ */
 public class ProhibitedWordsAdvisor implements CallAdvisor, StreamAdvisor {
 
     private static final String RESOURCE = "/prohibited-words.txt";

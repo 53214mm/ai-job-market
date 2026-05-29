@@ -2,6 +2,9 @@ package com.li.ai_job_market.common;
 
 import lombok.Data;
 
+/**
+ * 分页请求通用 DTO，封装分页查询参数
+ */
 @Data
 public class PageRequest {
 

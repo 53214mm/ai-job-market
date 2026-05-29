@@ -6,6 +6,9 @@ import lombok.Data;
 import java.io.Serializable;
 import java.time.LocalDateTime;
 
+/**
+ * AI对话会话实体，记录用户与AI的对话会话。
+ */
 @Data
 @TableName("ai_chat_session")
 public class AiChatSession implements Serializable {

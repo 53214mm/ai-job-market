@@ -5,6 +5,9 @@ import lombok.Data;
 import java.io.Serializable;
 import java.time.LocalDateTime;
 
+/**
+ * 公司评价视图对象，展示用户对企业的评价详情及评价者昵称。
+ */
 @Data
 public class CompanyReviewVO implements Serializable {
     private Long id;

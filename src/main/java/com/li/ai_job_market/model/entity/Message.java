@@ -6,6 +6,9 @@ import lombok.Data;
 import java.io.Serializable;
 import java.time.LocalDateTime;
 
+/**
+ * 私信实体，记录用户之间的站内私信。
+ */
 @Data
 @TableName("message")
 public class Message implements Serializable {

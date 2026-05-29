@@ -21,6 +21,9 @@ import org.springframework.ai.tool.ToolCallback;
 import java.util.List;
 import java.util.stream.Collectors;
 
+/**
+ * 基于工具调用的智能体实现，封装工具选择与执行逻辑
+ */
 @EqualsAndHashCode(callSuper = true)
 @Data
 @Slf4j

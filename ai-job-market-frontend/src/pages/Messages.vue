@@ -4,7 +4,10 @@ import { useStomp } from '../composables/useStomp.js'
 
 const token = localStorage.getItem('token')
 const uid = (() => {
-  try { const u = JSON.parse(localStorage.getItem('user') || '{}'); return u.id || null } catch(e) { return null }
+  try {
+    const u = JSON.parse(localStorage.getItem('user') || '{}')
+    return u.id != null ? Number(u.id) : null
+  } catch(e) { return null }
 })()
 const h = () => ({ 'Authorization': 'Bearer ' + token, 'Content-Type': 'application/json' })
 
@@ -48,7 +51,7 @@ async function openChat(peerId, peerName) {
       messages.value = (d.data.records || []).reverse()
       let anyRead = false
       for (const m of messages.value) {
-        if (m.receiverId === Number(uid) && m.isRead === 0) {
+        if (m.receiverId === uid && m.isRead === 0) {
           fetch('/api/messages/' + m.id + '/read', { method: 'PUT', headers: h() }).catch(() => {})
           anyRead = true
         }
@@ -78,7 +81,7 @@ async function sendMsg() {
       })
       const d = await res.json()
       if (d.code === 0) {
-        messages.value.push({ ...d.data, senderId: Number(uid) })
+        messages.value.push({ ...d.data, senderId: uid })
         input.value = ''
         scroll()
         loadConversations()
@@ -124,7 +127,7 @@ onMounted(async () => {
   unsubMessage = onMessage((msg) => {
     loadConversations()
     // 不重复添加自己刚发的消息（REST 发送时已本地 push）
-    if (msg.senderId === Number(uid)) return
+    if (msg.senderId === uid) return
     const peerId = msg.senderId
     if (activePeer.value && peerId === activePeer.value) {
       // 避免重复
@@ -191,17 +194,17 @@ onUnmounted(() => {
             <p class="text-xs mt-1">点击上方"新对话"开始聊天</p>
           </div>
           <div v-for="c in conversations" :key="c.id"
-            @click="openChat(c.senderId === Number(uid) ? c.receiverId : c.senderId, c.senderId === Number(uid) ? c.receiverName : c.senderName)"
+            @click="openChat(c.senderId === uid ? c.receiverId : c.senderId, c.senderId === uid ? c.receiverName : c.senderName)"
             class="px-3 py-3 border-b border-gray-50 cursor-pointer hover:bg-gray-50 transition-colors"
-            :class="{ 'bg-blue-50': activePeer === (c.senderId === Number(uid) ? c.receiverId : c.senderId) }">
+            :class="{ 'bg-blue-50': activePeer === (c.senderId === uid ? c.receiverId : c.senderId) }">
             <div class="flex items-center justify-between mb-1">
               <span class="text-sm font-medium text-gray-800">
-                {{ c.senderId === Number(uid) ? c.receiverName : c.senderName }}
+                {{ c.senderId === uid ? c.receiverName : c.senderName }}
               </span>
               <span class="text-xs text-gray-400">{{ timeStr(c.createdAt) }}</span>
             </div>
             <p class="text-xs text-gray-400 truncate">
-              {{ c.senderId === Number(uid) ? '我: ' : '' }}{{ c.content?.slice(0, 40) }}
+              {{ c.senderId === uid ? '我: ' : '' }}{{ c.content?.slice(0, 40) }}
             </p>
           </div>
         </div>
@@ -218,18 +221,18 @@ onUnmounted(() => {
         <div ref="chatEl" class="flex-1 overflow-y-auto py-4 px-4 space-y-3">
           <div v-if="loading" class="text-center text-gray-400 text-sm">加载中...</div>
           <div v-for="(m, i) in messages" :key="m.id || i"
-            :class="m.senderId === Number(uid) ? 'flex justify-end' : 'flex gap-2'">
-            <div v-if="m.senderId !== Number(uid)"
+            :class="m.senderId === uid ? 'flex justify-end' : 'flex gap-2'">
+            <div v-if="m.senderId !== uid"
               class="w-7 h-7 bg-blue-100 rounded-full flex items-center justify-center flex-shrink-0 mt-0.5">
               <span class="text-blue-600 text-xs font-bold">{{ (m.senderName || '?')[0] }}</span>
             </div>
-            <div :class="m.senderId === Number(uid)
+            <div :class="m.senderId === uid
               ? 'max-w-[70%] px-3 py-2 bg-blue-600 text-white text-sm rounded-xl rounded-tr-md'
               : 'max-w-[70%] px-3 py-2 bg-gray-100 text-gray-800 text-sm rounded-xl rounded-tl-md'">
               {{ m.content }}
-              <div class="text-[10px] mt-1" :class="m.senderId === Number(uid) ? 'text-white/60' : 'text-gray-400'">
+              <div class="text-[10px] mt-1" :class="m.senderId === uid ? 'text-white/60' : 'text-gray-400'">
                 {{ timeStr(m.createdAt) }}
-                <span v-if="m.senderId === Number(uid) && m.isRead === 1" class="ml-1">已读</span>
+                <span v-if="m.senderId === uid && m.isRead === 1" class="ml-1">已读</span>
               </div>
             </div>
           </div>

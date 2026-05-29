@@ -4,6 +4,9 @@ import lombok.Data;
 
 import java.io.Serializable;
 
+/**
+ * 公司创建请求DTO，封装创建公司时提交的企业信息。
+ */
 @Data
 public class CompanyCreateRequest implements Serializable {
     private String name;

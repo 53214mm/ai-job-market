@@ -6,6 +6,9 @@ import lombok.EqualsAndHashCode;
 
 import java.io.Serializable;
 
+/**
+ * 职位查询请求DTO，封装职位搜索的分页条件及排序方式。
+ */
 @Data
 @EqualsAndHashCode(callSuper = true)
 public class JobQueryRequest extends PageRequest implements Serializable {

@@ -6,6 +6,9 @@ import lombok.Data;
 import java.io.Serializable;
 import java.time.LocalDateTime;
 
+/**
+ * 投递日志实体，记录投递状态变更的操作日志。
+ */
 @Data
 @TableName("application_log")
 public class ApplicationLog implements Serializable {

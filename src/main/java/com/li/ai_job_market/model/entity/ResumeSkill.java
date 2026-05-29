@@ -6,6 +6,9 @@ import lombok.Data;
 import java.io.Serializable;
 import java.time.LocalDateTime;
 
+/**
+ * 简历技能实体，记录简历中的技能信息。
+ */
 @Data
 @TableName("resume_skill")
 public class ResumeSkill implements Serializable {

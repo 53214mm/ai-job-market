@@ -6,6 +6,9 @@ import lombok.Data;
 import java.io.Serializable;
 import java.time.LocalDateTime;
 
+/**
+ * 招聘方档案实体，记录招聘方的公司关联信息。
+ */
 @Data
 @TableName("user_recruiter_profile")
 public class UserRecruiterProfile implements Serializable {

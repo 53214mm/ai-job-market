@@ -22,6 +22,7 @@ import org.springframework.transaction.annotation.Transactional;
 import java.time.LocalDateTime;
 import java.util.*;
 
+/** 投递管理服务实现，处理职位投递全流程，包括匹配计算、状态流转、面试安排和自动通知 */
 @Slf4j
 @Service
 public class ApplicationServiceImpl extends ServiceImpl<ApplicationMapper, Application>

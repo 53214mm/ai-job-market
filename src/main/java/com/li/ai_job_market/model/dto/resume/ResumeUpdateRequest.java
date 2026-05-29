@@ -4,6 +4,9 @@ import lombok.Data;
 
 import java.io.Serializable;
 
+/**
+ * 简历更新请求DTO，封装更新简历时提交的基本信息。
+ */
 @Data
 public class ResumeUpdateRequest implements Serializable {
     private Long id;

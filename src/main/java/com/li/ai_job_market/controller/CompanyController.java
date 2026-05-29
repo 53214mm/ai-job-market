@@ -19,6 +19,9 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
+/**
+ * 公司控制器 —— 提供公司信息CRUD、认证审核、用户评价及AI生成公司描述功能
+ */
 @Slf4j
 @RestController
 @RequestMapping("/companies")
@@ -36,16 +39,19 @@ public class CompanyController {
 
     // ==================== 公司 CRUD ====================
 
+    // 分页查询公司列表
     @GetMapping
     public BaseResponse<Page<CompanyVO>> list(CompanyQueryRequest req) {
         return ResultUtils.success(companyService.listCompanies(req));
     }
 
+    // 获取公司详情
     @GetMapping("/{id}")
     public BaseResponse<CompanyVO> detail(@PathVariable Long id) {
         return ResultUtils.success(companyService.getCompanyDetail(id));
     }
 
+    // 创建公司（仅招聘方）
     @PostMapping
     public BaseResponse<Long> create(@RequestBody CompanyCreateRequest req,
                                       HttpServletRequest request) {
@@ -55,6 +61,7 @@ public class CompanyController {
         return ResultUtils.success(companyService.createCompany(loginUser.getId(), req));
     }
 
+    // 更新公司信息
     @PutMapping("/{id}")
     public BaseResponse<Boolean> update(@PathVariable Long id,
                                          @RequestBody CompanyUpdateRequest req,
@@ -63,6 +70,7 @@ public class CompanyController {
         return ResultUtils.success(companyService.updateCompany(id, loginUser.getId(), req));
     }
 
+    // 管理员审核公司认证
     @PutMapping("/{id}/verify")
     @AuthCheck(mustRole = "ADMIN")
     public BaseResponse<Boolean> verify(@PathVariable Long id,
@@ -72,6 +80,7 @@ public class CompanyController {
 
     // ==================== 评价 ====================
 
+    // 添加公司评价
     @PostMapping("/{id}/reviews")
     public BaseResponse<CompanyReview> addReview(@PathVariable Long id,
                                                   @RequestBody CompanyReviewRequest req,
@@ -80,11 +89,13 @@ public class CompanyController {
         return ResultUtils.success(companyService.addReview(id, loginUser.getId(), req));
     }
 
+    // 获取公司评价列表
     @GetMapping("/{id}/reviews")
     public BaseResponse<List<CompanyReviewVO>> listReviews(@PathVariable Long id) {
         return ResultUtils.success(companyService.listReviews(id));
     }
 
+    // 管理员更新评价审核状态
     @PutMapping("/reviews/{rid}/status")
     @AuthCheck(mustRole = "ADMIN")
     public BaseResponse<Boolean> updateReviewStatus(@PathVariable Long rid,
@@ -94,6 +105,7 @@ public class CompanyController {
 
     // ==================== AI ====================
 
+    // AI生成公司描述
     @PostMapping("/{id}/ai-describe")
     public BaseResponse<String> aiDescribe(@PathVariable Long id,
                                             HttpServletRequest request) {

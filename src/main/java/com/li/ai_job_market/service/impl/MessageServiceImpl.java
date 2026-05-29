@@ -21,6 +21,7 @@ import org.springframework.transaction.annotation.Transactional;
 import java.util.*;
 import java.util.stream.Collectors;
 
+/** 私信消息服务实现，支持WebSocket实时推送和自动通知提醒 */
 @Slf4j
 @Service
 public class MessageServiceImpl extends ServiceImpl<MessageMapper, Message>

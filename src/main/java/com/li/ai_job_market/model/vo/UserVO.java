@@ -5,6 +5,9 @@ import lombok.Data;
 import java.io.Serializable;
 import java.time.LocalDateTime;
 
+/**
+ * 用户视图对象，展示用户的基本信息（不含敏感字段如密码）。
+ */
 @Data
 public class UserVO implements Serializable {
     private Long id;

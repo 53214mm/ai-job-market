@@ -13,6 +13,9 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * Markdown 文档加载器，从 classpath 读取文档并转换为 Spring AI Document
+ */
 @Component
 @Slf4j
 public class JobAppDocumentLoader {

@@ -24,6 +24,7 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
+/** AI职位匹配服务实现，基于技能匹配度计算求职者与职位的匹配评分 */
 @Slf4j
 @Service
 public class AiJobMatchServiceImpl extends ServiceImpl<AiJobMatchMapper, AiJobMatch>

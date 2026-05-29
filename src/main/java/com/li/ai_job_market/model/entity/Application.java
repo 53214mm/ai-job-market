@@ -6,6 +6,9 @@ import lombok.Data;
 import java.io.Serializable;
 import java.time.LocalDateTime;
 
+/**
+ * 投递申请实体，记录求职者对职位的投递信息。
+ */
 @Data
 @TableName("application")
 public class Application implements Serializable {

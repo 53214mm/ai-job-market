@@ -10,6 +10,7 @@ import com.li.ai_job_market.model.vo.FavoriteVO;
 
 import java.util.List;
 
+/** 投递管理服务接口，提供职位投递、状态管理、面试安排和收藏功能 */
 public interface ApplicationService extends IService<Application> {
 
     long apply(Long seekerId, Long jobId, Long resumeId, String coverLetter);

@@ -7,6 +7,9 @@ import java.io.Serializable;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 
+/**
+ * 简历教育经历实体，记录简历中的教育背景。
+ */
 @Data
 @TableName("resume_education")
 public class ResumeEducation implements Serializable {

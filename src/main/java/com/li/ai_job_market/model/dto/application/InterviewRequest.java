@@ -4,6 +4,9 @@ import lombok.Data;
 
 import java.io.Serializable;
 
+/**
+ * 面试请求DTO，封装创建或更新面试安排的请求信息。
+ */
 @Data
 public class InterviewRequest implements Serializable {
     private String interviewType;

@@ -9,6 +9,9 @@ import org.springframework.stereotype.Component;
 import java.io.IOException;
 import java.util.concurrent.TimeUnit;
 
+/**
+ * 全网智能搜索工具，基于千帆 AI 搜索引擎进行联网检索
+ */
 @Component
 public class SearchTool {
     @Value("${spring.ai.qianfan.Bearer}")

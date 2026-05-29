@@ -27,6 +27,7 @@ import org.springframework.transaction.annotation.Transactional;
 import java.time.LocalDateTime;
 import java.util.regex.Pattern;
 
+/** 用户服务实现，提供用户注册、登录、JWT认证和角色档案创建功能 */
 @Slf4j
 @Service
 public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements UserService {

@@ -7,6 +7,7 @@ import com.li.ai_job_market.model.entity.ArticleCategory;
 
 import java.util.List;
 
+/** 文章管理服务接口，提供文章的创建、编辑、发布和分类查询功能 */
 public interface ArticleService extends IService<Article> {
 
     long createArticle(Long userId, String title, String content, Long categoryId,

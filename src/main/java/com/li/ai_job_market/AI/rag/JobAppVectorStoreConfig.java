@@ -10,6 +10,9 @@ import org.springframework.context.annotation.Configuration;
 
 import java.util.List;
 
+/**
+ * 向量存储配置类，初始化 SimpleVectorStore 并加载知识库文档
+ */
 @Configuration
 public class JobAppVectorStoreConfig {
 

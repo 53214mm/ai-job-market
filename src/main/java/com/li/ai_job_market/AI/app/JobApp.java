@@ -22,6 +22,9 @@ import reactor.core.publisher.Flux;
 
 import java.util.List;
 
+/**
+ * AI 核心应用类，封装对话、RAG 检索、工具调用等核心功能
+ */
 @Component
 @Slf4j
 public class JobApp {

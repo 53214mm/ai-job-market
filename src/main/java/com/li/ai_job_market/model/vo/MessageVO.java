@@ -5,6 +5,9 @@ import lombok.Data;
 import java.io.Serializable;
 import java.time.LocalDateTime;
 
+/**
+ * 消息视图对象，展示私信消息的详细信息及收发双方昵称。
+ */
 @Data
 public class MessageVO implements Serializable {
     private Long id;

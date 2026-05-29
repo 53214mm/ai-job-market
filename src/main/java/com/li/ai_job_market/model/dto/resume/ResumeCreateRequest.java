@@ -4,6 +4,9 @@ import lombok.Data;
 
 import java.io.Serializable;
 
+/**
+ * 简历创建请求DTO，封装创建简历时提交的基本信息。
+ */
 @Data
 public class ResumeCreateRequest implements Serializable {
     private String title;

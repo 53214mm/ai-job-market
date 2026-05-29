@@ -2,6 +2,9 @@ package com.li.ai_job_market.exception;
 
 import lombok.Getter;
 
+/**
+ * 统一错误码枚举，定义系统各层错误状态码及描述
+ */
 @Getter
 public enum ErrorCode {
 

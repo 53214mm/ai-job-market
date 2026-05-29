@@ -7,6 +7,7 @@ import com.li.ai_job_market.model.vo.MessageVO;
 
 import java.util.List;
 
+/** 私信消息服务接口，提供用户间私信发送、会话管理和未读统计功能 */
 public interface MessageService extends IService<Message> {
 
     MessageVO send(Long senderId, Long receiverId, Long applicationId, String content);

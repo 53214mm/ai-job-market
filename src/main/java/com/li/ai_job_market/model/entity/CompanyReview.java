@@ -6,6 +6,9 @@ import lombok.Data;
 import java.io.Serializable;
 import java.time.LocalDateTime;
 
+/**
+ * 公司评价实体，记录用户对公司的评分和评价。
+ */
 @Data
 @TableName("company_review")
 public class CompanyReview implements Serializable {

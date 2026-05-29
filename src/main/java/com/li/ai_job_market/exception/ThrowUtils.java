@@ -1,6 +1,9 @@
 package com.li.ai_job_market.exception;
 
 
+/**
+ * 异常抛出工具类，提供条件表达式的快捷异常抛出方法
+ */
 public class ThrowUtils {
 
     /**

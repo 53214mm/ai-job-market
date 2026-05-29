@@ -9,6 +9,9 @@ import org.springdoc.core.customizers.GlobalOpenApiCustomizer;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
+/**
+ * OpenAPI/Swagger 配置类，配置 API 文档及 JWT 鉴权方案
+ */
 @Configuration
 public class OpenApiConfig {
 

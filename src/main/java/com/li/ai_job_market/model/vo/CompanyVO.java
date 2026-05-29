@@ -6,6 +6,9 @@ import java.io.Serializable;
 import java.time.LocalDateTime;
 import java.util.List;
 
+/**
+ * 公司视图对象，展示企业详细信息，包含职位数量、平均评分及评价列表。
+ */
 @Data
 public class CompanyVO implements Serializable {
     private Long id;

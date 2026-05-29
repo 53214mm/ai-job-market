@@ -6,6 +6,9 @@ import lombok.Data;
 import java.io.Serializable;
 import java.time.LocalDateTime;
 
+/**
+ * 职位实体，记录招聘职位信息。
+ */
 @Data
 @TableName("job")
 public class Job implements Serializable {

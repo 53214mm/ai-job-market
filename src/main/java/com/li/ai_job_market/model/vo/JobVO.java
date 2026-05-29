@@ -7,6 +7,9 @@ import java.io.Serializable;
 import java.time.LocalDateTime;
 import java.util.List;
 
+/**
+ * 职位视图对象，展示职位详细信息，包含公司信息、技能标签和匹配分数。
+ */
 @Data
 public class JobVO implements Serializable {
     private Long id;

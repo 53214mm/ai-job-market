@@ -14,6 +14,9 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
+/**
+ * AI职位匹配控制器 —— 提供简历与职位的智能匹配计算及匹配结果查询功能
+ */
 @Slf4j
 @RestController
 @RequestMapping("/ai")
@@ -26,6 +29,7 @@ public class AiJobMatchController {
         return userService.getLoginUser(request);
     }
 
+    // 计算简历与职位的AI匹配度
     @PostMapping("/match/compute")
     public BaseResponse<String> compute(@RequestParam Long resumeId,
                                         @RequestParam Long jobId,
@@ -35,12 +39,14 @@ public class AiJobMatchController {
         return ResultUtils.success("匹配计算完成");
     }
 
+    // 获取当前用户的匹配记录列表
     @GetMapping("/match/my")
     public BaseResponse<List<AiJobMatch>> myMatches(HttpServletRequest request) {
         UserVO user = getLoginUser(request);
         return ResultUtils.success(aiJobMatchService.listBySeeker(user.getId()));
     }
 
+    // 分页获取当前用户的匹配记录
     @GetMapping("/match/page")
     public BaseResponse<Page<AiJobMatch>> page(@RequestParam(defaultValue = "1") int current,
                                                 @RequestParam(defaultValue = "10") int size,

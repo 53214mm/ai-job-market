@@ -6,6 +6,9 @@ import lombok.Data;
 import java.io.Serializable;
 import java.time.LocalDateTime;
 
+/**
+ * 公司实体，记录企业基本信息。
+ */
 @Data
 @TableName("company")
 public class Company implements Serializable {

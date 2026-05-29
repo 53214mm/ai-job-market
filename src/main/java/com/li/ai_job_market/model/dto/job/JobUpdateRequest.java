@@ -4,6 +4,9 @@ import lombok.Data;
 
 import java.io.Serializable;
 
+/**
+ * 职位更新请求DTO，封装更新职位信息时的可修改字段。
+ */
 @Data
 public class JobUpdateRequest implements Serializable {
     private Long id;

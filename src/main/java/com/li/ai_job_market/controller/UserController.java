@@ -18,6 +18,9 @@ import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.web.bind.annotation.*;
 
+/**
+ * 用户控制器 —— 提供用户注册、登录、个人信息管理及管理员用户列表与禁用功能
+ */
 @Slf4j
 @RestController
 @RequestMapping("/user")
@@ -26,6 +29,7 @@ public class UserController {
     @Resource
     private UserService userService;
 
+    // 用户注册
     @PostMapping("/register")
     public BaseResponse<Long> register(@RequestBody RegisterRequest req) {
         long userId = userService.register(
@@ -34,18 +38,21 @@ public class UserController {
         return ResultUtils.success(userId);
     }
 
+    // 用户登录
     @PostMapping("/login")
     public BaseResponse<LoginResult> login(@RequestBody LoginRequest req) {
         LoginResult result = userService.login(req.getEmail(), req.getPassword());
         return ResultUtils.success(result);
     }
 
+    // 获取当前登录用户信息
     @GetMapping("/current")
     public BaseResponse<UserVO> getCurrentUser(HttpServletRequest request) {
         UserVO userVO = userService.getLoginUser(request);
         return ResultUtils.success(userVO);
     }
 
+    // 更新用户个人信息
     @PutMapping("/update")
     public BaseResponse<Boolean> updateUser(@RequestBody UserUpdateRequest req,
                                              HttpServletRequest request) {
@@ -62,6 +69,7 @@ public class UserController {
         return ResultUtils.success(result);
     }
 
+    // 管理员获取用户列表
     @GetMapping("/list")
     @AuthCheck(mustRole = "ADMIN")
     public BaseResponse<Page<UserVO>> listUsers(UserQueryRequest req) {
@@ -84,6 +92,7 @@ public class UserController {
         return ResultUtils.success(voPage);
     }
 
+    // 模糊搜索用户（按昵称或邮箱）
     @GetMapping("/search")
     public BaseResponse<java.util.List<UserVO>> searchUsers(@RequestParam String q, HttpServletRequest request) {
         UserVO loginUser = userService.getLoginUser(request);
@@ -99,6 +108,7 @@ public class UserController {
         return ResultUtils.success(list);
     }
 
+    // 管理员禁用用户
     @PutMapping("/disable/{id}")
     @AuthCheck(mustRole = "ADMIN")
     public BaseResponse<Boolean> disableUser(@PathVariable Long id) {

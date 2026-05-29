@@ -5,6 +5,9 @@ import lombok.Data;
 import java.io.Serializable;
 import java.time.LocalDateTime;
 
+/**
+ * 简历分析视图对象，展示AI对简历的综合评分、优劣势及优化建议。
+ */
 @Data
 public class ResumeAnalysisVO implements Serializable {
     private Long id;

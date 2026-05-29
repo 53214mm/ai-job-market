@@ -7,6 +7,9 @@ import java.io.Serializable;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 
+/**
+ * 简历证书实体，记录简历中的证书信息。
+ */
 @Data
 @TableName("resume_certificate")
 public class ResumeCertificate implements Serializable {

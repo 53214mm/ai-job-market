@@ -8,6 +8,9 @@ import java.io.Serializable;
 import java.time.LocalDateTime;
 import java.util.List;
 
+/**
+ * 申请视图对象，展示职位申请的完整信息，包含关联的职位、公司、日志和面试信息。
+ */
 @Data
 public class ApplicationVO implements Serializable {
     private Long id;

@@ -11,6 +11,9 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
+/**
+ * RAG 云知识库增强顾问配置类，基于 DashScope 云端知识库检索
+ */
 @Configuration
 @Slf4j
 class JobAppRagCloudAdvisorConfig {

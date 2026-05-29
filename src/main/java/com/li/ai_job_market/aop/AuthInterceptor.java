@@ -16,6 +16,9 @@ import org.springframework.web.context.request.RequestAttributes;
 import org.springframework.web.context.request.RequestContextHolder;
 import org.springframework.web.context.request.ServletRequestAttributes;
 
+/**
+ * 权限校验 AOP 拦截器，基于 @AuthCheck 注解进行角色权限验证
+ */
 @Aspect
 @Component
 public class AuthInterceptor {

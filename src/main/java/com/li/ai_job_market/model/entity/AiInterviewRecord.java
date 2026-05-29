@@ -6,6 +6,9 @@ import lombok.Data;
 import java.io.Serializable;
 import java.time.LocalDateTime;
 
+/**
+ * AI面试记录实体，记录模拟面试的题目和评分。
+ */
 @Data
 @TableName("ai_interview_record")
 public class AiInterviewRecord implements Serializable {

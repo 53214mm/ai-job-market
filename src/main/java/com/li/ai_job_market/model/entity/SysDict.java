@@ -6,6 +6,9 @@ import lombok.Data;
 import java.io.Serializable;
 import java.time.LocalDateTime;
 
+/**
+ * 系统字典实体，记录系统通用的键值对配置数据。
+ */
 @Data
 @TableName("sys_dict")
 public class SysDict implements Serializable {

@@ -7,6 +7,9 @@ import java.io.Serializable;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 
+/**
+ * 简历项目经历实体，记录简历中的项目经验。
+ */
 @Data
 @TableName("resume_project")
 public class ResumeProject implements Serializable {

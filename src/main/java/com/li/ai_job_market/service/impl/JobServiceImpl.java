@@ -20,6 +20,7 @@ import org.springframework.transaction.annotation.Transactional;
 import java.time.LocalDateTime;
 import java.util.*;
 
+/** 职位管理服务实现，提供职位发布、编辑、搜索和基于简历技能的推荐功能 */
 @Slf4j
 @Service
 public class JobServiceImpl extends ServiceImpl<JobMapper, Job> implements JobService {

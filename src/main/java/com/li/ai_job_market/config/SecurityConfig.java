@@ -8,6 +8,9 @@ import org.springframework.security.config.annotation.web.configurers.AbstractHt
 import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.web.SecurityFilterChain;
 
+/**
+ * Spring Security 安全配置类，关闭 CSRF 并开放所有请求
+ */
 @Configuration
 @EnableWebSecurity
 public class SecurityConfig {

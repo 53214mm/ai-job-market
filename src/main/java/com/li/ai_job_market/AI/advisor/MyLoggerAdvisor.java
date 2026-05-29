@@ -12,6 +12,9 @@ import reactor.core.publisher.Flux;
 
 
 
+/**
+ * 日志记录顾问，拦截 AI 请求与响应并输出日志
+ */
 @Slf4j
 public class MyLoggerAdvisor implements CallAdvisor, StreamAdvisor {
 

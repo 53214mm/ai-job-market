@@ -16,6 +16,9 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 
+/**
+ * 基于 Redis 的聊天记忆实现，使用 Kryo 序列化存储对话历史
+ */
 @Component
 public class RedisBasedChatMemory implements ChatMemory {
 

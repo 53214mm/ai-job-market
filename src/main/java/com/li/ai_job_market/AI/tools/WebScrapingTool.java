@@ -7,6 +7,9 @@ import org.springframework.ai.tool.annotation.ToolParam;
 
 import java.io.IOException;
 
+/**
+ * 网页爬取工具，用于抓取指定 URL 的网页内容
+ */
 public class WebScrapingTool {
 
     @Tool(description = "抓取网页内容")
