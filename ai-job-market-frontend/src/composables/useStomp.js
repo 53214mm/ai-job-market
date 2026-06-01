@@ -16,7 +16,9 @@ function getToken() {
 function wsUrl() {
   const protocol = window.location.protocol === 'https:' ? 'wss:' : 'ws:'
   const host = window.location.host
-  return `${protocol}//${host}/api/ws`
+  // token 放入 URL 参数，确保 WebSocket 握手阶段就能提取到 Principal，
+  // 否则 Spring 的 /user 目标路由无法找到接收方会话，convertAndSendToUser 不会推送
+  return `${protocol}//${host}/api/ws?token=${encodeURIComponent(getToken())}`
 }
 
 export function useStomp() {

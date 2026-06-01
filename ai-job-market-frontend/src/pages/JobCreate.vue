@@ -49,7 +49,19 @@ async function submit() {
     const res = await fetch('/api/jobs', { method: 'POST', headers: h(), body: JSON.stringify(body) })
     const d = await res.json()
     if (d.code === 0) {
-      alert('职位发布成功')
+      // 创建成功后自动发布上线
+      const jobId = d.data
+      try {
+        const pubRes = await fetch('/api/jobs/' + jobId + '/publish', { method: 'PUT', headers: h() })
+        const pubData = await pubRes.json()
+        if (pubData.code === 0) {
+          alert('职位发布成功')
+        } else {
+          alert('职位已保存为草稿，请在"我的职位"中手动发布')
+        }
+      } catch (e) {
+        alert('职位已保存为草稿，请在"我的职位"中手动发布')
+      }
       router.push('/recruiter/jobs')
     } else {
       alert(d.message || '发布失败')

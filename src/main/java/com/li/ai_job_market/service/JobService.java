@@ -23,6 +23,8 @@ public interface JobService extends IService<Job> {
     boolean deleteSkillTag(Long jobId, Long sid, Long userId);
 
     List<JobVO> recommendJobs(Long seekerId, Long resumeId);
+    Page<JobVO> semanticSearch(String query, JobQueryRequest filters);
+    void vectorizeJob(Long jobId);
 
     JobVO toJobVO(Job job);
     void checkJobAccess(Long jobId, Long userId);

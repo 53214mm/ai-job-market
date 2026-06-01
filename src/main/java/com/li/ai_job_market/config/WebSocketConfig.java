@@ -37,8 +37,8 @@ public class WebSocketConfig implements WebSocketMessageBrokerConfigurer {
 
     @Override
     public void configureMessageBroker(MessageBrokerRegistry registry) {
-        // 客户端订阅前缀：/user 用于点对点，/topic 用于广播
-        registry.enableSimpleBroker("/user", "/topic");
+        // 客户端订阅前缀：/queue 用于点对点（由 UserDestinationMessageHandler 将 /user/{userId}/ 翻译为 /queue/），/topic 用于广播
+        registry.enableSimpleBroker("/queue", "/topic");
         // 客户端发送消息前缀
         registry.setApplicationDestinationPrefixes("/app");
         // 点对点消息默认前缀 /user，转换为 /user/{userId}/...

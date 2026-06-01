@@ -46,13 +46,12 @@ onMounted(async () => {
   window.addEventListener('unread-changed', onUnreadChanged)
   // 初始 REST 拉取
   await fetchUnread()
-  // 建立 WebSocket 接收实时未读数推送
+  // 先注册回调，再建立 WebSocket 连接——防止 STOMP 订阅建立后回调注册前的推送丢失
+  unsubUnread = onUnreadCount(() => {
+    fetchUnread()
+  })
   try {
     await connect()
-    unsubUnread = onUnreadCount(() => {
-      // WebSocket 推送触发后，用 REST 拉取获得通知/私信分开的精确值
-      fetchUnread()
-    })
   } catch(e) { /* STOMP 连接失败，仅依赖 REST 轮询 */ }
 })
 

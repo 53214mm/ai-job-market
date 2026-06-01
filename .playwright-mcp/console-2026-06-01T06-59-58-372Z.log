@@ -1,0 +1,5 @@
+[   66579ms] [ERROR] WebSocket connection to 'ws://localhost:5173/api/ws' failed:  @ http://localhost:5173/node_modules/.vite/deps/@stomp_stompjs.js?v=11075d5e:1304
+[   66579ms] [ERROR] WebSocket connection to 'ws://localhost:5173/?token=tZ8nQob_mpTC' failed:  @ http://localhost:5173/@vite/client:864
+[   66581ms] [LOG] [vite] server connection lost. Polling for restart... @ http://localhost:5173/@vite/client:992
+[   71954ms] [ERROR] WebSocket is already in CLOSING or CLOSED state. @ http://localhost:5173/node_modules/.vite/deps/@stomp_stompjs.js?v=11075d5e:685
+[   71954ms] [ERROR] WebSocket is already in CLOSING or CLOSED state. @ http://localhost:5173/node_modules/.vite/deps/@stomp_stompjs.js?v=11075d5e:685

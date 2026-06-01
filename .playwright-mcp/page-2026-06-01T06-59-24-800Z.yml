@@ -1,0 +1,308 @@
+- generic [ref=e3]:
+  - banner [ref=e4]:
+    - generic [ref=e6]:
+      - link "AI AI 招聘市场" [ref=e7] [cursor=pointer]:
+        - /url: /recruiter
+        - generic [ref=e9]: AI
+        - generic [ref=e10]: AI 招聘市场
+      - navigation [ref=e11]:
+        - link "工作台" [ref=e12] [cursor=pointer]:
+          - /url: /recruiter
+        - link "公司信息" [ref=e13] [cursor=pointer]:
+          - /url: /recruiter/company
+        - link "职位管理" [ref=e14] [cursor=pointer]:
+          - /url: /recruiter/jobs
+        - link "简历筛选" [ref=e15] [cursor=pointer]:
+          - /url: /recruiter/applications
+        - link "通知" [ref=e16] [cursor=pointer]:
+          - /url: /notifications
+        - link "私信 7" [ref=e17] [cursor=pointer]:
+          - /url: /messages
+          - text: 私信
+          - generic [ref=e18]: "7"
+        - link "AI助手" [ref=e19] [cursor=pointer]:
+          - /url: /ai/chat
+      - generic [ref=e20]:
+        - generic [ref=e21]: 招聘方
+        - generic [ref=e22]: 李HR
+        - button "退出" [ref=e23]
+  - main [ref=e24]:
+    - generic [ref=e25]:
+      - generic [ref=e26]:
+        - heading "职位搜索" [level=1] [ref=e27]
+        - generic [ref=e28]:
+          - generic [ref=e29]:
+            - button "全部职位" [ref=e30]
+            - button "我的职位" [ref=e31]
+          - button "发布新职位" [ref=e32]
+      - generic [ref=e34]:
+        - generic [ref=e35]:
+          - img [ref=e36]
+          - textbox "职位关键词" [ref=e38]
+        - combobox [ref=e40]:
+          - option "所有城市" [selected]
+          - option "北京"
+          - option "上海"
+          - option "广州"
+          - option "深圳"
+          - option "杭州"
+          - option "成都"
+        - combobox [ref=e42]:
+          - option "薪资范围" [selected]
+          - option "10K-20K"
+          - option "20K-35K"
+          - option "35K-50K"
+          - option "50K以上"
+        - button "搜索" [ref=e43]
+        - button "AI 语义搜索" [active] [ref=e44]:
+          - img [ref=e45]
+          - text: AI 语义搜索
+      - generic [ref=e47]:
+        - paragraph [ref=e48]: 共找到 19 个职位
+        - generic [ref=e49]:
+          - generic [ref=e50]: 排序：
+          - combobox [ref=e51]:
+            - option "发布时间" [selected]
+            - option "薪资高低"
+      - generic [ref=e52]:
+        - generic [ref=e54] [cursor=pointer]:
+          - generic [ref=e56]:
+            - generic [ref=e57]: 米
+            - generic [ref=e58]:
+              - heading "游戏服务器开发工程师（Go）" [level=3] [ref=e59]
+              - paragraph [ref=e60]: 米哈游
+          - generic [ref=e61]:
+            - generic [ref=e62]:
+              - img [ref=e63]
+              - text: 上海
+            - generic [ref=e66]:
+              - img [ref=e67]
+              - text: 28K-50K
+            - generic [ref=e69]:
+              - img [ref=e70]
+              - text: 2-5年
+          - generic [ref=e72]:
+            - generic [ref=e73]: 游戏
+            - generic [ref=e74]: Go
+            - generic [ref=e75]: 原神
+            - generic [ref=e76]: 米哈游
+          - generic [ref=e78]: 2026-06-01
+        - generic [ref=e80] [cursor=pointer]:
+          - generic [ref=e82]:
+            - generic [ref=e83]: 米
+            - generic [ref=e84]:
+              - heading "技术美术（TA）" [level=3] [ref=e85]
+              - paragraph [ref=e86]: 米哈游
+          - generic [ref=e87]:
+            - generic [ref=e88]:
+              - img [ref=e89]
+              - text: 上海
+            - generic [ref=e92]:
+              - img [ref=e93]
+              - text: 30K-55K
+            - generic [ref=e95]:
+              - img [ref=e96]
+              - text: 2-5年
+          - generic [ref=e98]:
+            - generic [ref=e99]: 技术美术
+            - generic [ref=e100]: Shader
+            - generic [ref=e101]: 米哈游
+            - generic [ref=e102]: Unity
+          - generic [ref=e104]: 2026-06-01
+        - generic [ref=e106] [cursor=pointer]:
+          - generic [ref=e108]:
+            - generic [ref=e109]: 百
+            - generic [ref=e110]:
+              - heading "大数据平台开发工程师" [level=3] [ref=e111]
+              - paragraph [ref=e112]: 百度在线网络技术有限公司
+          - generic [ref=e113]:
+            - generic [ref=e114]:
+              - img [ref=e115]
+              - text: 北京
+            - generic [ref=e118]:
+              - img [ref=e119]
+              - text: 30K-50K
+            - generic [ref=e121]:
+              - img [ref=e122]
+              - text: 3-5年
+          - generic [ref=e124]:
+            - generic [ref=e125]: 大数据
+            - generic [ref=e126]: Spark
+            - generic [ref=e127]: 百度
+            - generic [ref=e128]: Java
+          - generic [ref=e130]: 2026-06-01
+        - generic [ref=e132] [cursor=pointer]:
+          - generic [ref=e134]:
+            - generic [ref=e135]: 华
+            - generic [ref=e136]:
+              - heading "鸿蒙OS开发工程师" [level=3] [ref=e137]
+              - paragraph [ref=e138]: 华为技术有限公司
+          - generic [ref=e139]:
+            - generic [ref=e140]:
+              - img [ref=e141]
+              - text: 深圳
+            - generic [ref=e144]:
+              - img [ref=e145]
+              - text: 30K-55K
+            - generic [ref=e147]:
+              - img [ref=e148]
+              - text: 3-5年
+          - generic [ref=e150]:
+            - generic [ref=e151]: 鸿蒙
+            - generic [ref=e152]: C++
+            - generic [ref=e153]: 华为
+            - generic [ref=e154]: 分布式
+          - generic [ref=e156]: 2026-06-01
+        - generic [ref=e158] [cursor=pointer]:
+          - generic [ref=e160]:
+            - generic [ref=e161]: 华
+            - generic [ref=e162]:
+              - heading "AI芯片架构工程师" [level=3] [ref=e163]
+              - paragraph [ref=e164]: 华为技术有限公司
+          - generic [ref=e165]:
+            - generic [ref=e166]:
+              - img [ref=e167]
+              - text: 上海
+            - generic [ref=e170]:
+              - img [ref=e171]
+              - text: 50K-90K
+            - generic [ref=e173]:
+              - img [ref=e174]
+              - text: 5-10年
+          - generic [ref=e176]:
+            - generic [ref=e177]: AI芯片
+            - generic [ref=e178]: 昇腾
+            - generic [ref=e179]: 高薪
+            - generic [ref=e180]: 芯片架构
+          - generic [ref=e182]: 2026-06-01
+        - generic [ref=e184] [cursor=pointer]:
+          - generic [ref=e186]:
+            - generic [ref=e187]: 小
+            - generic [ref=e188]:
+              - heading "增长产品经理" [level=3] [ref=e189]
+              - paragraph [ref=e190]: 小红书科技
+          - generic [ref=e191]:
+            - generic [ref=e192]:
+              - img [ref=e193]
+              - text: 上海
+            - generic [ref=e196]:
+              - img [ref=e197]
+              - text: 25K-42K
+            - generic [ref=e199]:
+              - img [ref=e200]
+              - text: 2-5年
+          - generic [ref=e202]:
+            - generic [ref=e203]: 增长
+            - generic [ref=e204]: 产品
+            - generic [ref=e205]: 小红书
+            - generic [ref=e206]: SQL
+          - generic [ref=e208]: 2026-06-01
+        - generic [ref=e210] [cursor=pointer]:
+          - generic [ref=e212]:
+            - generic [ref=e213]: 腾
+            - generic [ref=e214]:
+              - heading "腾讯云前端开发工程师" [level=3] [ref=e215]
+              - paragraph [ref=e216]: 腾讯科技（深圳）有限公司
+          - generic [ref=e217]:
+            - generic [ref=e218]:
+              - img [ref=e219]
+              - text: 深圳
+            - generic [ref=e222]:
+              - img [ref=e223]
+              - text: 22K-38K
+            - generic [ref=e225]:
+              - img [ref=e226]
+              - text: 1-3年
+          - generic [ref=e228]:
+            - generic [ref=e229]: 前端
+            - generic [ref=e230]: 腾讯云
+            - generic [ref=e231]: Vue.js
+            - generic [ref=e232]: Vue.js
+          - generic [ref=e234]: 2026-06-01
+        - generic [ref=e236] [cursor=pointer]:
+          - generic [ref=e238]:
+            - generic [ref=e239]: 蚂
+            - generic [ref=e240]:
+              - heading "金融风控算法工程师" [level=3] [ref=e241]
+              - paragraph [ref=e242]: 蚂蚁集团
+          - generic [ref=e243]:
+            - generic [ref=e244]:
+              - img [ref=e245]
+              - text: 杭州
+            - generic [ref=e248]:
+              - img [ref=e249]
+              - text: 40K-70K
+            - generic [ref=e251]:
+              - img [ref=e252]
+              - text: 3-5年
+          - generic [ref=e254]:
+            - generic [ref=e255]: 风控
+            - generic [ref=e256]: 机器学习
+            - generic [ref=e257]: 蚂蚁
+            - generic [ref=e258]: Python
+          - generic [ref=e260]: 2026-06-01
+      - generic [ref=e261]:
+        - button "上一页" [disabled] [ref=e262]
+        - button "1" [ref=e263]
+        - button "2" [ref=e264]
+        - button "3" [ref=e265]
+        - button "下一页" [ref=e266]
+  - contentinfo [ref=e267]:
+    - generic [ref=e268]:
+      - generic [ref=e269]:
+        - generic [ref=e270]:
+          - heading "求职者" [level=4] [ref=e271]
+          - list [ref=e272]:
+            - listitem [ref=e273]:
+              - link "浏览职位" [ref=e274] [cursor=pointer]:
+                - /url: "#"
+            - listitem [ref=e275]:
+              - link "AI 简历分析" [ref=e276] [cursor=pointer]:
+                - /url: "#"
+            - listitem [ref=e277]:
+              - link "求职攻略" [ref=e278] [cursor=pointer]:
+                - /url: "#"
+            - listitem [ref=e279]:
+              - link "AI 模拟面试" [ref=e280] [cursor=pointer]:
+                - /url: "#"
+        - generic [ref=e281]:
+          - heading "招聘方" [level=4] [ref=e282]
+          - list [ref=e283]:
+            - listitem [ref=e284]:
+              - link "发布职位" [ref=e285] [cursor=pointer]:
+                - /url: "#"
+            - listitem [ref=e286]:
+              - link "AI 简历筛选" [ref=e287] [cursor=pointer]:
+                - /url: "#"
+            - listitem [ref=e288]:
+              - link "企业认证" [ref=e289] [cursor=pointer]:
+                - /url: "#"
+            - listitem [ref=e290]:
+              - link "招聘方案" [ref=e291] [cursor=pointer]:
+                - /url: "#"
+        - generic [ref=e292]:
+          - heading "关于" [level=4] [ref=e293]
+          - list [ref=e294]:
+            - listitem [ref=e295]:
+              - link "关于我们" [ref=e296] [cursor=pointer]:
+                - /url: "#"
+            - listitem [ref=e297]:
+              - link "帮助中心" [ref=e298] [cursor=pointer]:
+                - /url: "#"
+            - listitem [ref=e299]:
+              - link "隐私政策" [ref=e300] [cursor=pointer]:
+                - /url: "#"
+            - listitem [ref=e301]:
+              - link "服务条款" [ref=e302] [cursor=pointer]:
+                - /url: "#"
+        - generic [ref=e303]:
+          - heading "联系我们" [level=4] [ref=e304]
+          - list [ref=e305]:
+            - listitem [ref=e306]: service@aijob.com
+            - listitem [ref=e307]: 400-888-0000
+            - listitem [ref=e308]: 周一至周五 9:00-18:00
+      - generic [ref=e309]:
+        - generic [ref=e310]:
+          - generic [ref=e312]: AI
+          - generic [ref=e313]: AI 智能招聘市场
+        - paragraph [ref=e314]: © 2026 AI Job Market. All rights reserved.

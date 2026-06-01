@@ -70,6 +70,16 @@ async function sendMsg() {
 
   if (connected.value) {
     sendMessage({ receiverId: activePeer.value, content: text })
+    // 乐观更新：立即在本地显示自己发出的消息
+    const myInfo = JSON.parse(localStorage.getItem('user') || '{}')
+    messages.value.push({
+      senderId: uid,
+      receiverId: activePeer.value,
+      content: text,
+      createdAt: new Date().toISOString(),
+      senderName: myInfo.nickname || '我',
+      isRead: 1
+    })
     input.value = ''
     sending.value = false
     scroll()
@@ -123,11 +133,22 @@ function timeStr(t) {
 
 onMounted(async () => {
   await loadConversations()
-  await connect()
+  // 先注册回调，再建立连接——防止 STOMP 订阅建立后回调注册前的消息丢失
   unsubMessage = onMessage((msg) => {
     loadConversations()
-    // 不重复添加自己刚发的消息（REST 发送时已本地 push）
-    if (msg.senderId === uid) return
+    // 收到自己发的消息回显：替换之前乐观更新的临时消息
+    if (msg.senderId === uid) {
+      if (activePeer.value && msg.receiverId === activePeer.value) {
+        const idx = messages.value.findIndex(m => !m.id && m.content === msg.content && m.receiverId === msg.receiverId)
+        if (idx >= 0) {
+          messages.value[idx] = msg
+        } else if (!messages.value.some(m => m.id === msg.id)) {
+          messages.value.push(msg)
+        }
+        scroll()
+      }
+      return
+    }
     const peerId = msg.senderId
     if (activePeer.value && peerId === activePeer.value) {
       // 避免重复
@@ -139,6 +160,7 @@ onMounted(async () => {
       window.dispatchEvent(new Event('unread-changed'))
     }
   })
+  await connect()
 })
 
 onUnmounted(() => {

@@ -51,10 +51,10 @@ public class JobController {
         return ResultUtils.success(jobService.listJobs(req));
     }
 
-    // 语义搜索职位
+    // AI 语义搜索职位（向量相似度 + 条件过滤）
     @GetMapping("/search/semantic")
     public BaseResponse<Page<JobVO>> semanticSearch(JobQueryRequest req) {
-        return ResultUtils.success(jobService.listJobs(req));
+        return ResultUtils.success(jobService.semanticSearch(req.getKeyword(), req));
     }
 
     // 获取我发布的职位（招聘方视角）

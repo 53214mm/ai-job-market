@@ -200,4 +200,143 @@ INSERT INTO `ai_chat_message` (`id`, `session_id`, `role`, `content`, `tokens_us
 (23003, 22001, 'USER', 'AI集成方向需要学哪些具体技术？', 15, '2026-05-24 10:01:00'),
 (23004, 22001, 'ASSISTANT', 'AI集成方向推荐学习路径：\n1. Spring AI（已有基础，可快速上手）\n2. 向量数据库（pgvector/Milvus）\n3. Prompt工程\n4. RAG架构\n5. 对话记忆管理（如你项目中的RedisBasedChatMemory）\n\n建议从Spring AI开始，它和Spring Boot无缝集成。', 180, '2026-05-24 10:01:10');
 
+-- ==================== 扩展数据：更多用户 ====================
+INSERT INTO `user` (`id`, `email`, `phone`, `password_hash`, `role`, `nickname`, `avatar_url`, `status`, `created_at`, `updated_at`) VALUES
+(1004, 'seeker2@test.com', '13800002001', '$2a$10$N.zmdr9k7uOCQb376NoUnuTJ8iAt6Z5EHsM8lE9lBOsl7iKTVKIUi', 'SEEKER', '王前端', NULL, 'ACTIVE', NOW(), NOW()),
+(1005, 'seeker3@test.com', '13800002002', '$2a$10$N.zmdr9k7uOCQb376NoUnuTJ8iAt6Z5EHsM8lE9lBOsl7iKTVKIUi', 'SEEKER', '赵数据', NULL, 'ACTIVE', NOW(), NOW()),
+(1006, 'seeker4@test.com', '13800002003', '$2a$10$N.zmdr9k7uOCQb376NoUnuTJ8iAt6Z5EHsM8lE9lBOsl7iKTVKIUi', 'SEEKER', '钱产品', NULL, 'ACTIVE', NOW(), NOW()),
+(1007, 'recruiter2@test.com', '13800003001', '$2a$10$N.zmdr9k7uOCQb376NoUnuTJ8iAt6Z5EHsM8lE9lBOsl7iKTVKIUi', 'RECRUITER', '腾讯HR陈', NULL, 'ACTIVE', NOW(), NOW()),
+(1008, 'recruiter3@test.com', '13800003002', '$2a$10$N.zmdr9k7uOCQb376NoUnuTJ8iAt6Z5EHsM8lE9lBOsl7iKTVKIUi', 'RECRUITER', '华为HR刘', NULL, 'ACTIVE', NOW(), NOW());
+
+INSERT INTO `user_seeker_profile` (`id`, `user_id`, `real_name`, `gender`, `education_level`, `current_city`, `expected_city`, `expected_salary_min`, `expected_salary_max`, `job_status`, `personal_summary`, `created_at`, `updated_at`) VALUES
+(2002, 1004, '王小明', '男', '本科', '深圳', '深圳', 20, 35, '在职', '3年前端开发经验，精通Vue.js和React', NOW(), NOW()),
+(2003, 1005, '赵丽', '女', '硕士', '北京', '北京', 30, 55, '在职', '5年数据分析师经验，擅长Python/SQL和机器学习', NOW(), NOW()),
+(2004, 1006, '钱伟', '男', '本科', '上海', '上海', 25, 40, '离职', '2年B端产品经理经验，擅长用户研究和数据分析', NOW(), NOW());
+
+INSERT INTO `user_recruiter_profile` (`id`, `user_id`, `real_name`, `position`, `company_id`, `phone`, `verified`, `created_at`, `updated_at`) VALUES
+(3002, 1007, '陈芳', '招聘总监', 4007, '13800004001', TRUE, NOW(), NOW()),
+(3003, 1008, '刘强', 'HR经理', 4008, '13800004002', TRUE, NOW(), NOW());
+
+-- ==================== 扩展数据：更多公司 ====================
+INSERT INTO `company` (`id`, `name`, `short_name`, `industry`, `scale`, `stage`, `website`, `address`, `description`, `culture`, `welfare`, `verified`, `status`, `created_at`, `updated_at`) VALUES
+(4007, '腾讯科技（深圳）有限公司', '腾讯', '互联网', '1000+', '上市', 'https://www.tencent.com', '深圳市南山区科技中一路', '腾讯以技术丰富互联网用户的生活。业务覆盖社交、游戏、金融科技、云计算等领域。', '用户为本、科技向善', '["六险一金","免费早晚餐","弹性工作","股票期权","班车接送"]', TRUE, 'ACTIVE', NOW(), NOW()),
+(4008, '华为技术有限公司', '华为', '硬件', '1000+', '未融资', 'https://www.huawei.com', '深圳市龙岗区坂田华为基地', '华为是全球领先的ICT基础设施和智能终端提供商。', '以客户为中心、以奋斗者为本', '["五险一金","年终奖金","股权分红","员工宿舍","海外机会"]', TRUE, 'ACTIVE', NOW(), NOW()),
+(4009, '蚂蚁集团', '蚂蚁集团', '金融', '1000+', 'D轮', 'https://www.antgroup.com', '浙江省杭州市西湖区西溪路556号', '蚂蚁集团致力于用科技推动普惠金融，服务超过10亿用户。', '因为信任所以简单', '["五险一金","补充公积金","股票期权","弹性工作","年度旅游"]', TRUE, 'ACTIVE', NOW(), NOW()),
+(4010, '米哈游', '米哈游', '游戏', '1000+', '未融资', 'https://www.mihoyo.com', '上海市徐汇区宜山路700号', '米哈游是一家深耕动漫文化的科技公司，旗下《原神》全球用户超5亿。', '追求极致、打破常规', '["六险一金","项目分红","免费三餐","游戏室","年度出国游"]', FALSE, 'ACTIVE', NOW(), NOW());
+
+INSERT INTO `company_review` (`id`, `company_id`, `user_id`, `rating`, `title`, `content`, `pros`, `cons`, `status`, `created_at`) VALUES
+(5006, 4007, 1004, 5, '技术氛围极佳', '腾讯的技术氛围没得说，免费早晚餐很赞，班车方便。', '技术好、福利完善', '组织庞大、流程较长', 'APPROVED', NOW()),
+(5007, 4008, 1005, 4, '稳定有成长', '华为待遇好，成长空间巨大，海外机会很多。', '待遇好、成长快', '加班多、制度严', 'APPROVED', NOW()),
+(5008, 4009, 1006, 4, '金融科技前沿', '蚂蚁技术栈先进，金融挑战大，同事都很强。', '技术强、福利好', '监管压力、节奏快', 'PENDING', NOW()),
+(5009, 4010, 1004, 5, '游戏开发天堂', '米哈游技术实力顶尖，团队年轻有活力，项目分红很给力。', '技术强、分红丰厚', '版本期加班多', 'APPROVED', NOW());
+
+-- ==================== 扩展数据：更多简历 ====================
+INSERT INTO `resume` (`id`, `user_id`, `title`, `full_name`, `email`, `phone`, `current_city`, `expected_city`, `expected_salary_min`, `expected_salary_max`, `job_status`, `summary`, `privacy`, `is_default`, `ai_score`, `created_at`, `updated_at`) VALUES
+(6003, 1004, '高级前端开发工程师', '王小明', 'wangxm@email.com', '13800002001', '深圳', '深圳', 22, 38, '在职', '3年前端开发经验，精通Vue.js生态，有React和TypeScript经验。独立完成中后台系统前端架构搭建。', 'PUBLIC', TRUE, 82, NOW(), NOW()),
+(6004, 1005, '高级数据分析师', '赵丽', 'zhaoli@email.com', '13800002002', '北京', '北京', 32, 55, '在职', '5年数据分析经验，精通Python/SQL，有Spark和机器学习项目经验。', 'PUBLIC', TRUE, 90, NOW(), NOW()),
+(6005, 1006, 'B端产品经理简历', '钱伟', 'qianwei@email.com', '13800002003', '上海', '上海', 25, 42, '离职', '2年B端SaaS产品经验，从0到1参与企业级CRM产品设计。', 'PUBLIC', TRUE, 72, NOW(), NOW());
+
+INSERT INTO `resume_education` (`id`, `resume_id`, `school_name`, `degree`, `major`, `start_date`, `end_date`, `description`, `sort_order`, `created_at`) VALUES
+(7003, 6003, '深圳大学', '本科', '软件工程', '2017-09-01', '2021-07-01', 'GPA 3.6/4.0', 0, NOW()),
+(7004, 6004, '北京理工大学', '硕士', '数据科学', '2015-09-01', '2018-07-01', '发表SCI论文2篇', 0, NOW()),
+(7005, 6004, '北京理工大学', '本科', '信息与计算科学', '2011-09-01', '2015-07-01', '数学建模竞赛全国一等奖', 1, NOW()),
+(7006, 6005, '上海交通大学', '本科', '工商管理', '2018-09-01', '2022-07-01', 'GPA 3.5/4.0', 0, NOW());
+
+INSERT INTO `resume_work_experience` (`id`, `resume_id`, `company_name`, `position`, `industry`, `start_date`, `end_date`, `description`, `achievement`, `skills_used`, `sort_order`, `created_at`) VALUES
+(8003, 6003, '深信服科技', '前端开发工程师', '网络安全', '2023-01-01', NULL, '负责中后台管理系统前端架构搭建，Vue3+TS重构旧系统。', '系统重构后首屏从4s降到1.2s', 'Vue.js,TypeScript,Element Plus,Vite', 0, NOW()),
+(8004, 6004, '京东集团', '高级数据分析师', '互联网', '2021-03-01', NULL, '负责零售业务线数据分析和建模，主导用户画像标签体系建设。', '精准营销ROI提升35%', 'Python,SQL,Spark,Tableau', 0, NOW()),
+(8005, 6005, '明道云', '产品经理', '企业SaaS', '2023-07-01', '2025-05-01', '负责CRM产品功能规划和迭代，推动NPS从35到52。', '客户续费率提升20%', 'Axure,Figma,SQL,项目管理', 0, NOW());
+
+INSERT INTO `resume_project` (`id`, `resume_id`, `project_name`, `role`, `start_date`, `end_date`, `description`, `technologies`, `achievement`, `sort_order`, `created_at`) VALUES
+(9004, 6003, '中后台管理系统重构', '前端负责人', '2023-06-01', '2023-12-01', '主导Vue2到Vue3+TS全面重构，引入Vite和RBAC权限方案。', 'Vue3,TypeScript,Vite,Pinia', '首屏4s→1.2s', 0, NOW()),
+(9005, 6004, '用户画像标签体系', '项目负责人', '2022-06-01', '2023-01-01', '搭建2亿+用户画像标签，200+标签，Spark离线+Flink实时。', 'Python,Spark,Flink,Hive', 'ROI提升35%', 0, NOW()),
+(9006, 6004, '智能推荐算法优化', '核心成员', '2023-06-01', '2023-11-01', '引入深度学习替代协同过滤，A/B测试验证。', 'Python,PyTorch,深度学习', 'CTR提升18%', 1, NOW()),
+(9007, 6005, '企业CRM 2.0', '产品负责人', '2024-03-01', '2024-09-01', '从0到1设计CRM 2.0，50+用户访谈，4大模块。', 'Axure,Figma,SQL,敏捷', 'NPS 35→52', 0, NOW());
+
+INSERT INTO `resume_skill` (`id`, `resume_id`, `skill_name`, `proficiency`, `months_of_use`, `sort_order`, `created_at`) VALUES
+(10013, 6003, 'Vue.js', '精通', 36, 0, NOW()), (10014, 6003, 'TypeScript', '熟练', 24, 1, NOW()), (10015, 6003, 'React', '熟练', 18, 2, NOW()),
+(10016, 6004, 'Python', '精通', 60, 0, NOW()), (10017, 6004, 'SQL', '精通', 60, 1, NOW()), (10018, 6004, 'Spark', '熟练', 36, 2, NOW()), (10019, 6004, '机器学习', '熟练', 24, 3, NOW()),
+(10020, 6005, 'Axure', '精通', 24, 0, NOW()), (10021, 6005, 'SQL', '熟练', 18, 1, NOW()), (10022, 6005, '用户调研', '精通', 24, 2, NOW());
+
+-- ==================== 扩展数据：更多职位 (10个) ====================
+INSERT INTO `job` (`id`, `company_id`, `recruiter_id`, `title`, `category`, `experience_level`, `education_level`, `salary_min`, `salary_max`, `salary_months`, `city`, `district`, `address`, `job_type`, `head_count`, `description`, `requirement`, `welfare`, `tags`, `skills_required`, `status`, `view_count`, `apply_count`, `published_at`, `created_at`, `updated_at`) VALUES
+(12009, 4007, 1007, '微信后台开发工程师', '技术', '3-5年', '本科', 35, 60, 16, '深圳', '南山区', '科技中一路', '全职', 3, '参与微信支付核心系统开发，负责高并发场景系统优化。', '精通C++/Go，熟悉Linux和分布式系统', '["六险一金","股票期权","班车接送"]', '微信,后台,C++,高并发', 'C++,Go,Linux,分布式,MySQL,Redis', 'PUBLISHED', 2034, 156, NOW(), NOW(), NOW()),
+(12010, 4007, 1007, '腾讯云前端开发工程师', '技术', '1-3年', '本科', 22, 38, 14, '深圳', '南山区', '科技中一路', '全职', 2, '负责腾讯云控制台前端开发，参与组件库建设。', '精通Vue.js/React，熟悉TypeScript', '["六险一金","弹性工作","健身房"]', '前端,腾讯云,Vue.js', 'Vue.js,React,TypeScript,qiankun', 'PUBLISHED', 876, 64, NOW(), NOW(), NOW()),
+(12011, 4008, 1008, '鸿蒙OS开发工程师', '技术', '3-5年', '本科', 30, 55, 16, '深圳', '龙岗区', '坂田基地', '全职', 5, '参与鸿蒙OS核心模块开发，跨设备分布式能力研发。', '精通C/C++或Java，熟悉操作系统原理', '["五险一金","股权分红","员工宿舍"]', '鸿蒙,C++,华为,分布式', 'C++,Java,操作系统,嵌入式', 'PUBLISHED', 3120, 234, NOW(), NOW(), NOW()),
+(12012, 4008, 1008, 'AI芯片架构工程师', '技术', '5-10年', '硕士', 50, 90, 18, '上海', '浦东新区', '张江', '全职', 2, '负责昇腾AI芯片架构设计，参与微架构方案制定。', '硕士+5年芯片设计经验', '["五险一金","股权分红","高薪"]', 'AI芯片,昇腾,高薪', '芯片架构,Verilog,AI加速器', 'PUBLISHED', 567, 28, NOW(), NOW(), NOW()),
+(12013, 4009, 1007, '金融风控算法工程师', '技术', '3-5年', '硕士', 40, 70, 16, '杭州', '西湖区', '西溪路556号', '全职', 1, '负责支付风控模型研发，构建实时风险识别系统。', '精通Python/ML，有风控反欺诈经验', '["五险一金","股票期权","年度旅游"]', '风控,机器学习,蚂蚁', 'Python,TensorFlow,机器学习,图神经网络', 'PUBLISHED', 456, 35, NOW(), NOW(), NOW()),
+(12014, 4009, 1007, '区块链研发工程师', '技术', '2-5年', '本科', 30, 55, 15, '杭州', '西湖区', '西溪路556号', '全职', 2, '参与蚂蚁链底层区块链平台研发和智能合约引擎开发。', '精通Go/Rust，熟悉区块链原理', '["五险一金","股票期权","弹性工作"]', '区块链,Go,蚂蚁链', 'Go,Rust,区块链,智能合约', 'PUBLISHED', 389, 22, NOW(), NOW(), NOW()),
+(12015, 4010, 1008, '游戏服务器开发工程师（Go）', '游戏', '2-5年', '本科', 28, 50, 15, '上海', '徐汇区', '宜山路700号', '全职', 3, '负责原神游戏服务器开发维护和高并发优化。', '精通Go，有游戏服务器经验优先', '["六险一金","项目分红","免费三餐"]', '游戏,Go,原神,米哈游', 'Go,游戏服务器,Redis,Kafka,Lua', 'PUBLISHED', 2341, 189, NOW(), NOW(), NOW()),
+(12016, 4010, 1008, '技术美术（TA）', '设计', '2-5年', '本科', 30, 55, 14, '上海', '徐汇区', '宜山路700号', '全职', 1, '负责游戏渲染效果开发和Shader编写。', '精通Unity/UE，熟练HLSL/GLSL', '["六险一金","项目分红","顶配工作站"]', '技术美术,Shader,米哈游', 'Unity,Unreal,HLSL,GLSL,3D渲染', 'PUBLISHED', 789, 45, NOW(), NOW(), NOW()),
+(12017, 4003, 1008, '大数据平台开发工程师', '技术', '3-5年', '本科', 30, 50, 15, '北京', '海淀区', '上地十街10号', '全职', 2, '负责百度大数据平台建设和PB级数据处理方案架构。', '精通Java/Scala，熟悉Hadoop/Spark/Flink', '["五险一金","弹性工作","免费午餐"]', '大数据,Spark,百度', 'Java,Scala,Hadoop,Spark,Flink,Hive', 'PUBLISHED', 567, 38, NOW(), NOW(), NOW()),
+(12018, 4005, 1007, '增长产品经理', '产品', '2-5年', '本科', 25, 42, 14, '上海', '黄浦区', '马当路388号', '全职', 1, '负责小红书用户增长策略制定和A/B测试实验。', '数据驱动思维，有成功增长案例', '["五险一金","弹性工作","宠物友好"]', '增长,产品,小红书', 'SQL,数据分析,A/B测试,用户增长', 'PUBLISHED', 678, 42, NOW(), NOW(), NOW());
+
+-- ==================== 扩展数据：投递、面试、收藏、通知、私信 ====================
+INSERT INTO `application` (`id`, `job_id`, `resume_id`, `seeker_id`, `recruiter_id`, `company_id`, `status`, `cover_letter`, `ai_match_score`, `created_at`, `updated_at`) VALUES
+(14006, 12009, 6001, 1001, 1007, 4007, 'APPLIED', '对微信后台开发感兴趣，有分布式系统经验。', 62, NOW(), NOW()),
+(14007, 12010, 6003, 1004, 1007, 4007, 'INTERVIEW', '腾讯云前端岗位跟我的经验完美匹配！', 94, NOW(), NOW()),
+(14008, 12011, 6001, 1001, 1008, 4008, 'VIEWED', '对鸿蒙OS非常感兴趣，希望参与国产OS建设。', 55, NOW(), NOW()),
+(14009, 12013, 6004, 1005, 1007, 4009, 'SCREENING', '蚂蚁风控是行业标杆，我的数据经验匹配！', 91, NOW(), NOW()),
+(14010, 12015, 6003, 1004, 1008, 4010, 'APPLIED', '原神玩家！有全栈基础想转型游戏。', 48, NOW(), NOW()),
+(14011, 12017, 6004, 1005, 1008, 4003, 'APPLIED', 'PB级数据处理经验丰富，百度是我理想下一站。', 95, NOW(), NOW()),
+(14012, 12018, 6005, 1006, 1007, 4005, 'APPLIED', '小红书是我最喜欢的产品！B端经验+数据分析。', 78, NOW(), NOW()),
+(14013, 12014, 6003, 1004, 1007, 4009, 'REJECTED', '对区块链感兴趣，有Node.js经验。', 35, NOW(), NOW());
+
+INSERT INTO `application_log` (`id`, `application_id`, `from_status`, `to_status`, `operator_id`, `remark`, `created_at`) VALUES
+(15009, 14007, 'APPLIED', 'VIEWED', 1007, NULL, NOW()),
+(15010, 14007, 'VIEWED', 'SCREENING', 1007, '匹配度很高', NOW()),
+(15011, 14007, 'SCREENING', 'INTERVIEW', 1007, '安排面试', NOW()),
+(15012, 14009, 'APPLIED', 'VIEWED', 1007, NULL, NOW()),
+(15013, 14009, 'VIEWED', 'SCREENING', 1007, '数据分析经验丰富', NOW()),
+(15014, 14013, 'APPLIED', 'VIEWED', 1007, NULL, NOW()),
+(15015, 14013, 'VIEWED', 'REJECTED', 1007, '技术栈差异大', NOW());
+
+INSERT INTO `interview` (`id`, `application_id`, `interview_type`, `scheduled_time`, `duration_minutes`, `location`, `interviewer`, `contact_phone`, `status`, `created_at`) VALUES
+(16002, 14007, 'VIDEO', '2026-05-28 10:00:00', 60, '腾讯会议', '张前端技术总监', '13800004001', 'SCHEDULED', NOW());
+
+INSERT INTO `favorite` (`id`, `user_id`, `target_type`, `target_id`, `created_at`) VALUES
+(17005, 1004, 'JOB', 12010, NOW()), (17006, 1004, 'JOB', 12015, NOW()), (17007, 1005, 'JOB', 12013, NOW()), (17008, 1005, 'JOB', 12017, NOW()), (17009, 1006, 'JOB', 12018, NOW());
+
+INSERT INTO `notification` (`id`, `user_id`, `type`, `title`, `content`, `related_id`, `is_read`, `created_at`) VALUES
+(18005, 1004, 'INTERVIEW_INVITE', '面试邀请', '腾讯云前端开发工程师面试已安排', 14007, FALSE, NOW()),
+(18006, 1005, 'APPLICATION_UPDATE', '投递状态更新', '金融风控算法工程师职位已进入筛选', 14009, FALSE, NOW()),
+(18007, 1004, 'APPLICATION_UPDATE', '投递结果通知', '区块链研发工程师职位未被通过', 14013, FALSE, NOW()),
+(18008, 1007, 'SYSTEM', '新投递提醒', '您发布的职位收到5份新投递', 12009, TRUE, NOW()),
+(18009, 1008, 'SYSTEM', '新投递提醒', '游戏服务器开发工程师收到3份新投递', 12015, TRUE, NOW());
+
+INSERT INTO `message` (`id`, `sender_id`, `receiver_id`, `application_id`, `content`, `is_read`, `created_at`) VALUES
+(19003, 1007, 1004, 14007, '王小明你好，你的前端经验非常匹配，请确认面试时间。', FALSE, NOW()),
+(19004, 1004, 1007, 14007, '陈HR您好，时间没问题，我会好好准备！', TRUE, NOW()),
+(19005, 1008, 1005, 14009, '赵丽你好，你的数据背景非常扎实，想先聊聊。', FALSE, NOW());
+
+-- ==================== 扩展数据：AI相关 ====================
+INSERT INTO `ai_resume_analysis` (`id`, `resume_id`, `seeker_id`, `overall_score`, `format_score`, `content_score`, `keyword_score`, `strengths`, `weaknesses`, `suggestions`, `created_at`) VALUES
+(24001, 6001, 1001, 88, 90, 85, 89, '技术栈详尽，项目量化突出', '总结可更突出岗位匹配度', '增加行业愿景和职业规划', NOW()),
+(24002, 6003, 1004, 82, 85, 80, 81, '技能精准，组件库项目有亮点', '工作经历单一', '补充移动端开发经验', NOW()),
+(24003, 6004, 1005, 90, 88, 92, 90, '量化出色，学术背景强', '偏技术缺少业务价值描述', '针对岗位微调关键词', NOW());
+
+INSERT INTO `ai_job_match` (`id`, `seeker_id`, `resume_id`, `job_id`, `match_score`, `dimension_scores`, `match_reason`, `created_at`) VALUES
+(25001, 1004, 6003, 12010, 94.00, '{"skill":94}', '技能完美匹配', NOW()),
+(25002, 1005, 6004, 12013, 91.00, '{"skill":91}', '技能高度匹配', NOW()),
+(25003, 1005, 6004, 12017, 95.00, '{"skill":95}', '技能完美匹配', NOW());
+
+INSERT INTO `ai_interview_record` (`id`, `user_id`, `job_id`, `session_id`, `question`, `expected_answer_keywords`, `user_answer`, `ai_feedback`, `score`, `question_index`, `created_at`) VALUES
+(26001, 1001, 12001, 22001, '描述你主导过的最具挑战性的技术项目', '微服务,性能优化,技术领导力', '我主导了京东订单系统微服务化改造，3人团队6个月将单体拆为5个微服务。接口响应时间从2s降到200ms，系统可用性达到99.99%。', 'STAR法则清晰，量化成果明确。建议补充遇到的挫折和应对方案。', 88, 1, NOW()),
+(26002, 1004, 12010, 22002, '你使用过哪些前端性能优化手段？', '前端性能,Vue.js,首屏加载,打包优化', 'Vite替换Webpack、路由懒加载、WebP+CDN、Performance面板分析，首屏4s→1.2s。', '优化全面有量化，覆盖构建/加载/运行时三个维度。建议补充性能监控方案。', 92, 1, NOW()),
+(26003, 1005, 12013, 22003, '介绍你在用户画像项目中的特征工程方法', '特征工程,用户画像,数据挖掘', '三个维度：基础属性(人口统计)、行为特征(TF-IDF/Word2Vec提取)、偏好特征(品类/价格/品牌)，共200+标签。创新是用LSTM编码行为序列。', '专业深入，特征设计清晰，创新点突出。建议补充时效性维护方案。', 90, 1, NOW());
+
+-- ==================== 扩展数据：AI聊天 ====================
+INSERT INTO `ai_chat_session` (`id`, `user_id`, `session_type`, `title`, `message_count`, `created_at`, `updated_at`) VALUES
+(22002, 1004, 'RAG', '前端职业规划', 2, NOW(), NOW()),
+(22003, 1005, 'CAREER_ADVICE', '面试准备', 2, NOW(), NOW()),
+(22004, 1006, 'RAG', '转行咨询', 2, NOW(), NOW());
+
+INSERT INTO `ai_chat_message` (`id`, `session_id`, `role`, `content`, `tokens_used`, `created_at`) VALUES
+(23005, 22002, 'USER', '我做前端3年了，2026年前端的发展路径是什么？', 18, NOW()),
+(23006, 22002, 'ASSISTANT', '四个方向：1.技术专家（WebAssembly）2.全栈（Node.js+Go）3.跨端（Flutter/RN）4.架构师。建议拓展TS和Node.js。', 150, NOW()),
+(23007, 22003, 'USER', '明天面试蚂蚁风控岗，有什么准备建议？', 16, NOW()),
+(23008, 22003, 'ASSISTANT', '复习ML基础、准备风控算法、STAR法则梳理项目、了解蚂蚁业务。祝你顺利！', 120, NOW()),
+(23009, 22004, 'USER', 'B端PM转AI产品需要补充什么？', 14, NOW()),
+(23010, 22004, 'ASSISTANT', '学AI基础概念、Prompt工程、RAG架构。你的CRM经验在AI客服方向很有竞争力！', 130, NOW());
+
 SET FOREIGN_KEY_CHECKS = 1;

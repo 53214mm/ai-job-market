@@ -14,6 +14,12 @@ import com.li.ai_job_market.service.UserRecruiterProfileService;
 import jakarta.annotation.Resource;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
+import org.springframework.ai.document.Document;
+import org.springframework.ai.embedding.EmbeddingModel;
+import org.springframework.ai.vectorstore.VectorStore;
+import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -35,6 +41,17 @@ public class JobServiceImpl extends ServiceImpl<JobMapper, Job> implements JobSe
     private ResumeMapper resumeMapper;
     @Resource
     private ResumeSkillMapper resumeSkillMapper;
+
+    @Resource
+    @Qualifier("jobAppVectorStore")
+    private VectorStore vectorStore;
+
+    @Resource
+    private org.springframework.ai.embedding.EmbeddingModel embeddingModel;
+
+    @Resource
+    @Qualifier("pgJdbcTemplate")
+    private JdbcTemplate pgJdbcTemplate;
 
     @Override
     @Transactional(rollbackFor = Exception.class)
@@ -141,7 +158,10 @@ public class JobServiceImpl extends ServiceImpl<JobMapper, Job> implements JobSe
         job.setId(jobId);
         job.setStatus("PUBLISHED");
         job.setPublishedAt(LocalDateTime.now());
-        return this.updateById(job);
+        boolean ok = this.updateById(job);
+        // 异步向量化（不阻塞发布流程）
+        try { vectorizeJob(jobId); } catch (Exception e) { log.warn("职位向量化失败: {}", e.getMessage()); }
+        return ok;
     }
 
     @Override
@@ -215,6 +235,112 @@ public class JobServiceImpl extends ServiceImpl<JobMapper, Job> implements JobSe
         }).sorted((a, b) -> b.getMatchScore().compareTo(a.getMatchScore())).toList();
 
         return result.subList(0, Math.min(20, result.size()));
+    }
+
+    // ==================== AI 语义搜索 ====================
+
+    @Override
+    public Page<JobVO> semanticSearch(String query, JobQueryRequest filters) {
+        if (StringUtils.isBlank(query)) return listJobs(filters);
+
+        Map<Long, Double> scoreMap = new LinkedHashMap<>();
+        try {
+            // 1. EmbeddingModel 向量化查询
+            float[] qEmb = embeddingModel.embed(query);
+            String vecStr = java.util.Arrays.toString(qEmb);
+
+            // 2. JDBC 直连 pgvector 做余弦相似度检索
+            JdbcTemplate jt = pgJdbcTemplate;
+            String sql = "SELECT id, metadata, 1 - (embedding <=> ?::vector) AS sim " +
+                         "FROM job_vectors " +
+                         "ORDER BY embedding <=> ?::vector LIMIT ?";
+            List<Map<String, Object>> rows = jt.queryForList(sql, vecStr, vecStr, 50);
+            log.info("语义搜索: query='{}', JDBC 匹配 {} 条", query, rows.size());
+
+            // 3. 解析 metadata（PGobject 转为 String）
+            com.fasterxml.jackson.databind.ObjectMapper om = new com.fasterxml.jackson.databind.ObjectMapper();
+            for (Map<String, Object> row : rows) {
+                try {
+                    Object metaRaw = row.get("metadata");
+                    String metaJson = metaRaw != null ? metaRaw.toString() : "{}";
+                    @SuppressWarnings("unchecked")
+                    Map<String, Object> meta = om.readValue(metaJson, Map.class);
+                    Object jid = meta.get("jobId");
+                    if (jid == null) continue;
+                    Long jobId = jid instanceof Number n ? n.longValue() : Long.valueOf(jid.toString());
+                    double sim = ((Number) row.get("sim")).doubleValue();
+                    scoreMap.putIfAbsent(jobId, sim);
+                } catch (Exception ignored) {}
+            }
+        } catch (Exception e) {
+            log.error("语义搜索失败: {}", e.getMessage());
+            return new Page<>(filters.getCurrent(), filters.getPageSize(), 0);
+        }
+        if (scoreMap.isEmpty()) return new Page<>(filters.getCurrent(), filters.getPageSize(), 0);
+
+        // 从 MySQL 查询完整 Job 数据
+        LambdaQueryWrapper<Job> w = new LambdaQueryWrapper<>();
+        w.in(Job::getId, scoreMap.keySet());
+        w.eq(Job::getStatus, "PUBLISHED");
+        // 叠加精确筛选
+        if (StringUtils.isNotBlank(filters.getCity())) w.eq(Job::getCity, filters.getCity());
+        if (StringUtils.isNotBlank(filters.getCategory())) w.eq(Job::getCategory, filters.getCategory());
+        if (filters.getSalaryMin() != null) w.ge(Job::getSalaryMax, filters.getSalaryMin());
+        w.orderByDesc(Job::getPublishedAt);
+
+        List<Job> jobs = this.list(w);
+        // 按相似度排序
+        jobs.sort((a, b) -> Double.compare(
+                scoreMap.getOrDefault(b.getId(), 0.0),
+                scoreMap.getOrDefault(a.getId(), 0.0)));
+
+        // 手动分页
+        int total = jobs.size();
+        int from = (filters.getCurrent() - 1) * filters.getPageSize();
+        int to = Math.min(from + filters.getPageSize(), total);
+        List<JobVO> voList = jobs.subList(Math.min(from, total), to).stream()
+                .map(j -> {
+                    JobVO vo = buildJobVO(j);
+                    vo.setMatchScore((int) (scoreMap.getOrDefault(j.getId(), 0.0) * 100));
+                    return vo;
+                }).toList();
+
+        Page<JobVO> page = new Page<>(filters.getCurrent(), filters.getPageSize(), total);
+        page.setRecords(voList);
+        return page;
+    }
+
+    @Override
+    public void vectorizeJob(Long jobId) {
+        Job job = this.getById(jobId);
+        if (job == null || !"PUBLISHED".equals(job.getStatus())) return;
+
+        // 拼接职位文本用于向量化
+        String text = String.join(" | ",
+                job.getTitle() != null ? job.getTitle() : "",
+                job.getDescription() != null ? job.getDescription() : "",
+                job.getSkillsRequired() != null ? job.getSkillsRequired() : "",
+                job.getTags() != null ? job.getTags() : "",
+                job.getCity() != null ? job.getCity() : "",
+                job.getCategory() != null ? job.getCategory() : ""
+        ).replaceAll("\\s+", " ").trim();
+
+        if (text.length() < 10) return;
+
+        // 用 JDBC 直写 pgvector（绕过 PgVectorStore metadata 兼容问题）
+        try {
+            float[] emb = embeddingModel.embed(text);
+            String vecStr = java.util.Arrays.toString(emb);
+            JdbcTemplate jt = pgJdbcTemplate;
+            jt.update("DELETE FROM job_vectors WHERE metadata->>'jobId' = ?", String.valueOf(jobId));
+            jt.update("INSERT INTO job_vectors (id, content, metadata, embedding) " +
+                      "VALUES (?::uuid, ?, ?::jsonb, ?::vector)",
+                      java.util.UUID.randomUUID().toString(), text,
+                      "{\"jobId\":" + jobId + "}", vecStr);
+            log.info("职位向量化完成: jobId={}", jobId);
+        } catch (Exception e) {
+            log.error("职位向量化失败: jobId={}, error={}", jobId, e.getMessage());
+        }
     }
 
     // ==================== 技能标签 ====================

@@ -12,6 +12,7 @@ const currentPage = ref(1)
 const pageSize = ref(8)
 const searchParams = ref({ keyword: '', city: '', salary: '', sortBy: 'time' })
 const tab = ref('all') // all | my
+const aiMode = ref(false)
 const role = computed(() => JSON.parse(localStorage.getItem('user') || '{}').role || '')
 
 async function fetchJobs() {
@@ -28,7 +29,7 @@ async function fetchJobs() {
       if (lo) params.salaryMin = parseInt(lo)
       if (hi) params.salaryMax = parseInt(hi)
     }
-    const url = tab.value === 'my' ? '/api/jobs/my?' : '/api/jobs?'
+    const url = tab.value === 'my' ? '/api/jobs/my?' : aiMode.value ? '/api/jobs/search/semantic?' : '/api/jobs?'
     const res = await fetch(url + new URLSearchParams(params), {
       headers: localStorage.getItem('token') ? { 'Authorization': 'Bearer ' + localStorage.getItem('token') } : {}
     })
@@ -49,6 +50,7 @@ async function fetchJobs() {
 }
 
 function handleSearch(params) {
+  aiMode.value = false
   searchParams.value = { ...searchParams.value, ...params }
   currentPage.value = 1
   fetchJobs()
@@ -72,6 +74,19 @@ async function handleApply(jobId) {
   } catch(e) { alert('投递失败') }
 }
 
+async function handlePublish(jobId) {
+  const token = localStorage.getItem('token')
+  if (!token) { router.push('/login'); return }
+  try {
+    const res = await fetch('/api/jobs/' + jobId + '/publish', { method: 'PUT',
+      headers: { 'Authorization': 'Bearer ' + token }
+    })
+    const data = await res.json()
+    if (data.code === 0) { alert('职位已发布！'); fetchJobs() }
+    else alert(data.message || '发布失败')
+  } catch(e) { alert('发布失败') }
+}
+
 async function handleFavorite(jobId) {
   const token = localStorage.getItem('token')
   if (!token) { router.push('/login'); return }
@@ -87,8 +102,9 @@ async function handleFavorite(jobId) {
 }
 
 function handleAiSearch(params) {
+  aiMode.value = true
   searchParams.value = { ...searchParams.value, ...params }
-  router.push('/jobs?ai=1')
+  currentPage.value = 1
   fetchJobs()
 }
 function changePage(p) { currentPage.value = p; fetchJobs() }
@@ -109,7 +125,7 @@ onMounted(fetchJobs)
       </div>
     </div>
 
-    <SearchBar @search="handleSearch" />
+    <SearchBar @search="handleSearch" @aiSearch="handleAiSearch" />
 
     <!-- Sort & Count -->
     <div class="flex items-center justify-between mt-6 mb-4">
@@ -137,12 +153,15 @@ onMounted(fetchJobs)
     <div v-else class="grid grid-cols-1 md:grid-cols-2 gap-4">
       <template v-for="job in jobs" :key="job.id">
         <div class="relative">
-          <JobCard :job="job" @apply="handleApply" @favorite="handleFavorite" @click="id => router.push('/jobs/' + id)" />
+          <JobCard :job="job" :showActions="role === 'SEEKER'" @apply="handleApply" @favorite="handleFavorite" @click="id => router.push('/jobs/' + id)" />
           <div v-if="tab === 'my'" class="absolute top-3 right-3 flex items-center gap-1">
             <span class="px-2 py-0.5 text-xs rounded-full"
               :class="job.status === 'PUBLISHED' ? 'bg-green-50 text-green-600' : job.status === 'CLOSED' ? 'bg-gray-100 text-gray-500' : 'bg-yellow-50 text-yellow-600'">
               {{ job.status === 'PUBLISHED' ? '已发布' : job.status === 'CLOSED' ? '已关闭' : '草稿' }}
             </span>
+            <button v-if="job.status !== 'PUBLISHED' && job.status !== 'CLOSED'"
+              @click.stop="handlePublish(job.id)"
+              class="px-2 py-0.5 text-xs bg-green-600 text-white rounded hover:bg-green-700 transition-colors">发布</button>
           </div>
         </div>
       </template>
