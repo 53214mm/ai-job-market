@@ -48,7 +48,7 @@ public class AiInterviewServiceImpl implements AiInterviewService {
             只返回 JSON。
             """.formatted(job.getTitle(), StringUtils.defaultString(job.getRequirement(), job.getDescription()));
 
-        String result = jobApp.doChat(prompt, "interview-gen-" + jobId);
+        String result = jobApp.doChat(prompt, "interview-gen-" + jobId + "-" + System.currentTimeMillis());
         String question = extractJsonField(result, "question");
         String keywords = extractJsonField(result, "keywords");
 

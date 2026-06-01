@@ -201,7 +201,7 @@ public class CompanyServiceImpl extends ServiceImpl<CompanyMapper, Company>
                 StringUtils.defaultString(company.getWelfare(), "未填写")
             );
 
-        return jobApp.doChat(prompt, "company-describe-" + companyId);
+        return jobApp.doChat(prompt, "company-describe-" + companyId + "-" + System.currentTimeMillis());
     }
 
     // ==================== 辅助方法 ====================

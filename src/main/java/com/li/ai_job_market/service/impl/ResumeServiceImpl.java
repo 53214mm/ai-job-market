@@ -445,7 +445,7 @@ public class ResumeServiceImpl extends ServiceImpl<ResumeMapper, Resume>
             %s
             """.formatted(resumeMarkdown);
 
-        String result = jobApp.doChat(prompt, "resume-analyze-" + resumeId);
+        String result = jobApp.doChat(prompt, "resume-analyze-" + resumeId + "-" + System.currentTimeMillis());
 
         // 解析 AI 返回的 JSON 结果
         AiResumeAnalysis analysis = new AiResumeAnalysis();
@@ -528,7 +528,7 @@ public class ResumeServiceImpl extends ServiceImpl<ResumeMapper, Resume>
             %s
             """.formatted(resumeMarkdown);
 
-        return jobApp.doChat(prompt, "resume-optimize-" + resumeId);
+        return jobApp.doChat(prompt, "resume-optimize-" + resumeId + "-" + System.currentTimeMillis());
     }
 
     // ==================== PDF 导出 ====================
@@ -651,7 +651,7 @@ public class ResumeServiceImpl extends ServiceImpl<ResumeMapper, Resume>
             %s
             """.formatted(pdfText.length() > 6000 ? pdfText.substring(0, 6000) : pdfText);
 
-        String jsonResult = jobApp.doChat(prompt, "pdf-parse-" + userId);
+        String jsonResult = jobApp.doChat(prompt, "pdf-parse-" + userId + "-" + System.currentTimeMillis());
 
         // 创建简历
         Resume resume = new Resume();
