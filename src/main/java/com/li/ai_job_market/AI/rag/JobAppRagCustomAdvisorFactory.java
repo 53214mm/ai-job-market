@@ -4,31 +4,23 @@ import org.springframework.ai.chat.client.advisor.api.Advisor;
 import org.springframework.ai.rag.advisor.RetrievalAugmentationAdvisor;
 import org.springframework.ai.rag.retrieval.search.VectorStoreDocumentRetriever;
 import org.springframework.ai.vectorstore.VectorStore;
-import org.springframework.ai.vectorstore.filter.Filter;
-import org.springframework.ai.vectorstore.filter.FilterExpressionBuilder;
 
 /**
- * 创建自定义的 RAG 增强顾问工厂类，后续可在此类中添加创建不同类型 RAG 增强顾问的方法
+ * RAG 增强顾问工厂，基于 pgvector 向量库检索相关文档增强 AI 回答
  */
 public class JobAppRagCustomAdvisorFactory {
 
     /**
-     * 创建一个基于向量数据库的 RAG 增强顾问，示例中通过过滤表达式筛选出特定状态的文档进行增强
-     * @param vectorStore
-     * @param status
-     * @return
+     * 创建基于 pgvector 的 RAG 增强顾问
+     * 检索与用户问题最相似的前 3 条文档，增强后喂给 AI
+     *
+     * @param vectorStore pgvector 向量存储
      */
-    public static Advisor createLoveAppRagCustomAdvisor(VectorStore vectorStore,String status) {
-        // 构建过滤表达式，筛选出状态为指定值的文档
-        Filter.Expression expression = new FilterExpressionBuilder()
-                .eq("status", status)
-                .build();
-
+    public static Advisor createJobRagAdvisor(VectorStore vectorStore) {
         VectorStoreDocumentRetriever documentRetriever = VectorStoreDocumentRetriever.builder()
                 .vectorStore(vectorStore)
-                .filterExpression(expression) // 通过过滤表达式筛选出特定状态的文档进行增强
-                .similarityThreshold(0.5) // 设置相似度阈值，只有相似度高于该值的文档才会被检索到
-                .topK(3) // 设置返回的文档数量，示例中返回最相似的3条文档
+                .similarityThreshold(0.5)
+                .topK(3)
                 .build();
 
         return RetrievalAugmentationAdvisor.builder()
@@ -36,5 +28,4 @@ public class JobAppRagCustomAdvisorFactory {
                 .queryAugmenter(JobAppContextualQueryAugmenterFactory.createInstance())
                 .build();
     }
-
 }

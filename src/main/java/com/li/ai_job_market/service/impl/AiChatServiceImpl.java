@@ -58,7 +58,10 @@ public class AiChatServiceImpl implements AiChatService {
 
         // 调用 AI，chatId 格式关联会话，Redis 自动管理多轮上下文
         String chatId = "ai-chat-" + sessionId;
-        String reply = jobApp.doChat(message, chatId);
+        // 根据会话类型选择：RAG 类型走知识库增强，普通类型走基础对话
+        String reply = "RAG".equalsIgnoreCase(session.getSessionType())
+                ? jobApp.doChatWithRag(message, chatId)
+                : jobApp.doChat(message, chatId);
 
         // 保存 AI 回复
         AiChatMessage aiMsg = new AiChatMessage();

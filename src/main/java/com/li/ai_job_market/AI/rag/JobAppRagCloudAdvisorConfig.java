@@ -26,7 +26,7 @@ class JobAppRagCloudAdvisorConfig {
         DashScopeApi dashScopeApi = DashScopeApi.builder()
                 .apiKey(dashScopeApiKey)
                 .build();
-        final String KNOWLEDGE_INDEX = "恋爱大师";
+        final String KNOWLEDGE_INDEX = "ai_job_market";
         DocumentRetriever documentRetriever = new DashScopeDocumentRetriever(dashScopeApi,
                 DashScopeDocumentRetrieverOptions.builder()
                         .withIndexName(KNOWLEDGE_INDEX)

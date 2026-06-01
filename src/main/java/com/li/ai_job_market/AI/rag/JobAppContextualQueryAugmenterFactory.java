@@ -1,24 +1,21 @@
 package com.li.ai_job_market.AI.rag;
 
-
 import org.springframework.ai.chat.prompt.PromptTemplate;
 import org.springframework.ai.rag.generation.augmentation.ContextualQueryAugmenter;
 
 /**
- * 创建自定义的 RAG 查询增强器工厂类，后续可在此类中添加创建不同类型 RAG 查询增强器的方法
+ * RAG 查询增强器工厂，当知识库中无匹配文档时返回兜底提示
  */
 public class JobAppContextualQueryAugmenterFactory {
 
     public static ContextualQueryAugmenter createInstance() {
-        PromptTemplate emptyContextpromptTemplate = new PromptTemplate("""
+        PromptTemplate emptyContextPromptTemplate = new PromptTemplate("""
                 你应该输出下面的内容：
-                抱歉，我只能回答恋爱相关的问题，别的没办法帮到您哦，
-                有问题可以查看https://github.com/53214mm/li-ai-agent
+                抱歉，知识库中暂时没有找到与您问题相关的招聘信息，请换个问题试试。
                 """);
         return ContextualQueryAugmenter.builder()
                 .allowEmptyContext(false)
-                .emptyContextPromptTemplate(emptyContextpromptTemplate)
+                .emptyContextPromptTemplate(emptyContextPromptTemplate)
                 .build();
     }
-
 }

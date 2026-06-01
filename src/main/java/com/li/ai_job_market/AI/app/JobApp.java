@@ -3,6 +3,7 @@ package com.li.ai_job_market.AI.app;
 
 import com.li.ai_job_market.AI.advisor.MyLoggerAdvisor;
 import com.li.ai_job_market.AI.chatMemory.RedisBasedChatMemory;
+import com.li.ai_job_market.AI.rag.JobAppRagCustomAdvisorFactory;
 import com.li.ai_job_market.AI.rag.QueryRewriter;
 import jakarta.annotation.Resource;
 import lombok.extern.slf4j.Slf4j;
@@ -103,18 +104,13 @@ public class JobApp {
     }
 
     @Resource
-    private VectorStore loveAppVectorStore;
-    @Resource
-    private Advisor loveAppRagCloudAdvisor;
+    private VectorStore jobAppVectorStore;
     @Resource
     private QueryRewriter queryRewriter;
 
     /**
-     * AI RAG对话
-     *
-     * @param message
-     * @param chatId
-     * @return
+     * AI RAG对话（检索增强生成）
+     * 从 pgvector 知识库检索相关文档后增强回答
      */
     public String doChatWithRag(String message, String chatId) {
         message = queryRewriter.doQueryRewrite(message);
@@ -123,16 +119,10 @@ public class JobApp {
                 .prompt()
                 .user(message)
                 .advisors(spec -> spec.param(ChatMemory.CONVERSATION_ID, chatId))
-                // 应用 RAG 知识库问答 QuestionAnswerAdvisor
-//                .advisors(QuestionAnswerAdvisor.builder(loveAppVectorStore).build())
-                // 应用 RAG 检索增强服务（基于云知识库服务）
-//                .advisors(loveAppRagCloudAdvisor)
-                // 应用自定义的 RAG 检索增强服务（文档查询器 + 上下文增强器）RetrievalAugmentationAdvisor
-//                .advisors(
-//                        LoveAppRagCustomAdvisorFactory.createLoveAppRagCustomAdvisor(
-//                                loveAppVectorStore,"单身"
-//                        )
-//                )
+                // 基于 pgvector 的自定义 RAG 检索增强（文档查询器 + 上下文增强器）
+                .advisors(
+                        JobAppRagCustomAdvisorFactory.createJobRagAdvisor(jobAppVectorStore)
+                )
                 .call()
                 .chatResponse();
         String content = chatResponse.getResult().getOutput().getText();
