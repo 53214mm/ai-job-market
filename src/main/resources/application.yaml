@@ -42,10 +42,11 @@ spring:
       max-file-size: 10MB
       max-request-size: 10MB
 
-# 自定义 Redis 对话记忆配置（可选扩展）
+# 自定义 Redis 对话记忆配置
 chat-memory:
   redis:
     key-prefix: "chat:memory:"  # 对话历史 key 前缀
+    ttl-days: 7                 # 对话历史过期天数，默认7天
 
 jwt:
   secret: ai-job-market-secret-key-2026-must-be-long-enough

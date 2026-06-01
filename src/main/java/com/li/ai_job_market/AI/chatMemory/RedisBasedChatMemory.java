@@ -12,6 +12,7 @@ import org.springframework.stereotype.Component;
 
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
+import java.time.Duration;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
@@ -32,14 +33,15 @@ public class RedisBasedChatMemory implements ChatMemory {
 
     private final RedisTemplate<String, byte[]> redisTemplate;
     private final String keyPrefix;
+    private final Duration ttl;
 
-
-    // Single constructor for Spring injection. The key prefix is read from configuration
-    // property `chat-memory.redis.key-prefix` with a sensible default.
+    // Single constructor for Spring injection.
     public RedisBasedChatMemory(RedisTemplate<String, byte[]> redisTemplate,
-                                @Value("${chat-memory.redis.key-prefix:chat:memory:}") String keyPrefix) {
+                                @Value("${chat-memory.redis.key-prefix:chat:memory:}") String keyPrefix,
+                                @Value("${chat-memory.redis.ttl-days:7}") long ttlDays) {
         this.redisTemplate = Objects.requireNonNull(redisTemplate, "redisTemplate must not be null");
         this.keyPrefix = keyPrefix == null || keyPrefix.isEmpty() ? "chat:memory:" : keyPrefix;
+        this.ttl = Duration.ofDays(ttlDays);
     }
 
     private String keyFor(String conversationId) {
@@ -76,7 +78,8 @@ public class RedisBasedChatMemory implements ChatMemory {
 
     private void saveConversation(String conversationId, List<Message> messages) {
         byte[] data = serializeMessages(messages);
-        redisTemplate.opsForValue().set(keyFor(conversationId), data);
+        // 设置过期时间，避免对话历史无限堆积
+        redisTemplate.opsForValue().set(keyFor(conversationId), data, ttl);
     }
 
     private byte[] serializeMessages(List<Message> messages) {
