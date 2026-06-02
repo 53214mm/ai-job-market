@@ -44,6 +44,9 @@ import Messages from './pages/Messages.vue'
 
 // 招聘方专用
 import JobCreate from './pages/JobCreate.vue'
+import JobDetail from './pages/JobDetail.vue'
+import Articles from './pages/Articles.vue'
+import ArticleDetail from './pages/ArticleDetail.vue'
 import RecruiterApps from './pages/RecruiterApplications.vue'
 
 const routes = [
@@ -51,6 +54,9 @@ const routes = [
   { path: '/login', name: 'Login', component: Login },
   { path: '/register', name: 'Register', component: Register },
   { path: '/jobs', name: 'Jobs', component: Jobs },
+  { path: '/jobs/:id', name: 'JobDetail', component: JobDetail },
+  { path: '/articles', name: 'Articles', component: Articles },
+  { path: '/articles/:id', name: 'ArticleDetail', component: ArticleDetail },
 
   // 求职者
   { path: '/seeker', name: 'SeekerDashboard', component: SeekerDashboard },
@@ -74,6 +80,7 @@ const routes = [
   { path: '/recruiter/jobs', name: 'RecruiterJobs', component: Jobs },
   { path: '/recruiter/jobs/create', name: 'JobCreate', component: JobCreate },
   { path: '/recruiter/applications', name: 'RecruiterApplications', component: RecruiterApps },
+  { path: '/recruiter/resumes/:id', name: 'RecruiterResumeView', component: ResumeDetail },
 
   // AI
   { path: '/ai/chat', name: 'AiChat', component: AiChat },

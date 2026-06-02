@@ -1,6 +1,8 @@
 <script setup>
 import { ref, onMounted } from 'vue'
+import { useRouter } from 'vue-router'
 
+const router = useRouter()
 const token = localStorage.getItem('token')
 const h = () => ({ 'Authorization': 'Bearer ' + token, 'Content-Type': 'application/json' })
 
@@ -83,12 +85,14 @@ onMounted(loadApps)
               <span v-if="a.aiMatchScore" class="text-xs text-gray-400">AI匹配: {{ a.aiMatchScore }}%</span>
             </div>
             <p class="text-xs text-gray-400 mb-2">
-              求职者: ID#{{ a.seekerId }} · 投递时间: {{ (a.createdAt||'').slice(0, 10) }}
+              求职者: {{ a.seekerName || 'ID#' + a.seekerId }} · {{ a.resumeTitle || '' }} · 投递时间: {{ (a.createdAt||'').slice(0, 10) }}
             </p>
             <p v-if="a.coverLetter" class="text-xs text-gray-500 mb-2 bg-gray-50 p-2 rounded">
               附言: {{ a.coverLetter?.slice(0, 120) }}{{ a.coverLetter?.length > 120 ? '...' : '' }}
             </p>
             <div class="flex gap-2 flex-wrap">
+              <button v-if="a.resumeId" @click="router.push('/recruiter/resumes/' + a.resumeId)"
+                class="text-xs px-2 py-1 border border-green-200 rounded hover:bg-green-50 text-green-600">查看简历</button>
               <button v-if="a.status === 'APPLIED'" @click="changeStatus(a.id, 'VIEWED')"
                 class="text-xs px-2 py-1 border border-gray-200 rounded hover:bg-gray-50 text-gray-600">标记已查看</button>
               <button v-if="a.status === 'APPLIED' || a.status === 'VIEWED'" @click="changeStatus(a.id, 'SCREENING')"

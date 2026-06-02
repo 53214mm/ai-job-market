@@ -61,12 +61,24 @@ public class ResumeController {
         return ResultUtils.success(page);
     }
 
-    // 获取简历详情
+    // 获取简历详情（仅简历所有者）
     @GetMapping("/{id}")
     public BaseResponse<ResumeVO> detail(@PathVariable Long id,
                                           HttpServletRequest request) {
         Long userId = getLoginUserId(request);
         ResumeVO vo = resumeService.getResumeDetail(id, userId);
+        return ResultUtils.success(vo);
+    }
+
+    // 招聘方查看投递者简历
+    @GetMapping("/{id}/view")
+    public BaseResponse<ResumeVO> viewForRecruiter(@PathVariable Long id,
+                                                    HttpServletRequest request) {
+        UserVO user = userService.getLoginUser(request);
+        ThrowUtils.throwIf(!UserRoleEnum.RECRUITER.getValue().equals(user.getRole())
+                        && !UserRoleEnum.ADMIN.getValue().equals(user.getRole()),
+                ErrorCode.NO_AUTH_ERROR, "仅招聘方可查看投递简历");
+        ResumeVO vo = resumeService.getResumeForRecruiter(id, user.getId());
         return ResultUtils.success(vo);
     }
 

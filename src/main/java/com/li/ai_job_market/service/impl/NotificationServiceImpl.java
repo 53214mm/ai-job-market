@@ -109,6 +109,11 @@ public class NotificationServiceImpl extends ServiceImpl<NotificationMapper, Not
         return ok;
     }
 
+    @Override
+    public int markReadByRelatedId(Long relatedId) {
+        return this.getBaseMapper().markReadByRelatedId(relatedId);
+    }
+
     private NotificationVO toVO(Notification n) {
         NotificationVO vo = new NotificationVO();
         vo.setId(n.getId());

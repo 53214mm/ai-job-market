@@ -143,7 +143,41 @@ public class MessageServiceImpl extends ServiceImpl<MessageMapper, Message>
         ThrowUtils.throwIf(msg == null || !msg.getReceiverId().equals(userId),
                 ErrorCode.NO_AUTH_ERROR, "无权操作此消息");
         msg.setIsRead(1);
-        return this.updateById(msg);
+        boolean ok = this.updateById(msg);
+        // 同步标记关联的通知为已读
+        try { notificationService.markReadByRelatedId(id); } catch (Exception e) { /* ignore */ }
+        return ok;
+    }
+
+    @Override
+    public int markAllReadFromPeer(Long userId, Long peerId) {
+        int count = this.getBaseMapper().markAllReadFromPeer(userId, peerId);
+        // 同步清除与该会话消息关联的通知
+        try { notificationService.markAllRead(userId); } catch (Exception e) { /* ignore */ }
+        pushUnreadCount(userId);
+        return count;
+    }
+
+    @Override
+    public int markAllRead(Long userId) {
+        int count = this.getBaseMapper().markAllRead(userId);
+        // 同步清理与私信关联的通知（每条私信自动创建一条通知）
+        try {
+            notificationService.markAllRead(userId);
+        } catch (Exception e) {
+            log.warn("清理私信相关通知失败: {}", e.getMessage());
+        }
+        pushUnreadCount(userId);
+        return count;
+    }
+
+    @Override
+    public int deleteConversation(Long userId, Long peerId) {
+        log.info("删除私聊: userId={}, peerId={}", userId, peerId);
+        int count = this.getBaseMapper().deleteConversation(userId, peerId);
+        log.info("删除私聊结果: 删除了 {} 条消息", count);
+        pushUnreadCount(userId);
+        return count;
     }
 
     private MessageVO toVO(Message msg) {

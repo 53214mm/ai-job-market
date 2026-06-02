@@ -3,12 +3,48 @@ import { ref } from 'vue'
 import { useRouter } from 'vue-router'
 
 const router = useRouter()
-const form = ref({ email: '', password: '', checkPassword: '', role: 'SEEKER', nickname: '' })
+const form = ref({ email: '', password: '', checkPassword: '', role: 'SEEKER', nickname: '', code: '' })
 const loading = ref(false)
+const sending = ref(false)
+const countdown = ref(0)
 const error = ref('')
+const successMsg = ref('')
+
+let timer = null
+
+async function sendCode() {
+  if (!form.value.email) { error.value = '请先输入邮箱'; return }
+  if (countdown.value > 0) return
+  sending.value = true
+  error.value = ''
+  successMsg.value = ''
+  try {
+    const res = await fetch('/api/user/send-code', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ email: form.value.email })
+    })
+    const data = await res.json()
+    if (data.code === 0) {
+      successMsg.value = '验证码已发送，请查收邮箱'
+      countdown.value = 60
+      timer = setInterval(() => {
+        countdown.value--
+        if (countdown.value <= 0) { clearInterval(timer); timer = null }
+      }, 1000)
+    } else {
+      error.value = data.message || '发送失败'
+    }
+  } catch (e) {
+    error.value = '网络错误，请稍后重试'
+  } finally {
+    sending.value = false
+  }
+}
 
 async function handleRegister() {
   error.value = ''
+  if (!form.value.code) { error.value = '请输入邮箱验证码'; return }
   if (form.value.password !== form.value.checkPassword) {
     error.value = '两次密码不一致'
     return
@@ -22,6 +58,7 @@ async function handleRegister() {
     })
     const data = await res.json()
     if (data.code === 0) {
+      alert('注册成功！')
       router.push('/login')
     } else {
       error.value = data.message || '注册失败'
@@ -49,6 +86,9 @@ async function handleRegister() {
         <div v-if="error" class="p-3 bg-red-50 border border-red-200 rounded-md text-sm text-red-700">
           {{ error }}
         </div>
+        <div v-if="successMsg" class="p-3 bg-green-50 border border-green-200 rounded-md text-sm text-green-700">
+          {{ successMsg }}
+        </div>
 
         <!-- Role -->
         <div>
@@ -67,10 +107,24 @@ async function handleRegister() {
           </div>
         </div>
 
-        <!-- Email -->
+        <!-- Email + Send Code -->
         <div>
           <label class="block text-sm font-medium text-gray-700 mb-1.5">邮箱</label>
-          <input v-model="form.email" type="email" placeholder="请输入邮箱"
+          <div class="flex gap-2">
+            <input v-model="form.email" type="email" placeholder="请输入邮箱"
+              class="flex-1 px-3 py-2.5 border border-gray-200 rounded-md text-sm focus:outline-none focus:ring-2 focus:ring-blue-500" />
+            <button @click="sendCode" :disabled="sending || countdown > 0"
+              class="px-3 py-2.5 text-xs font-medium rounded-md transition-colors flex-shrink-0"
+              :class="countdown > 0 ? 'bg-gray-100 text-gray-400' : 'bg-blue-50 text-blue-600 hover:bg-blue-100'">
+              {{ countdown > 0 ? countdown + 's' : sending ? '发送中...' : '发送验证码' }}
+            </button>
+          </div>
+        </div>
+
+        <!-- Verification Code -->
+        <div>
+          <label class="block text-sm font-medium text-gray-700 mb-1.5">验证码</label>
+          <input v-model="form.code" type="text" placeholder="请输入6位验证码" maxlength="6"
             class="w-full px-3 py-2.5 border border-gray-200 rounded-md text-sm focus:outline-none focus:ring-2 focus:ring-blue-500" />
         </div>
 

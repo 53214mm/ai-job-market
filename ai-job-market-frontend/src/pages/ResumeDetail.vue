@@ -1,7 +1,6 @@
 <script setup>
-import { ref, onMounted } from 'vue'
+import { ref, onMounted, computed } from 'vue'
 import { useRoute, useRouter } from 'vue-router'
-import { resumeApi } from '../api.js'
 
 const route = useRoute()
 const router = useRouter()
@@ -9,22 +8,42 @@ const resume = ref(null)
 const analysis = ref(null)
 const loading = ref(true)
 
-onMounted(async () => {
-  try {
-    resume.value = await resumeApi.detail(route.params.id)
-  } catch (e) { alert(e.message); router.push('/resumes') }
-  finally { loading.value = false }
+const token = () => localStorage.getItem('token')
+const role = computed(() => {
+  try { return JSON.parse(localStorage.getItem('user') || '{}').role || '' }
+  catch(e) { return '' }
 })
+const isRecruiter = computed(() => role.value === 'RECRUITER' || role.value === 'ADMIN')
+
+async function loadResume() {
+  try {
+    const h = { 'Authorization': 'Bearer ' + token(), 'Content-Type': 'application/json' }
+    const url = isRecruiter.value
+      ? '/api/resumes/' + route.params.id + '/view'
+      : '/api/resumes/' + route.params.id
+    const res = await fetch(url, { headers: h })
+    const d = await res.json()
+    if (d.code === 0) resume.value = d.data
+    else throw new Error(d.message || '加载失败')
+  } catch (e) {
+    alert(e.message)
+    router.push(isRecruiter.value ? '/recruiter/applications' : '/resumes')
+  } finally { loading.value = false }
+}
+
+onMounted(loadResume)
 
 async function handleAiAnalyze() {
   try {
-    analysis.value = await resumeApi.aiAnalyze(route.params.id)
-    resume.value.aiScore = analysis.value.overallScore
+    const h = { 'Authorization': 'Bearer ' + token(), 'Content-Type': 'application/json' }
+    const res = await fetch('/api/resumes/' + route.params.id + '/ai-analyze', { method: 'POST', headers: h })
+    const d = await res.json()
+    if (d.code === 0) { analysis.value = d.data; resume.value.aiScore = d.data.overallScore }
   } catch (e) { alert(e.message) }
 }
 
 async function handleExportPdf() {
-  window.open(resumeApi.exportPdf(route.params.id), '_blank')
+  window.open('/api/resumes/' + route.params.id + '/export-pdf', '_blank')
 }
 
 function goEdit() {
@@ -42,10 +61,10 @@ function goEdit() {
     <template v-else-if="resume">
       <!-- Top bar -->
       <div class="flex items-center justify-between mb-6">
-        <button @click="router.push('/resumes')" class="text-sm text-gray-500 hover:text-blue-600 flex items-center gap-1">
-          &larr; 返回列表
+        <button @click="router.push(isRecruiter ? '/recruiter/applications' : '/resumes')" class="text-sm text-gray-500 hover:text-blue-600 flex items-center gap-1">
+          &larr; {{ isRecruiter ? '返回投递列表' : '返回列表' }}
         </button>
-        <div class="flex items-center gap-2">
+        <div v-if="!isRecruiter" class="flex items-center gap-2">
           <button @click="handleAiAnalyze" class="px-3 py-1.5 text-xs font-medium bg-blue-50 text-blue-600 rounded-md hover:bg-blue-100 transition-colors">
             AI 分析
           </button>

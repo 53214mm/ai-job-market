@@ -36,7 +36,7 @@ async function fetchJobs() {
     const data = await res.json()
     if (data.code === 0) {
       jobs.value = (data.data.records || []).map(j => ({
-        id: j.id, title: j.title, company: j.companyName || '未知公司', city: j.city || '未指定',
+        id: j.id, companyId: j.companyId, title: j.title, company: j.companyName || '未知公司', city: j.city || '未指定',
         salary: (j.salaryMin || j.salaryMax) ? (j.salaryMin || '') + 'K-' + (j.salaryMax || '') + 'K' : '薪资面议',
         experience: j.experienceLevel || '不限', tags: ((j.tags || '') + ',' + (j.skillsRequired || '')).split(/[,，]/).filter(Boolean).slice(0, 4),
         matchScore: j.matchScore || null, postedTime: j.publishedAt ? j.publishedAt.slice(0, 10) : (j.createdAt || '').slice(0, 10),

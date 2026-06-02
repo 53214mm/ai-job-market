@@ -152,6 +152,29 @@ public class JobServiceImpl extends ServiceImpl<JobMapper, Job> implements JobSe
     }
 
     @Override
+    public boolean adminCloseJob(Long jobId) {
+        Job job = this.getById(jobId);
+        ThrowUtils.throwIf(job == null, ErrorCode.NOT_FOUND_ERROR, "职位不存在");
+        Job update = new Job();
+        update.setId(jobId);
+        update.setStatus("CLOSED");
+        return this.updateById(update);
+    }
+
+    @Override
+    public boolean adminRepublishJob(Long jobId) {
+        Job job = this.getById(jobId);
+        ThrowUtils.throwIf(job == null, ErrorCode.NOT_FOUND_ERROR, "职位不存在");
+        Job update = new Job();
+        update.setId(jobId);
+        update.setStatus("PUBLISHED");
+        update.setPublishedAt(LocalDateTime.now());
+        boolean ok = this.updateById(update);
+        try { vectorizeJob(jobId); } catch (Exception e) { log.warn("职位向量化失败: {}", e.getMessage()); }
+        return ok;
+    }
+
+    @Override
     public boolean publishJob(Long jobId, Long userId) {
         checkJobAccess(jobId, userId);
         Job job = new Job();

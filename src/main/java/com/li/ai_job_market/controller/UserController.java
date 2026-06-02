@@ -29,9 +29,27 @@ public class UserController {
     @Resource
     private UserService userService;
 
+    @Resource
+    private com.li.ai_job_market.service.EmailService emailService;
+
+    // 发送邮箱验证码
+    @PostMapping("/send-code")
+    public BaseResponse<?> sendCode(@RequestBody RegisterRequest req) {
+        ThrowUtils.throwIf(StringUtils.isBlank(req.getEmail()), ErrorCode.PARAMS_ERROR, "邮箱不能为空");
+        try {
+            emailService.sendVerificationCode(req.getEmail());
+        } catch (Exception e) {
+            return ResultUtils.error(ErrorCode.SYSTEM_ERROR, e.getMessage());
+        }
+        return ResultUtils.success("验证码已发送，请查收");
+    }
+
     // 用户注册
     @PostMapping("/register")
     public BaseResponse<Long> register(@RequestBody RegisterRequest req) {
+        ThrowUtils.throwIf(StringUtils.isBlank(req.getCode()), ErrorCode.PARAMS_ERROR, "请输入验证码");
+        ThrowUtils.throwIf(!emailService.verifyCode(req.getEmail(), req.getCode()),
+                ErrorCode.PARAMS_ERROR, "验证码错误或已过期");
         long userId = userService.register(
                 req.getEmail(), req.getPassword(), req.getCheckPassword(),
                 req.getRole(), req.getNickname());
@@ -115,6 +133,17 @@ public class UserController {
         User user = new User();
         user.setId(id);
         user.setStatus("DISABLED");
+        boolean result = userService.updateUser(user);
+        return ResultUtils.success(result);
+    }
+
+    // 管理员解禁用户
+    @PutMapping("/enable/{id}")
+    @AuthCheck(mustRole = "ADMIN")
+    public BaseResponse<Boolean> enableUser(@PathVariable Long id) {
+        User user = new User();
+        user.setId(id);
+        user.setStatus("ACTIVE");
         boolean result = userService.updateUser(user);
         return ResultUtils.success(result);
     }

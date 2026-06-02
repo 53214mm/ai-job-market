@@ -34,6 +34,20 @@ async function disableUser(id) {
   } catch (e) { alert('操作失败') }
 }
 
+async function enableUser(id) {
+  if (!confirm('确定解禁此用户？')) return
+  try {
+    const res = await fetch('/api/user/enable/' + id, {
+      method: 'PUT', headers: { 'Authorization': 'Bearer ' + localStorage.getItem('token') }
+    })
+    const data = await res.json()
+    if (data.code === 0) {
+      const u = users.value.find(x => x.id === id)
+      if (u) u.status = 'ACTIVE'
+    } else { alert(data.message) }
+  } catch (e) { alert('操作失败') }
+}
+
 function changePage(p) { currentPage.value = p; fetchUsers() }
 onMounted(fetchUsers)
 
@@ -79,6 +93,7 @@ const roleMap = { SEEKER: '求职者', RECRUITER: '招聘方', ADMIN: '管理员
             <td class="px-4 py-3 text-gray-400 text-xs">{{ (u.createdAt || '').slice(0, 10) }}</td>
             <td class="px-4 py-3 text-right">
               <button v-if="u.status === 'ACTIVE' && u.role !== 'ADMIN'" @click="disableUser(u.id)" class="text-xs px-2 py-1 text-red-600 hover:bg-red-50 rounded transition-colors">禁用</button>
+              <button v-if="u.status === 'DISABLED'" @click="enableUser(u.id)" class="text-xs px-2 py-1 text-green-600 hover:bg-green-50 rounded transition-colors">解禁</button>
             </td>
           </tr>
         </tbody>

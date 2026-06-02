@@ -510,3 +510,40 @@ export const aiApi = {
 | 17 | `ai-job-market-frontend/src/main.js` | 改:+AI路由 |
 
 **共 17 个文件（后端 12 新建 + 前端 3 新建 + 2 修改）。**
+
+---
+
+## 十二、后续更新（2026年6月）
+
+### 12.1 AI 语义搜索
+
+基于 pgvector + JDBC 直连的职位语义搜索：
+
+**架构**：独立的 `job_vectors` 表（避免与 `vector_store` 知识库表冲突），通过 JDBC 直连读写，绕过 PgVectorStore 的 UUID ID 限制和表重建问题。
+
+**流程**：
+1. 职位发布/更新 → 拼接 title+description+skills+tags → DashScope Embedding API → JDBC INSERT INTO job_vectors
+2. 用户搜索 → Embedding 向量化查询文本 → `embedding <=> query::vector` 余弦相似度 → 返回 TOP-N score → 解析 metadata 提取 jobId → MySQL 反查完整职位数据 → 按相似度排序分页返回
+
+**关键代码**：
+- `PgVectorConfig.pgJdbcTemplate` — 共享 JDBC 连接池
+- `JobServiceImpl.semanticSearch()` — 向量检索 + MySQL 混合查询
+- `JobServiceImpl.vectorizeJob()` — 单职位向量化
+
+### 12.2 RAG 知识库启用
+
+- `JobAppRagCustomAdvisorFactory` — 招聘领域自定义 Advisor
+- `JobAppDocumentLoader` — Markdown 文档加载器
+- 启动时自动扫描新增文档并向量化入 `vector_store`
+
+### 12.3 对话记忆优化
+
+- `RedisBasedChatMemory`：支持 TTL 过期（默认 7 天）
+- `FileBasedChatMemory`：本地文件持久化
+- `chatId` 加时间戳防记忆累积
+
+### 12.4 Agent 智能体
+
+- `BaseAgent` → `ReActAgent`（推理-行动循环） → `ToolCallAgent` → `JobAgent`
+- 工具集：文件操作、搜索、网页抓取、PDF 生成、终端操作
+- MCP 外部工具集成（mxai-mcp-server）

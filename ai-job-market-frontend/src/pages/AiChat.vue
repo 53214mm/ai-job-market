@@ -1,7 +1,15 @@
 <script setup>
 import { ref, nextTick, watch, onBeforeUnmount } from 'vue'
+import { useRouter } from 'vue-router'
 
+const router = useRouter()
 const token = localStorage.getItem('token')
+
+// 未登录则跳转登录页
+if (!token) {
+  router.replace('/login')
+  throw new Error('请先登录')
+}
 
 // ─── 按用户隔离存储 ───
 function getUID() {
@@ -179,7 +187,7 @@ async function send() {
           <span v-else>...</span>
         </button>
       </div>
-      <p class="text-xs text-gray-400 mt-2 text-center">AI 基于多轮对话上下文回答 · 支持 Markdown 格式</p>
+      <p class="text-xs text-gray-400 mt-2 text-center">AI 不一定完全正确，仅供参考，不构成任何法律建议</p>
     </div>
   </div>
 </template>

@@ -3,12 +3,25 @@ import { ref, onMounted, onUnmounted, nextTick } from 'vue'
 import { useStomp } from '../composables/useStomp.js'
 
 const token = localStorage.getItem('token')
-const uid = (() => {
+
+// 从 JWT token 解析 userId，比 localStorage user 对象更可靠
+function parseUid() {
   try {
     const u = JSON.parse(localStorage.getItem('user') || '{}')
     return u.id != null ? Number(u.id) : null
   } catch(e) { return null }
-})()
+}
+// 动态获取，每次使用时重新读取（防止 token 切换后 uid 过期）
+function getUid() {
+  return parseUid()
+}
+function getPeer(c) {
+  const uid = getUid()
+  if (uid == null) return null
+  // 使用 == 而非 === 以兼容后端返回字符串/数字类型不一致
+  return c.senderId == uid ? c.receiverId : c.senderId
+}
+
 const h = () => ({ 'Authorization': 'Bearer ' + token, 'Content-Type': 'application/json' })
 
 const { connected, connect, onMessage, sendMessage } = useStomp()
@@ -48,15 +61,11 @@ async function openChat(peerId, peerName) {
     const res = await fetch('/api/messages/' + peerId + '?current=1&pageSize=50', { headers: h() })
     const d = await res.json()
     if (d.code === 0) {
-      messages.value = (d.data.records || []).reverse()
-      let anyRead = false
-      for (const m of messages.value) {
-        if (m.receiverId === uid && m.isRead === 0) {
-          fetch('/api/messages/' + m.id + '/read', { method: 'PUT', headers: h() }).catch(() => {})
-          anyRead = true
-        }
-      }
-      if (anyRead) window.dispatchEvent(new Event('unread-changed'))
+      messages.value = (d.data.records || [])
+      // 无论当前页是否有未读，都调用批量已读 API 覆盖该会话全部消息（包括分页外的旧消息）
+      fetch('/api/messages/' + peerId + '/read-all', { method: 'PUT', headers: h() })
+        .catch(() => {})
+        .finally(() => window.dispatchEvent(new Event('unread-changed')))
     }
   } catch(e) { console.error(e) }
   finally { loading.value = false }
@@ -73,7 +82,7 @@ async function sendMsg() {
     // 乐观更新：立即在本地显示自己发出的消息
     const myInfo = JSON.parse(localStorage.getItem('user') || '{}')
     messages.value.push({
-      senderId: uid,
+      senderId: getUid(),
       receiverId: activePeer.value,
       content: text,
       createdAt: new Date().toISOString(),
@@ -91,7 +100,7 @@ async function sendMsg() {
       })
       const d = await res.json()
       if (d.code === 0) {
-        messages.value.push({ ...d.data, senderId: uid })
+        messages.value.push({ ...d.data, senderId: getUid() })
         input.value = ''
         scroll()
         loadConversations()
@@ -125,6 +134,40 @@ function selectUser(user) {
   loadConversations()
 }
 
+async function deleteConversation(peerId) {
+  if (!confirm('确定删除该私聊记录？')) return
+  // 乐观删除：立即从本地列表移除
+  conversations.value = conversations.value.filter(c => {
+    const p = getPeer(c)
+    return p !== peerId
+  })
+  if (activePeer.value === peerId) {
+    activePeer.value = null
+    activePeerName.value = ''
+    messages.value = []
+  }
+  window.dispatchEvent(new Event('unread-changed'))
+  // 后台异步删除
+  try {
+    await fetch('/api/messages/conversations/' + peerId, { method: 'DELETE', headers: h() })
+    loadConversations()
+  } catch(e) { /* 网络错误不影响本地已移除 */ }
+}
+
+async function markAllRead() {
+  try {
+    const res = await fetch('/api/messages/read-all', { method: 'PUT', headers: h() })
+    const d = await res.json()
+    console.log('全部已读 API 返回:', d)
+    // 同时清除通知未读
+    await fetch('/api/notifications/read-all', { method: 'PUT', headers: h() }).catch(() => {})
+  } catch(e) { console.error(e) }
+  // 强制刷新角标
+  for (let i = 0; i < 3; i++) {
+    setTimeout(() => window.dispatchEvent(new Event('unread-changed')), i * 300)
+  }
+}
+
 function timeStr(t) {
   if (!t) return ''
   const d = new Date(t)
@@ -137,7 +180,7 @@ onMounted(async () => {
   unsubMessage = onMessage((msg) => {
     loadConversations()
     // 收到自己发的消息回显：替换之前乐观更新的临时消息
-    if (msg.senderId === uid) {
+    if (msg.senderId == getUid()) {
       if (activePeer.value && msg.receiverId === activePeer.value) {
         const idx = messages.value.findIndex(m => !m.id && m.content === msg.content && m.receiverId === msg.receiverId)
         if (idx >= 0) {
@@ -156,8 +199,9 @@ onMounted(async () => {
         messages.value.push(msg)
         scroll()
       }
-      fetch('/api/messages/' + msg.id + '/read', { method: 'PUT', headers: h() }).catch(() => {})
-      window.dispatchEvent(new Event('unread-changed'))
+      fetch('/api/messages/' + msg.id + '/read', { method: 'PUT', headers: h() }).catch(() => {}).finally(() => {
+        window.dispatchEvent(new Event('unread-changed'))
+      })
     }
   })
   await connect()
@@ -174,7 +218,10 @@ onUnmounted(() => {
     <div class="w-72 border-r border-gray-100 flex flex-col flex-shrink-0">
       <div class="py-4 px-3 border-b border-gray-100 flex items-center justify-between">
         <h1 class="text-lg font-bold text-gray-900">私信</h1>
-        <span class="w-2 h-2 rounded-full" :class="connected ? 'bg-green-500' : 'bg-gray-300'" title="连接状态"></span>
+        <div class="flex items-center gap-2">
+          <button @click="markAllRead" class="text-[10px] text-gray-400 hover:text-blue-600 transition-colors" title="全部已读">全部已读</button>
+          <span class="w-2 h-2 rounded-full" :class="connected ? 'bg-green-500' : 'bg-gray-300'" title="连接状态"></span>
+        </div>
       </div>
 
       <!-- 新对话按钮 -->
@@ -215,19 +262,29 @@ onUnmounted(() => {
             <p>暂无对话</p>
             <p class="text-xs mt-1">点击上方"新对话"开始聊天</p>
           </div>
-          <div v-for="c in conversations" :key="c.id"
-            @click="openChat(c.senderId === uid ? c.receiverId : c.senderId, c.senderId === uid ? c.receiverName : c.senderName)"
-            class="px-3 py-3 border-b border-gray-50 cursor-pointer hover:bg-gray-50 transition-colors"
-            :class="{ 'bg-blue-50': activePeer === (c.senderId === uid ? c.receiverId : c.senderId) }">
-            <div class="flex items-center justify-between mb-1">
-              <span class="text-sm font-medium text-gray-800">
-                {{ c.senderId === uid ? c.receiverName : c.senderName }}
-              </span>
-              <span class="text-xs text-gray-400">{{ timeStr(c.createdAt) }}</span>
+          <div v-for="c in conversations" :key="c.id" class="flex items-stretch border-b border-gray-50 hover:bg-gray-50 transition-colors"
+            :class="{ 'bg-blue-50': activePeer === getPeer(c) }">
+            <div
+              @click="openChat(getPeer(c), getUid() == c.senderId ? c.receiverName : c.senderName)"
+              class="flex-1 px-3 py-3 cursor-pointer min-w-0">
+              <div class="flex items-center justify-between mb-1">
+                <span class="text-sm font-medium text-gray-800">
+                  {{ getUid() == c.senderId ? c.receiverName : c.senderName }}
+                </span>
+                <span class="text-[10px] text-gray-300 ml-2 flex-shrink-0">{{ timeStr(c.createdAt) }}</span>
+              </div>
+              <p class="text-xs text-gray-400 truncate">
+                {{ getUid() == c.senderId ? '我: ' : '' }}{{ c.content?.slice(0, 40) }}
+              </p>
             </div>
-            <p class="text-xs text-gray-400 truncate">
-              {{ c.senderId === uid ? '我: ' : '' }}{{ c.content?.slice(0, 40) }}
-            </p>
+            <span
+              @click="deleteConversation(getPeer(c))"
+              style="cursor:pointer;width:36px;display:flex;align-items:center;justify-content:center;flex-shrink:0;color:#d1d5db;border-left:1px solid #f9fafb"
+              onmouseover="this.style.color='#ef4444';this.style.background='#fef2f2'"
+              onmouseout="this.style.color='#d1d5db';this.style.background=''"
+              title="删除对话">
+              <svg width="14" height="14" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"/></svg>
+            </span>
           </div>
         </div>
       </div>
@@ -243,18 +300,18 @@ onUnmounted(() => {
         <div ref="chatEl" class="flex-1 overflow-y-auto py-4 px-4 space-y-3">
           <div v-if="loading" class="text-center text-gray-400 text-sm">加载中...</div>
           <div v-for="(m, i) in messages" :key="m.id || i"
-            :class="m.senderId === uid ? 'flex justify-end' : 'flex gap-2'">
-            <div v-if="m.senderId !== uid"
+            :class="m.senderId == getUid() ? 'flex justify-end' : 'flex gap-2'">
+            <div v-if="m.senderId != getUid()"
               class="w-7 h-7 bg-blue-100 rounded-full flex items-center justify-center flex-shrink-0 mt-0.5">
               <span class="text-blue-600 text-xs font-bold">{{ (m.senderName || '?')[0] }}</span>
             </div>
-            <div :class="m.senderId === uid
+            <div :class="m.senderId == getUid()
               ? 'max-w-[70%] px-3 py-2 bg-blue-600 text-white text-sm rounded-xl rounded-tr-md'
               : 'max-w-[70%] px-3 py-2 bg-gray-100 text-gray-800 text-sm rounded-xl rounded-tl-md'">
               {{ m.content }}
-              <div class="text-[10px] mt-1" :class="m.senderId === uid ? 'text-white/60' : 'text-gray-400'">
+              <div class="text-[10px] mt-1" :class="m.senderId == getUid() ? 'text-white/60' : 'text-gray-400'">
                 {{ timeStr(m.createdAt) }}
-                <span v-if="m.senderId === uid && m.isRead === 1" class="ml-1">已读</span>
+                <span v-if="m.senderId == getUid() && m.isRead === 1" class="ml-1">已读</span>
               </div>
             </div>
           </div>

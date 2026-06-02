@@ -14,5 +14,6 @@ public class RegisterRequest implements Serializable {
     private String checkPassword;
     private String role;
     private String nickname;
+    private String code;
     private static final long serialVersionUID = 1L;
 }

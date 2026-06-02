@@ -1,8 +1,12 @@
 <script setup>
-import { ref, onMounted } from 'vue'
+import { ref, onMounted, computed } from 'vue'
 import { useRoute, useRouter } from 'vue-router'
 const route = useRoute(); const router = useRouter()
 const app = ref(null); const loading = ref(true)
+const role = computed(() => {
+  try { return JSON.parse(localStorage.getItem('user') || '{}').role || '' }
+  catch(e) { return '' }
+})
 const statusOptions = ['VIEWED','SCREENING','INTERVIEW','OFFER','HIRED','REJECTED']
 const statusForm = ref({ status: '', remark: '' })
 const interviewForm = ref({ interviewType:'VIDEO', scheduledTime:'', durationMinutes:60, location:'', interviewer:'', contactPhone:'' })
@@ -80,8 +84,8 @@ onMounted(loadDetail)
         </div>
       </div>
 
-      <!-- Recruiter Actions -->
-      <div v-if="app.status !== 'REJECTED' && app.status !== 'HIRED'" class="grid grid-cols-1 md:grid-cols-2 gap-4">
+      <!-- Recruiter Actions（仅招聘方可见） -->
+      <div v-if="(role === 'RECRUITER' || role === 'ADMIN') && app.status !== 'REJECTED' && app.status !== 'HIRED'" class="grid grid-cols-1 md:grid-cols-2 gap-4">
         <div class="bg-white border border-gray-200 rounded-xl p-5 shadow-sm">
           <h3 class="text-sm font-semibold text-gray-900 mb-3">更新状态</h3>
           <select v-model="statusForm.status" class="w-full px-3 py-2 border rounded-md text-sm mb-2">

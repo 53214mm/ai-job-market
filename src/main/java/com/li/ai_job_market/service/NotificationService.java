@@ -19,4 +19,7 @@ public interface NotificationService extends IService<Notification> {
     boolean markAllRead(Long userId);
 
     boolean delete(Long id, Long userId);
+
+    /** 根据关联ID标记通知为已读（如消息ID） */
+    int markReadByRelatedId(Long relatedId);
 }

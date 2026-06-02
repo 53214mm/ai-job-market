@@ -61,6 +61,9 @@ public class ResumeServiceImpl extends ServiceImpl<ResumeMapper, Resume>
     @Resource
     private AiResumeAnalysisMapper analysisMapper;
 
+    @Resource
+    private com.li.ai_job_market.mapper.ApplicationMapper applicationMapper;
+
     private final ObjectMapper objectMapper = new ObjectMapper();
 
     private static final DateTimeFormatter DATE_FMT = DateTimeFormatter.ofPattern("yyyy.MM");
@@ -103,6 +106,24 @@ public class ResumeServiceImpl extends ServiceImpl<ResumeMapper, Resume>
         if ("PRIVATE".equals(resume.getPrivacy())) {
             checkResumeAccess(resumeId, currentUserId);
         }
+
+        ResumeVO vo = toResumeVO(resume);
+        vo.setEducations(listEducations(resumeId));
+        vo.setWorkExperiences(listWorkExperiences(resumeId));
+        vo.setProjects(listProjects(resumeId));
+        vo.setSkills(listSkills(resumeId));
+        vo.setCertificates(listCertificates(resumeId));
+        return vo;
+    }
+
+    @Override
+    public ResumeVO getResumeForRecruiter(Long resumeId, Long recruiterId) {
+        // 校验招聘方是否有投递记录引用了该简历
+        int count = applicationMapper.countByResumeIdAndRecruiterId(resumeId, recruiterId);
+        ThrowUtils.throwIf(count == 0, ErrorCode.NO_AUTH_ERROR, "无权查看此简历：该简历未投递到您的职位");
+
+        Resume resume = this.getById(resumeId);
+        ThrowUtils.throwIf(resume == null, ErrorCode.NOT_FOUND_ERROR, "简历不存在");
 
         ResumeVO vo = toResumeVO(resume);
         vo.setEducations(listEducations(resumeId));

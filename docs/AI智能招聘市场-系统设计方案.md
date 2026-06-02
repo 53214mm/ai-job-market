@@ -718,3 +718,48 @@ src/main/resources/
     ├── js/
     └── images/
 ```
+
+---
+
+## 八、2026年6月更新：新功能与优化
+
+### 8.1 前端架构变更
+
+原 Thymeleaf 模板方案已改用 **Vue 3 SPA**（Vite 构建，Tailwind CSS 样式）。前端独立于后端运行在 `:5173`，通过 Vite proxy 转发 API 到后端 `:8123`。
+
+### 8.2 AI 语义搜索
+
+基于 pgvector 实现职位向量相似度搜索：
+
+```
+职位发布 → 拼接文本 → DashScope Embedding(1024维) → JDBC 写入 job_vectors
+搜索查询 → Embedding 向量化 → 余弦相似度检索 → MySQL 反查完整职位
+```
+
+### 8.3 WebSocket 实时消息
+
+- STOMP over WebSocket 替代轮询
+- 用户目的路由（`/user/{userId}/queue/messages`）
+- JWT 握手认证（URL token + STOMP CONNECT header 双重验证）
+
+### 8.4 邮箱验证码注册
+
+- QQ 邮箱 SMTP 发送 6 位验证码
+- 5 分钟有效期，内存缓存
+- 注册前必须验证邮箱
+
+### 8.5 管理员功能增强
+
+- 用户管理：禁用/解禁
+- 职位管理：下架/上架任意职位（跳过所有权校验）
+- 内容管理：文章发布、分类管理
+
+### 8.6 技术栈变化
+
+| 项目 | 原设计 | 当前实现 |
+|------|--------|---------|
+| 前端 | Thymeleaf | Vue 3 + Vite + Tailwind CSS |
+| AI 模型 | Qwen-plus | Qwen-max |
+| WebSocket | 无 | STOMP/WebSocket |
+| 邮件 | 无 | Spring Mail + QQ SMTP |
+| 向量搜索 | 未实现 | pgvector + JDBC 直连 |

@@ -117,4 +117,28 @@ public class NotificationController {
         UserVO user = getLoginUser(request);
         return ResultUtils.success(messageService.markRead(id, user.getId()));
     }
+
+    // 批量标记某个会话的所有未读私信为已读
+    @PutMapping("/messages/{peerId}/read-all")
+    public BaseResponse<Integer> markAllMessagesRead(@PathVariable Long peerId, HttpServletRequest request) {
+        UserVO user = getLoginUser(request);
+        int count = messageService.markAllReadFromPeer(user.getId(), peerId);
+        return ResultUtils.success(count);
+    }
+
+    // 删除与指定用户的整个私聊记录
+    @DeleteMapping("/messages/conversations/{peerId}")
+    public BaseResponse<Integer> deleteConversation(@PathVariable Long peerId, HttpServletRequest request) {
+        UserVO user = getLoginUser(request);
+        int count = messageService.deleteConversation(user.getId(), peerId);
+        return ResultUtils.success(count);
+    }
+
+    // 批量标记所有未读私信为已读
+    @PutMapping("/messages/read-all")
+    public BaseResponse<Integer> markAllMessagesRead(HttpServletRequest request) {
+        UserVO user = getLoginUser(request);
+        int count = messageService.markAllRead(user.getId());
+        return ResultUtils.success(count);
+    }
 }

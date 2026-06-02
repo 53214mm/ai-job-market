@@ -19,4 +19,13 @@ public interface MessageService extends IService<Message> {
     long unreadCount(Long userId);
 
     boolean markRead(Long id, Long userId);
+
+    /** 批量标记某个会话中的所有未读消息为已读 */
+    int markAllReadFromPeer(Long userId, Long peerId);
+
+    /** 将该用户所有未读私信批量标记为已读 */
+    int markAllRead(Long userId);
+
+    /** 删除当前用户与指定对端之间的整个私聊记录 */
+    int deleteConversation(Long userId, Long peerId);
 }

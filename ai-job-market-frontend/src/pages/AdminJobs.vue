@@ -31,6 +31,20 @@ async function closeJob(id) {
   } catch (e) { alert('操作失败') }
 }
 
+async function republishJob(id) {
+  if (!confirm('确定重新上架此职位？')) return
+  try {
+    const res = await fetch('/api/jobs/' + id + '/publish', {
+      method: 'PUT', headers: { 'Authorization': 'Bearer ' + localStorage.getItem('token') }
+    })
+    const data = await res.json()
+    if (data.code === 0) {
+      const j = jobs.value.find(x => x.id === id)
+      if (j) j.status = 'PUBLISHED'
+    } else { alert(data.message) }
+  } catch (e) { alert('操作失败') }
+}
+
 const filtered = () => {
   if (filter.value === 'published') return jobs.value.filter(j => j.status === 'PUBLISHED')
   if (filter.value === 'closed') return jobs.value.filter(j => j.status === 'CLOSED')
@@ -68,6 +82,7 @@ onMounted(fetchJobs)
           <p class="text-xs text-gray-400 mt-0.5">{{ j.companyName || '未知公司' }} · {{ j.city || '-' }} · {{ j.salaryMin }}K-{{ j.salaryMax }}K · 浏览 {{ j.viewCount || 0 }} · 投递 {{ j.applyCount || 0 }}</p>
         </div>
         <button v-if="j.status === 'PUBLISHED'" @click="closeJob(j.id)" class="px-3 py-1.5 text-xs text-red-600 border border-red-200 rounded-md hover:bg-red-50 transition-colors">下架</button>
+        <button v-if="j.status === 'CLOSED'" @click="republishJob(j.id)" class="px-3 py-1.5 text-xs text-green-600 border border-green-200 rounded-md hover:bg-green-50 transition-colors">上架</button>
       </div>
     </div>
   </div>

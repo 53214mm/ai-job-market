@@ -88,19 +88,25 @@ public class JobController {
         return ResultUtils.success(jobService.updateJob(id, loginUser.getId(), req));
     }
 
-    // 发布职位（上线）
+    // 发布职位（上线，招聘方或管理员均可操作）
     @PutMapping("/{id}/publish")
     public BaseResponse<Boolean> publish(@PathVariable Long id,
                                           HttpServletRequest request) {
         UserVO loginUser = getLoginUser(request);
+        if (UserRoleEnum.ADMIN.getValue().equals(loginUser.getRole())) {
+            return ResultUtils.success(jobService.adminRepublishJob(id));
+        }
         return ResultUtils.success(jobService.publishJob(id, loginUser.getId()));
     }
 
-    // 关闭职位（下架）
+    // 关闭职位（下架，招聘方或管理员均可操作）
     @PutMapping("/{id}/close")
     public BaseResponse<Boolean> close(@PathVariable Long id,
                                         HttpServletRequest request) {
         UserVO loginUser = getLoginUser(request);
+        if (UserRoleEnum.ADMIN.getValue().equals(loginUser.getRole())) {
+            return ResultUtils.success(jobService.adminCloseJob(id));
+        }
         return ResultUtils.success(jobService.closeJob(id, loginUser.getId()));
     }
 

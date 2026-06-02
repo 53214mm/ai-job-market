@@ -16,7 +16,9 @@ const emit = defineEmits(['apply', 'click', 'favorite'])
         </div>
         <div>
           <h3 class="text-base font-semibold text-gray-900">{{ job.title }}</h3>
-          <p class="text-sm text-gray-500 mt-0.5">{{ job.company }}</p>
+          <router-link v-if="job.companyId" :to="'/companies/' + job.companyId" @click.stop
+            class="text-sm text-blue-500 hover:underline mt-0.5 inline-block">{{ job.company }}</router-link>
+          <p v-else class="text-sm text-gray-500 mt-0.5">{{ job.company }}</p>
         </div>
       </div>
       <span v-if="job.matchScore && showActions"

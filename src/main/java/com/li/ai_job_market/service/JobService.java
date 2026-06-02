@@ -15,6 +15,10 @@ public interface JobService extends IService<Job> {
     JobVO getJobDetail(Long jobId);
     boolean updateJob(Long jobId, Long userId, JobUpdateRequest req);
     boolean closeJob(Long jobId, Long userId);
+    /** 管理员下架任意职位（跳过所有权校验） */
+    boolean adminCloseJob(Long jobId);
+    /** 管理员重新上架任意职位（跳过所有权校验） */
+    boolean adminRepublishJob(Long jobId);
     boolean publishJob(Long jobId, Long userId);
     Page<JobVO> listJobs(JobQueryRequest req);
     Page<JobVO> listMyJobs(Long userId, JobQueryRequest req);

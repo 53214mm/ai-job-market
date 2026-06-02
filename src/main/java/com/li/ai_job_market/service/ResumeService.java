@@ -59,4 +59,7 @@ public interface ResumeService extends IService<Resume> {
     ResumeVO toResumeVO(Resume resume);
     String buildResumeMarkdown(Long resumeId);
     void checkResumeAccess(Long resumeId, Long userId);
+
+    /** 招聘方查看投递者的简历（需校验该招聘方有引用此简历的投递记录） */
+    ResumeVO getResumeForRecruiter(Long resumeId, Long recruiterId);
 }
