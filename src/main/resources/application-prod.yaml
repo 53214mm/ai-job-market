@@ -1,0 +1,74 @@
+spring:
+  datasource:
+    url: jdbc:mysql://${MYSQL_HOST:localhost}:${MYSQL_PORT:3306}/${MYSQL_DB:ai_job_market}?useUnicode=true&characterEncoding=UTF-8&serverTimezone=Asia/Shanghai
+    username: ${MYSQL_USER:root}
+    password: ${MYSQL_PASSWORD:}
+    driver-class-name: com.mysql.cj.jdbc.Driver
+  data:
+    redis:
+      host: ${REDIS_HOST:localhost}
+      port: ${REDIS_PORT:6379}
+      password: ${REDIS_PASSWORD:}
+      database: 1
+      timeout: 5000
+      connect-timeout: 5000
+  mail:
+    host: ${MAIL_HOST:smtp.qq.com}
+    port: ${MAIL_PORT:587}
+    username: ${MAIL_USERNAME:}
+    password: ${MAIL_PASSWORD:}
+    properties:
+      mail.smtp.auth: true
+      mail.smtp.starttls.enable: true
+      mail.smtp.starttls.required: true
+  ai:
+    dashscope:
+      api-key: ${DASHSCOPE_API_KEY:}
+      chat:
+        options:
+          model: qwen-max
+    vectorstore:
+      pgvector:
+        index-type: HNSW
+        dimensions: 1024
+        distance-type: COSINE_DISTANCE
+        max-document-batch-size: 10000
+    mcp:
+      client:
+        sse:
+          connections:
+            mxai-mcp-server:
+              url: https://mcp.mxai.cn
+              sse-endpoint: /sse
+  servlet:
+    multipart:
+      max-file-size: 10MB
+      max-request-size: 10MB
+
+pgvector:
+  datasource:
+    url: jdbc:postgresql://${PG_HOST:localhost}:${PG_PORT:5432}/${PG_DB:ai_job_market}
+    username: ${PG_USER:root}
+    password: ${PG_PASSWORD:}
+  store:
+    index-type: HNSW
+    dimensions: 1024
+    distance-type: COSINE_DISTANCE
+    max-document-batch-size: 10000
+
+mxai:
+  api-key: ${MXAI_API_KEY:}
+
+jwt:
+  secret: ${JWT_SECRET}
+  expiration-ms: 604800000
+
+chat-memory:
+  redis:
+    key-prefix: "chat:memory:"
+    ttl-days: 7
+
+# 允许的跨域来源（逗号分隔），部署时设为实际域名
+app:
+  cors:
+    allowed-origins: ${APP_CORS_ORIGINS:http://localhost:5173,http://localhost:8123}

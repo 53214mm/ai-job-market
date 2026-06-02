@@ -10,14 +10,14 @@ import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 @Configuration
 public class CorsConfig implements WebMvcConfigurer {
 
+    @org.springframework.beans.factory.annotation.Value("${app.cors.allowed-origins:http://localhost:5173,http://localhost:8123}")
+    private String allowedOrigins;
+
     @Override
     public void addCorsMappings(CorsRegistry registry) {
-        // 覆盖所有请求
         registry.addMapping("/**")
-                // 允许发送 Cookie
                 .allowCredentials(true)
-                // 放行哪些域名（必须用 patterns，否则 * 会和 allowCredentials 冲突）
-                .allowedOriginPatterns("*")
+                .allowedOriginPatterns(allowedOrigins.split(","))
                 .allowedMethods("GET", "POST", "PUT", "DELETE", "OPTIONS")
                 .allowedHeaders("*")
                 .exposedHeaders("*");

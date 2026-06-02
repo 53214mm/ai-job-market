@@ -31,8 +31,17 @@ public class WebSocketConfig implements WebSocketMessageBrokerConfigurer {
 
     private final JwtUtils jwtUtils;
 
+    @org.springframework.beans.factory.annotation.Value("${app.cors.allowed-origins:http://localhost:5173,http://localhost:8123}")
+    private String allowedOrigins;
+
     public WebSocketConfig(JwtUtils jwtUtils) {
         this.jwtUtils = jwtUtils;
+    }
+
+    private String[] getAllowedOrigins() {
+        return java.util.Arrays.stream(allowedOrigins.split(","))
+                .map(String::trim)
+                .toArray(String[]::new);
     }
 
     @Override
@@ -50,7 +59,7 @@ public class WebSocketConfig implements WebSocketMessageBrokerConfigurer {
         JwtHandshakeInterceptor interceptor = new JwtHandshakeInterceptor();
         // 原生 WebSocket（@stomp/stompjs brokerURL 模式）
         registry.addEndpoint("/ws")
-                .setAllowedOriginPatterns("http://localhost:5173", "http://localhost:8123")
+                .setAllowedOriginPatterns(getAllowedOrigins())
                 .addInterceptors(interceptor)
                 .setHandshakeHandler(new DefaultHandshakeHandler() {
                     @Override
@@ -63,7 +72,7 @@ public class WebSocketConfig implements WebSocketMessageBrokerConfigurer {
                 });
         // SockJS 降级（sockjs-client）
         registry.addEndpoint("/ws")
-                .setAllowedOriginPatterns("http://localhost:5173", "http://localhost:8123")
+                .setAllowedOriginPatterns(getAllowedOrigins())
                 .addInterceptors(interceptor)
                 .withSockJS();
     }

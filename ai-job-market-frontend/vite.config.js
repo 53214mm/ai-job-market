@@ -13,5 +13,11 @@ export default defineConfig({
         ws: true,
       }
     }
+  },
+  build: {
+    outDir: 'dist',
+    assetsDir: 'assets',
+    sourcemap: false,
+    chunkSizeWarningLimit: 500
   }
 })
