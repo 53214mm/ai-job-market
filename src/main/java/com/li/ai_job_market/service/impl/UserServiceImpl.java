@@ -44,6 +44,9 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements Us
     @Resource
     private UserRecruiterProfileMapper recruiterProfileMapper;
 
+    @Resource
+    private com.li.ai_job_market.mapper.CompanyMapper companyMapper;
+
     private static final Pattern EMAIL_PATTERN =
             Pattern.compile("^[A-Za-z0-9+_.-]+@[A-Za-z0-9.-]+\\.[A-Za-z]{2,}$");
 
@@ -161,6 +164,22 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements Us
         vo.setStatus(user.getStatus());
         vo.setLastLoginTime(user.getLastLoginTime());
         vo.setCreatedAt(user.getCreatedAt());
+
+        // 招聘方：填充所属公司信息，方便前端判断和跳转
+        if (UserRoleEnum.RECRUITER.getValue().equals(user.getRole())) {
+            UserRecruiterProfile profile = recruiterProfileMapper.selectOne(
+                new LambdaQueryWrapper<UserRecruiterProfile>()
+                    .eq(UserRecruiterProfile::getUserId, user.getId()));
+            if (profile != null && profile.getCompanyId() != null) {
+                vo.setCompanyId(profile.getCompanyId());
+                com.li.ai_job_market.model.entity.Company company =
+                    companyMapper.selectById(profile.getCompanyId());
+                if (company != null) {
+                    vo.setCompanyName(company.getName());
+                }
+            }
+        }
+
         return vo;
     }
 }

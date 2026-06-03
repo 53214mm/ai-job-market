@@ -41,11 +41,12 @@ public class CompanyServiceImpl extends ServiceImpl<CompanyMapper, Company>
         ThrowUtils.throwIf(StringUtils.isBlank(req.getName()),
                 ErrorCode.PARAMS_ERROR, "公司名称不能为空");
 
+        // 确保招聘方档案存在
         UserRecruiterProfile profile = recruiterProfileService.getOne(
                 new LambdaQueryWrapper<UserRecruiterProfile>().eq(UserRecruiterProfile::getUserId, userId));
-        if (profile != null && profile.getCompanyId() != null) {
-            ThrowUtils.throwIf(true, ErrorCode.PARAMS_ERROR, "您已关联公司，不可重复创建");
-        }
+        ThrowUtils.throwIf(profile == null, ErrorCode.NOT_FOUND_ERROR, "招聘方档案不存在，请联系管理员");
+        ThrowUtils.throwIf(profile.getCompanyId() != null,
+                ErrorCode.PARAMS_ERROR, "您已关联公司，不可重复创建");
 
         Company company = new Company();
         company.setName(req.getName());
@@ -64,10 +65,11 @@ public class CompanyServiceImpl extends ServiceImpl<CompanyMapper, Company>
         boolean saved = this.save(company);
         ThrowUtils.throwIf(!saved, ErrorCode.SYSTEM_ERROR, "创建公司失败");
 
-        if (profile != null) {
-            profile.setCompanyId(company.getId());
-            recruiterProfileService.updateById(profile);
-        }
+        // 将公司关联到招聘方档案 —— 必须成功
+        profile.setCompanyId(company.getId());
+        boolean profileUpdated = recruiterProfileService.updateById(profile);
+        ThrowUtils.throwIf(!profileUpdated, ErrorCode.SYSTEM_ERROR, "关联公司到招聘方档案失败");
+
         log.info("公司创建: id={}, name={}, userId={}", company.getId(), req.getName(), userId);
         return company.getId();
     }

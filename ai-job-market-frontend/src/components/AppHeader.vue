@@ -109,7 +109,7 @@ function logout() {
         <!-- Nav: 招聘方 -->
         <nav v-else-if="role === 'RECRUITER'" class="hidden md:flex items-center gap-8">
           <router-link to="/recruiter" class="text-sm font-medium text-gray-600 hover:text-blue-600 transition-colors">工作台</router-link>
-          <router-link to="/recruiter/company" class="text-sm font-medium text-gray-600 hover:text-blue-600 transition-colors">公司信息</router-link>
+          <router-link :to="user?.companyId ? '/recruiter/company/' + user.companyId : '/recruiter/company'" class="text-sm font-medium text-gray-600 hover:text-blue-600 transition-colors">公司信息</router-link>
           <router-link to="/recruiter/jobs" class="text-sm font-medium text-gray-600 hover:text-blue-600 transition-colors">职位管理</router-link>
           <router-link to="/recruiter/applications" class="text-sm font-medium text-gray-600 hover:text-blue-600 transition-colors">简历筛选</router-link>
           <router-link to="/notifications" class="relative text-sm font-medium text-gray-600 hover:text-blue-600 transition-colors">通知

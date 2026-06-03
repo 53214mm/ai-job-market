@@ -17,6 +17,8 @@ public class UserVO implements Serializable {
     private String nickname;
     private String avatarUrl;
     private String status;
+    private Long companyId;
+    private String companyName;
     private LocalDateTime lastLoginTime;
     private LocalDateTime createdAt;
     private static final long serialVersionUID = 1L;

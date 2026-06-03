@@ -27,6 +27,9 @@ spring:
       chat:
         options:
           model: qwen-max
+    qianfan:
+      api-key: ${QIANFAN_API_KEY:}
+      Bearer: ${QIANFAN_BEARER:}
     vectorstore:
       pgvector:
         index-type: HNSW

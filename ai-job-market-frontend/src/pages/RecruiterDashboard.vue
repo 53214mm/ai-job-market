@@ -9,22 +9,34 @@ const stats = ref({ publishedJobs: 0, receivedApps: 0, interviewing: 0, pending:
 onMounted(async () => {
   const token = localStorage.getItem('token')
   const h = token ? { 'Authorization': 'Bearer ' + token } : {}
+  // 从 /api/user/current 获取包含 companyId/companyName 的完整用户信息
   try {
     const res = await fetch('/api/user/current', { headers: h })
     const d = await res.json()
     if (d.code === 0) {
-      user.role = d.data.role
-      user.id = d.data.id
+      const u = d.data
+      user.role = u.role
+      user.id = u.id
+      user.companyId = u.companyId
+      user.companyName = u.companyName
     }
   } catch (e) { /* */ }
+
+  // 根据用户的真实 companyId 获取公司详情
+  if (user.companyId) {
+    try {
+      const compRes = await fetch('/api/companies/' + user.companyId, { headers: h })
+      const cdata = await compRes.json()
+      if (cdata.code === 0) myCompany.value = cdata.data
+    } catch (e) { /* */ }
+  }
+
   try {
-    const [compRes, jobRes, appRes] = await Promise.all([
-      fetch('/api/companies?current=1&pageSize=50', { headers: h }),
+    const [jobRes, appRes] = await Promise.all([
       fetch('/api/jobs/my?current=1&pageSize=100', { headers: h }),
       fetch('/api/applications/received?current=1&pageSize=100', { headers: h })
     ])
-    const [cdata, jdata, adata] = await Promise.all([compRes.json(), jobRes.json(), appRes.json()])
-    if (cdata.code === 0) myCompany.value = cdata.data.records?.[0] || null
+    const [jdata, adata] = await Promise.all([jobRes.json(), appRes.json()])
     if (jdata.code === 0) {
       const records = jdata.data.records || []
       stats.value.publishedJobs = records.filter(j => j.status === 'PUBLISHED').length
@@ -39,7 +51,7 @@ onMounted(async () => {
 })
 
 function goCompany() {
-  if (myCompany.value) router.push('/companies/' + myCompany.value.id)
+  if (user.companyId) router.push('/recruiter/company/' + user.companyId)
   else router.push('/recruiter/company')
 }
 </script>
